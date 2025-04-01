@@ -65,6 +65,8 @@ function prise_en_main()
 {   
     user=$1
     computer=$2
+    echo "Prise en main à distance"
+    echo "--------------------"
     ssh "$user@$computer"
 }
 
