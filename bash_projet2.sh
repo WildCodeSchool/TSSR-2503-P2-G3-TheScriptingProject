@@ -13,7 +13,7 @@
 # <Evenement> : Action effectuée (à définir par le groupe)
 
 
-#Fonction :
+#Fonction 1 :
 # - Création compte utilisateur local 
 # - Changement de mot de passe 
 # - Suppression compte utilisateur local
@@ -41,68 +41,68 @@ function utilisateur_local()
     esac
 }
 
-#Fonction : 
+#Fonction 2 : 
 # - Ajout à un groupe local 
 # - Sortie d'un groupe local 
 
-#Fonction : 
+#Fonction 3 : 
 # - Arret 
 # - Redémarrage 
 # - Vérouillage 
 
-#Fonction : 
+#Fonction 4 : 
 # - Mise-à-jour du système 
 
-#Fonction :
+#Fonction 5 :
 # - Création de répertoire 
 # - Modification de repertoire 
 # - -Suppression de répertoire 
 
-#Fonction : 
+#Fonction 6 : 
 # - Prise en main a distance (CLI)
 
-# Fonction : 
+# Fonction 7 : 
 # - Définition de règle de pare-feu 
 # - Activation du pare-feu
 # - Désactivation du pare feu 
 
-#Fonction 
+#Fonction 8 : 
 # - Installation de logiciel
 # - Désinstallation de logiciel 
 # - Execution de script sur la machine distante 
 
-#Fonction :
+#Fonction 9 :
 # - Date de dernière connexion d’un utilisateur
 # - Date de dernière modification du mot de passe
 # - Liste des sessions ouvertes par l'utilisateur
 
-#Fonction : 
+#Fonction 10 : 
 # - Groupe d’appartenance d’un utilisateur
 # - Historique des commandes exécutées par l'utilisateur
 
-#Fonction : 
+#Fonction 11 : 
 # - Droits/permissions de l’utilisateur sur un dossier
 # - Droits/permissions de l’utilisateur sur un fichier
 
-#Fonction : 
+#Fonction 12 : 
 # - Version de l'OS
 
-#Fonction : 
+#Fonction 13 : 
 # - Nombre de disque
 # - Partition (nombre, nom, FS, taille) par disque
 
-#Fonction : 
+#Fonction 14 : 
 # - Liste des applications/paquets installées
 # - Liste des services en cours d'execution
 # - Liste des utilisateurs locaux
 
-#Fonction : 
+#Fonction 15 : 
 # - Type de CPU, nombre de coeurs, etc.
 # - Mémoire RAM totale
 # - Utilisation de la RAM
 # - Utilisation du disque
 # - Utilisation du processeur
 
-#Fonction : 
+#Fonction 16 : 
 # - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
 # - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
