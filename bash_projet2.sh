@@ -59,12 +59,59 @@ function utilisateur_local()
 # - -Suppression de répertoire 
 
 #Fonction 6 : 
+# Cette fonction nécessite d'avoir une connexion ssh disponible (voir ssh.service et openssh)
 # - Prise en main a distance (CLI)
+function prise_en_main()
+{   
+    user=$1
+    computer=$2
+    ssh "$user@$computer"
+}
 
 # Fonction 7 : 
+# Cette fonction nécessitera d'avoir installé UFW (uncomplicated firewall)
 # - Définition de règle de pare-feu 
 # - Activation du pare-feu
 # - Désactivation du pare feu 
+function pare_feu()
+{
+    echo "Gestion du pare-feu"
+    echo "--------------------"
+    echo "Que voulez-vous faire ?"
+    echo "1 : Définir une règle de pare-feu"
+    echo "2 : Activer le pare-feu"
+    echo "3 : Désactiver le pare-feu"
+    read -r choix
+    case $choix in
+    1)
+        echo "Définition de règle"
+        echo "Que voulez-vous faire ?"
+        echo "1 : Autoriser adresse"
+        echo "2 : Interdire adresse"
+        read -r choix2
+        case $choix2 in
+        1)
+            echo "Entrez adresse à autoriser"
+            read -r adresse
+            ufw allow from $adresse
+            ;;
+        2)
+            echo "Entrez adresse à interdire"
+            read -r adresse
+            ufw deny from $adresse
+            ;;
+        esac
+        ;;
+    2)
+        echo "Activation du pare-feu"
+        ufw enable
+        ;;
+    3)
+        echo "Désactivation du pare-feu"
+        ufw disable
+        ;;
+    esac
+}
 
 #Fonction 8 : 
 # - Installation de logiciel
