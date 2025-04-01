@@ -45,6 +45,20 @@ function utilisateur_local()
 # - Ajout à un groupe local 
 # - Sortie d'un groupe local 
 
+function groupe_local()
+{
+    user=$1
+    echo "Que voulez vous faire Mister ?"
+    echo "1 : Ajout à un groupe local"
+    echo "2 : Sortie d'un groupe local"
+    read -r choix_groupe_local 
+    case $choix_groupe_local in 
+        1)
+        groupadd "$user" ;; 
+        2) 
+        
+}
+
 #Fonction 3 : 
 # - Arret 
 # - Redémarrage 
