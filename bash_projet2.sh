@@ -151,8 +151,11 @@ function logiciel()
 
 #Fonction 9 :
 # - Date de dernière connexion d’un utilisateur
+# Commande last $user
 # - Date de dernière modification du mot de passe
+# Commande passwd $user -S
 # - Liste des sessions ouvertes par l'utilisateur
+# Commande last $user
 
 #Fonction 10 : 
 # - Groupe d’appartenance d’un utilisateur
