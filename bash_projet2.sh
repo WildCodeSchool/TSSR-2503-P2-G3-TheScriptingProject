@@ -119,6 +119,35 @@ function pare_feu()
 # - Installation de logiciel
 # - Désinstallation de logiciel 
 # - Execution de script sur la machine distante 
+# ./script.sh
+function logiciel()
+{
+    echo "Gestion de logiciels"
+    echo "--------------------"
+    echo "Que voulez-vous faire ?"
+    echo "1 : Installer un logiciel"
+    echo "2 : Supprimer un logiciel"
+    echo "3 : Exécuter un script"
+    read -r choix
+    case $choix in
+    1)
+        echo "Quel logiciel souhaitez-vous installer ?"
+        read -r logiciel
+        apt install $logiciel
+        ;;
+    2)
+        echo "Remove"
+        echo "Quel logiciel souhaitez-vous supprimer ?"
+        read -r logiciel
+        apt remove $logiciel
+        ;;
+    3)
+        echo "Quel script souhaitez-vous lancer ?"
+        read -r script
+        ./$script
+        ;;
+    esac
+}
 
 #Fonction 9 :
 # - Date de dernière connexion d’un utilisateur
@@ -155,3 +184,5 @@ function pare_feu()
 #Fonction 16 : 
 # - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
 # - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
+
+logiciel
