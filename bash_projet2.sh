@@ -55,8 +55,9 @@ function groupe_local()
     case $choix_groupe_local in 
         1)
         groupadd "$user" ;; 
-        2) 
-        
+        2)
+        usermod -r ;;
+    esac
 }
 
 #Fonction 3 : 
@@ -64,13 +65,54 @@ function groupe_local()
 # - Redémarrage 
 # - Vérouillage 
 
+function shut()
+{
+    user=$1
+    echo "Que voulez vous faire ?"
+    echo "1 : Arret"
+    echo "2 : Redémarrage"
+    echo "3 : Vérouillage"
+    read -r choix_shut
+    case $choix_shut in
+        1)
+        poweroff ;; 
+        2)
+        reboot ;; 
+        3) 
+        nano /etc/passwd ;;
+        esac
+}
+
 #Fonction 4 : 
 # - Mise-à-jour du système 
+
+function update()
+{
+    apt update && upgrade -y 
+}
 
 #Fonction 5 :
 # - Création de répertoire 
 # - Modification de repertoire 
 # - -Suppression de répertoire 
+
+function repertoire()
+{
+    user=$1
+    echo "Que voulez vous faire ?"
+    echo "1 : Création de répertoire"
+    echo "2 : Modification de répertoire"
+    echo "3 : Suppréssion de repertoire"
+    read -r choix_repertoire
+    case $choix_repertoire in 
+        1)
+        mkdir ;;
+        2) 
+        mv $1 ;; 
+        3) 
+        rmkdir $1 ;;
+        esac
+}
 
 #Fonction 6 : 
 # - Prise en main a distance (CLI)
