@@ -156,14 +156,80 @@ function logiciel()
 # Commande passwd $user -S
 # - Liste des sessions ouvertes par l'utilisateur
 # Commande last $user
+function info_compte()
+{
+    user=$1
+    echo "Informations sur le compte"
+    echo "--------------------"
+    echo "Que voulez-vous savoir ?"
+    echo "1) Date de dernière connexion de $user"
+    echo "2) Date de dernière modification du mot de passe de $user"
+    echo "3) Liste des sessions de $user"
+    read -r choix
+    case $choix in
+        1) 
+            echo "Date de dernière connexion :"
+            last $user | head -n 1
+            ;;
+        2)
+            echo "Dernière modification de mot de passe :"
+            passwd $user -S
+            ;;
+        3)
+            echo "Sessions :"
+            last $user
+            ;;
+    esac
+
+}
 
 #Fonction 10 : 
 # - Groupe d’appartenance d’un utilisateur
 # - Historique des commandes exécutées par l'utilisateur
+function groupe()
+{
+    user=$1
+    echo "Info groupe & commandes"
+    echo "--------------------"
+    echo "Que voulez-vous savoir ?"
+    echo "1) Groupe de $user"
+    echo "2) Historique commandes de $user"
+    read -r choix
+    case $choix in
+        1)
+            echo "Groupes de l'utilisateur :"
+            groups $user
+            ;;
+        2)
+            echo "Historiques des commandes :"
+            cat /home/$user/.bash_history
+            ;;
+    esac
+}
+
 
 #Fonction 11 : 
 # - Droits/permissions de l’utilisateur sur un dossier
 # - Droits/permissions de l’utilisateur sur un fichier
+function droits()
+{
+    user=$1
+    target=$2
+    echo "Info droits fichier/dossier"
+    echo "--------------------"
+    echo "Que voulez-vous savoir ?"
+    echo "1) Droits de $user sur dossier $target"
+    echo "2) Droits de $user sur fichier $target"
+    read -r choix
+    case $choix in
+        1) 
+            echo ""
+            ;;
+        2)
+            echo ""
+            ;;
+    esac
+}
 
 #Fonction 12 : 
 # - Version de l'OS
@@ -187,5 +253,3 @@ function logiciel()
 #Fonction 16 : 
 # - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
 # - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
-
-logiciel
