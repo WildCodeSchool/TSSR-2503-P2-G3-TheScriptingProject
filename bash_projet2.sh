@@ -30,13 +30,21 @@ function utilisateur_local()
     read -r choix
     case $choix in
         1) 
-        adduser "$user" ;;
+        echo "Merci de donner un nom d'utilisateur."
+        read -r nom_user
+        adduser "$nom_user" ;;
         2) 
-        passwd "$user" ;;
+        echo "Merci de donner le nom d'utilisateur a qui vous voulez changer de mot de passe"
+        read -r nom_passwd
+        passwd "$nom_passwd" ;;
         3) 
-        deluser "$user" ;;
+        echo "Merci de donner l'utilisateur que vous souhaitez supprimer"
+        read -r user_del
+        deluser "$user_del" ;;
         4)
-        usermod -L "$user" ;;
+        echo "Merci de donner l'utilisateur que vous voulez désactiver"
+        read -r user_desactive
+        usermod -L "$user_desactive" ;;
         #chage -E 0 username
     esac
 }
