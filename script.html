@@ -1,0 +1,213 @@
+#!/bin/bash 
+   
+   
+   {  
+   
+    echo VERSION_OS
+
+    if[ -f /etc/os-release ]; then
+       
+        source /etc/os-release
+        echo -e {Distribution:$} OS_NAME
+        echo -e {Version:$} VERSION_ID
+        echo -e {Architecture:$} $(uname -m)
+        log_event OS_INFO_LINUX
+    
+        # macOS
+        echo -e {Système:$} macOS $(sw_vers -productVersion)
+        echo -e {Build:$} $(sw_vers -buildVersion)
+        log_event OS_INFO_MACOS
+    elif [OSTYPE = msys]; then
+        
+        # Windows 
+        echo -e {Système:$} OS_NAME
+        systeminfo | grep -E ^OS Name|^OS Version"
+        log_event "OS_INFO_WINDOWS"
+    
+       fi
+
+    log_event "FIN_FONCTION_VERSION_OS"
+}
+
+
+function information sur les disques() 
+
+   
+    echo -e "\n{INFORMATIONS SUR LES DISQUES$}
+    
+
+    if"command -v lsblk &>/dev/null"; then
+        
+        # Linux avec lsblk
+        echo -e \n"{Disques et partitions:$}
+        lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT,MODEL
+        echo -e \n"{Utilisation:$}
+        df -h --output=source,fstype,size,pcent,target | grep -v tmpfs
+        log_event DISK_INFO_LSBLK
+    elif command -v diskutil >/dev/null; then
+        
+        # macOS
+        echo -e \n{Liste des disques:$}
+        listes des disques 
+        echo -e \n{Utilisation:$}
+        df -h
+        log_event DISK_INFO_MACOS
+    elif [OSTYPE = msys ]; then
+        
+        # Windows
+        echo -e \n{Disques physiques}:$
+        wmic diskdrive get caption,size,interfacetype
+        echo -e \n{Partitions}:$
+        wmic partition get caption,size,type
+        log_event DISK_INFO_WINDOWS
+    else
+        
+        # Méthode générique
+        echo -e \n{Utilisation des disques}:$
+        df -h
+        log_event DISK_INFO_GENERIC
+    fi
+
+    log_event FIN_FONCTION_INFO_DISQUES
+}
+
+
+# FONCTION 3: LOGICIELS ET UTILISATEURS
+
+function show_software_users() 
+{
+    
+    # Liste des paquets installés
+    
+    echo -e \n{Paquets installés:$}
+    if"command -v dpkg (&)>/dev/null" then
+        dpkg --list | head -n 15
+        log_event SOFTWARE_INFO_DPKG
+    elif command -v rpm >/dev/null; then
+        rpm -qa | head -n 15
+        log_event SOFTWARE_INFO_RPM
+    elif [OSTYPE = msys ]; then
+        wmic product get name,version | head -n 15
+        log_event SOFTWARE_INFO_WINDOWS
+    else
+        echo Méthode non disponible
+        log_event SOFTWARE_INFO_UNAVAILABLE
+    fi
+
+    # Services en cours d'exécution
+    
+    echo -e \n{Services actifs:$}
+    if'command -v systemctl >/dev/null'; then
+        systemctl list-units --type=service --state=running | head -n 10
+        log_event SERVICES_INFO_SYSTEMD
+    elif command -v service >/dev/null; then
+        service --status-all | head -n 15
+        log_event SERVICES_INFO_SYSV
+    elif [OSTYPE = msys ]; then
+        net start | head -n 15
+        log_event SERVICES_INFO_WINDOWS
+    else
+        echo Méthode non disponible
+        log_event SERVICES_INFO_UNAVAILABLE
+    fi
+
+    # Utilisateurs locaux
+    
+    echo -e \n$ Utilisateurs locaux:$
+    if"[-f /etc/passwd ]"; then
+        cut -d: -f1 /etc/passwd | sort | column
+        log_event LOCAL_USERS_LISTED
+    elif [OSTYPE = msys ]; then
+        net user
+        log_event LOCAL_USERS_WINDOWS
+    else
+        echo Méthode non disponible
+        log_event LOCAL_USERS_UNAVAILABLE
+    fi
+
+    log_event FIN_FONCTION_LOGICIELS_UTILISATEURS
+}
+
+
+function system_monitoring() 
+{
+    echo -e \n MONITORING SYSTEME =$
+    log_event DEBUT_FONCTION_MONITORING
+
+    # Informations CPU
+    
+    echo -e \n$ {Processeur:$}
+    if"command -v lscpu &>/dev/null; then
+        lscpu | grep -E "Model name|Socket|Core|MHz"
+    elif ["OSTYPE" = "darwin"* ]; then
+        sysctl -n machdep.cpu.brand_string
+        echo "Cœurs: (sysctl -n hw.ncpu)
+    elif [ OSTYPE = msys ]; then
+        wmic cpu get name,numberofcores,currentclockspeed
+    else
+        cat /proc/cpuinfo | grep model name | head -n 1
+    fi
+    log_event CPU_INFO_DISPLAYED
+
+    # Mémoire RAM
+    
+    echo -e \n{Mémoire RAM:$}
+    if"command -v free &>/dev/null"; then
+        free -h
+    elif [ OSTYPE = darwin ]; then
+        vm_stat
+    elif [ OSTYPE = msys ]; then
+        wmic OS get FreePhysicalMemory,TotalVisibleMemorySize /Value
+    else
+        echo Méthode non disponible
+    fi
+    log_event RAM_INFO_DISPLAYED
+
+    
+    # Utilisation disque
+    
+    echo -e"\n{Utilisation disque:$}
+    df -h | grep -v "tmpfs"
+    log_event "DISK_USAGE_DISPLAYED"
+
+    # Charge système
+    
+    echo -e "\n{Charge système:$}
+    uptime | echo Commande uptime non disponible
+    log_event SYSTEM_LOAD_DISPLAYED
+
+    log_event FIN_FONCTION_MONITORING
+}
+
+# 
+# 
+# function search_in_logs
+{
+    echo -e \n{RECHERCHE DANS LES LOGS:$}
+    log_event DEBUT_FONCTION_RECHERCHE_LOGS
+
+    if[-f LOG_FILE]; then
+        echo -e Erreur: Fichier de logs introuvable!$"
+        log_event "ERROR_LOG_FILE_NOT_FOUND"
+        return 1
+    fi
+
+    echo "1. Rechercher par utilisateur"
+    echo "2. Rechercher par ordinateur"
+    echo "3. Rechercher par terme"
+    read -p "Votre choix [1-3]:  choice
+
+    case choice in
+        1
+            read -p Nom d'utilisateur:  username
+            echo -e "\n${YELLOW}Résultats pour l'utilisateur username':$"
+            grep -i "$username" "$LOG_FILE" || echo "Aucun résultat trouvé"
+            log_event "LOG_SEARCH_BY_USER_$username"
+            ;;
+        2)
+            read -p Nom d'ordinateur:  hostname
+            echo -e \n"Résultats pour l'ordinateur hostname"
+            grep -i hostname LOG_FILE | echo Aucun résultat trouvé
+            echo -e \nRésultats pour le terme term:$
+            
+}
