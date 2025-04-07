@@ -1,0 +1,181 @@
+#!/bin/bash
+
+#Squelette projet 2 => sprint 1 
+
+# Faire des logs a chaques actions pour garder une trace => journalisation log_evt.log
+# Pour le serveur windows, dans C:\Windows\System32\LogFiles
+# Pour le serveur Linux, dans /var/log
+# <Date>-<Heure>-<Utilisateur>-<Evenement>
+# Avec :
+# <Date> : Date de l’evenement au format yyyymmdd
+# <Heure> : Heure de l'événement au format hhmmss
+# <Utilisateur> : Nom de l’utilisateur courant exécutant le script
+# <Evenement> : Action effectuée (à définir par le groupe)
+
+
+#Fonction 1 :
+# - Création compte utilisateur local 
+# - Changement de mot de passe 
+# - Suppression compte utilisateur local
+# - Désactivation compte utilisateur local 
+
+function utilisateur_local() 
+{
+    echo "Que voulez vous faire Mister ?"
+    echo "1 : création d'un compte utilisateur local."
+    echo "2 : Changement de mot de passe."
+    echo "3 : Suppression compte utilisateur local."
+    echo "4 : Désactivation compte utilisateur local."
+    read -r choix
+    case $choix in
+        1) 
+        echo "Merci de donner un nom d'utilisateur."
+        read -r nom_user
+        adduser "$nom_user" ;;
+        2) 
+        echo "Merci de donner le nom d'utilisateur a qui vous voulez changer de mot de passe"
+        read -r nom_passwd
+        passwd "$nom_passwd" ;;
+        3) 
+        echo "Merci de donner l'utilisateur que vous souhaitez supprimer"
+        read -r user_del
+        deluser "$user_del" ;;
+        4)
+        echo "Merci de donner l'utilisateur que vous voulez désactiver"
+        read -r user_desactive
+        usermod -L "$user_desactive" ;;
+        #chage -E 0 username
+    esac
+}
+
+#Fonction 2 : 
+# - Ajout à un groupe local 
+# - Sortie d'un groupe local 
+
+function groupe_local()
+{
+    echo "Que voulez vous faire Mister ?"
+    echo "1 : Ajout à un groupe local"
+    echo "2 : Sortie d'un groupe local"
+    read -r choix_groupe_local 
+    case $choix_groupe_local in 
+        1)
+        echo "A quel groupe voulez vous être ajouté ?"
+        read -r group_add
+        groupadd "$group_add" ;; 
+        2)
+        echo "Vous voulez sortir de quel groupe ?"
+        read -r group_out
+        usermod -r "$group_out" ;;
+    esac
+}
+
+#Fonction 3 : 
+# - Arret 
+# - Redémarrage 
+# - Vérouillage 
+
+function shut()
+{
+    echo "Que voulez vous faire ?"
+    echo "1 : Arret"
+    echo "2 : Redémarrage"
+    echo "3 : Vérouillage"
+    read -r choix_shut
+    case $choix_shut in
+        1)
+        poweroff ;; 
+        2)
+        reboot ;; 
+        3) 
+        nano /etc/passwd ;;
+        esac
+}
+
+#Fonction 4 : 
+# - Mise-à-jour du système 
+
+function update()
+{
+    apt update && apt upgrade -y 
+}
+
+#Fonction 5 :
+# - Création de répertoire 
+# - Modification de repertoire 
+# - -Suppression de répertoire 
+
+function repertoire()
+{
+    echo "Que voulez vous faire ?"
+    echo "1 : Création de répertoire"
+    echo "2 : Modification de répertoire"
+    echo "3 : Suppréssion de repertoire"
+    read -r choix_repertoire
+    case $choix_repertoire in 
+        1)
+        echo "Comment voulez vous nommer le repertoire ?"
+        read -r name_dir
+        mkdir "$name_dir" ;;
+        2) 
+        echo "Quel repertoire voulez vous modifier ?"
+        read -r mod_dir
+        echo "Quel est le nouveau nom ?"
+        read -r new_dir
+        mv "$mod_dir" "$new_dir" ;; 
+        3) 
+        echo "Quel repertoire voulez vous supprimer ?"
+        read -r dir_del
+        rmdir "$dir_del" ;;
+        esac
+}
+
+
+#Fonction 6 : 
+# - Prise en main a distance (CLI)
+
+# Fonction 7 : 
+# - Définition de règle de pare-feu 
+# - Activation du pare-feu
+# - Désactivation du pare feu 
+
+#Fonction 8 : 
+# - Installation de logiciel
+# - Désinstallation de logiciel 
+# - Execution de script sur la machine distante 
+
+#Fonction 9 :
+# - Date de dernière connexion d’un utilisateur
+# - Date de dernière modification du mot de passe
+# - Liste des sessions ouvertes par l'utilisateur
+
+#Fonction 10 : 
+# - Groupe d’appartenance d’un utilisateur
+# - Historique des commandes exécutées par l'utilisateur
+
+#Fonction 11 : 
+# - Droits/permissions de l’utilisateur sur un dossier
+# - Droits/permissions de l’utilisateur sur un fichier
+
+#Fonction 12 : 
+# - Version de l'OS
+
+#Fonction 13 : 
+# - Nombre de disque
+# - Partition (nombre, nom, FS, taille) par disque
+
+#Fonction 14 : 
+# - Liste des applications/paquets installées
+# - Liste des services en cours d'execution
+# - Liste des utilisateurs locaux
+
+#Fonction 15 : 
+# - Type de CPU, nombre de coeurs, etc.
+# - Mémoire RAM totale
+# - Utilisation de la RAM
+# - Utilisation du disque
+# - Utilisation du processeur
+
+#Fonction 16 : 
+# - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
+# - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
