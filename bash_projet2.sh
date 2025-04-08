@@ -210,6 +210,7 @@ function groupe()
 
 #Fonction 11 : 
 # - Droits/permissions de l’utilisateur sur un dossier
+# Utiliser getfacl
 # - Droits/permissions de l’utilisateur sur un fichier
 function droits()
 {
@@ -223,10 +224,10 @@ function droits()
     read -r choix
     case $choix in
         1) 
-            echo ""
+            getfacl $target 
             ;;
         2)
-            echo ""
+            getfacl $target 
             ;;
     esac
 }
@@ -253,3 +254,5 @@ function droits()
 #Fonction 16 : 
 # - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
 # - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
+
+droits "borne" "test"
