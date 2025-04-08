@@ -169,6 +169,23 @@ function repertoire()
 # - Liste des services en cours d'execution
 # - Liste des utilisateurs locaux
 
+function app()
+{
+    echo "Que voulez vous faire ?"
+    echo "1) Voir la liste des applications/paquets installées"
+    echo "2) Voir la liste des services en cours d'execution"
+    echo "3) Voir la liste des utilisateurs locaux"
+    read -r choix_app
+    case $choix_app in 
+        1) 
+        apt --installed list
+        2)
+        systemctl
+        3)
+        cut -d: -f1 /etc/passwd
+    esac
+}
+
 #Fonction 15 : 
 # - Type de CPU, nombre de coeurs, etc.
 # - Mémoire RAM totale
@@ -176,6 +193,46 @@ function repertoire()
 # - Utilisation du disque
 # - Utilisation du processeur
 
+function computeur()
+{
+    echo "Que voulez vous faire ?"
+    echo "1) Voir le type de CPU, le nombre de coeur, etc."
+    echo "2) Voir la mémoire RAM total"
+    echo "3) Voir l'utilisation de la RAM"
+    echo "4) Voir l'utilisation du disque"
+    echo "5) Voir l'utilisation du processeur"
+    case $choix_computeur in 
+        1) 
+        lscpu
+        2) 
+        free
+        3) 
+        free
+        4)
+        df
+        5)
+        sudo apt install htop
+        htop
+}
+
 #Fonction 16 : 
 # - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
 # - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
+
+#function log_event qui est dans tous les case pour fichier de journalisation
+
+function search()
+{
+    echo "Que voulez vous faire ?"
+    echo "1) Rechercher des évenements dans le fichier log_evt.log pour un utilisateur"
+    echo "2) Rechercher des évenements dans le fichier log_evt.log pour un ordinateur"
+    case $choix_search in 
+        1)
+        echo "Quel évenement recherchez vous ?"
+        read -r event_user
+        cat log_evt.log | grep $event_user
+        2)
+        echo "Quel évenement recherchez vous ?"
+        read -r event_computer
+        cat log_evt.log | grep $event_computer
+}
