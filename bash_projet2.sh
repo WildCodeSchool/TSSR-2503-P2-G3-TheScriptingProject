@@ -232,19 +232,43 @@ function droits()
     esac
 }
 
-#Fonction 12 : 
-# - Version de l'OS
+function os_version()
+{
+    #Fonction 12 : 
+    # - Version de l'OS
+    cat /etc/os-release | grep "PRETTY_NAME" | cut -d = -f 2 | tr -d '"'
+}
 
-#Fonction 13 : 
-# - Nombre de disque
-# - Partition (nombre, nom, FS, taille) par disque
 
-#Fonction 14 : 
+function disk_number()
+{
+    #Fonction 13 : 
+    # - Nombre de disque
+    # - Partition (nombre, nom, FS, taille) par disque
+    # Nécessite d'avoir installé hwinfo
+    echo "Que voulez-vous savoir ?"
+    echo "--------------------"
+    echo "1) Nombre de disques"
+    echo "2) Partitions par disque"
+    read -r choix
+    case $choix in
+    1)
+        amount=$(hwinfo --disk --short | wc -l)
+        amount=$(($amount-1))
+        echo "Vous avez $amount disques installés."
+        ;;
+    2)
+        lsblk -f
+        ;;
+    esac
+}
+
+#Fonction 14 : -> sheldon
 # - Liste des applications/paquets installées
 # - Liste des services en cours d'execution
 # - Liste des utilisateurs locaux
 
-#Fonction 15 : 
+#Fonction 15 : -> sheldon
 # - Type de CPU, nombre de coeurs, etc.
 # - Mémoire RAM totale
 # - Utilisation de la RAM
@@ -255,4 +279,45 @@ function droits()
 # - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
 # - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
 
-droits "borne" "test"
+# Fonction log
+# Journalisation dans log_evt.log
+# Format: Date-Heure-User-Event
+function log_events()
+{
+    event=$1
+    logDate=$(date -I | tr -d -)
+    logHeure=$(date +%H%M%S)
+    user=$(whoami)
+    log="$logDate"-"$logHeure"-"$user"-"$event"
+    echo $log
+    # echo $log >> /var/log/log_evt.log
+}
+
+
+# ------------------------------
+# EXECUTION
+
+# Variable pour gérer l'arrêt
+#run=1
+#while [ $run -eq 1 ]
+#do
+#    echo "Que voulez-vous faire ?"
+#    echo "--------------------"
+#    echo "1) Gestion du pare feu"
+#    echo "2) Fonction 2"
+#    echo "3) Fonction 3"
+#    echo "q) Quitter"
+#    read -r choix
+#
+#    case $choix in
+#        1)
+#            pare_feu
+#            ;;
+#        2)
+#            echo "Choix 2"
+#            ;;
+#        q)
+#            exit 0
+#            ;;
+#    esac
+#done
