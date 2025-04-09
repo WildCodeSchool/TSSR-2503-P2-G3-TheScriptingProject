@@ -16,8 +16,9 @@ Taper 4 pour désactiver un compte
 $utilisateur_local
 $choix = Read-Host -Prompt "choix ?"
 
-switch ($utilisateur_local)
+switch ($choix)
 {
+#1 fonctionne
     1 {New-LocalUser}
     2 {Set-LocalUser}
     3 {Remove-LocalUser}
