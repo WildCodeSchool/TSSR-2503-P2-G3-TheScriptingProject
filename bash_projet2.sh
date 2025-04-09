@@ -12,6 +12,7 @@ function action_utilisateur_local()
     # - Suppression compte utilisateur local
     # - Désactivation compte utilisateur local 
     echo "Que voulez vous faire ?"
+    echo "--------------------"
     echo "1) Création d'un compte utilisateur local."
     echo "2) Changement de mot de passe."
     echo "3) Suppression compte utilisateur local."
@@ -43,6 +44,7 @@ function action_groupe_local()
     # - Ajout à un groupe local 
     # - Sortie d'un groupe local 
     echo "Que voulez vous faire ?"
+    echo "--------------------"
     echo "1) Ajout à un groupe local"
     echo "2) Sortie d'un groupe local"
     read -r choix_groupe_local 
@@ -64,9 +66,10 @@ function action_shut()
     # - Redémarrage 
     # - Vérouillage 
     echo "Que voulez vous faire ?"
-    echo "1 : Arret"
-    echo "2 : Redémarrage"
-    echo "3 : Vérouillage"
+    echo "--------------------"
+    echo "1) Arret"
+    echo "2) Redémarrage"
+    echo "3) Verrouillage"
     read -r choix_shut
     case $choix_shut in
         1)
@@ -90,9 +93,10 @@ function action_repertoire()
     # - Modification de repertoire 
     # - -Suppression de répertoire 
     echo "Que voulez vous faire ?"
-    echo "1 : Création de répertoire"
-    echo "2 : Modification de répertoire"
-    echo "3 : Suppréssion de repertoire"
+    echo "--------------------"
+    echo "1) Création de répertoire"
+    echo "2) Modification de répertoire"
+    echo "3) Suppression de répertoire"
     read -r choix_repertoire
     case $choix_repertoire in 
         1)
@@ -133,16 +137,16 @@ function action_pare_feu()
     echo "Gestion du pare-feu"
     echo "--------------------"
     echo "Que voulez-vous faire ?"
-    echo "1 : Définir une règle de pare-feu"
-    echo "2 : Activer le pare-feu"
-    echo "3 : Désactiver le pare-feu"
+    echo "1) Définir une règle de pare-feu"
+    echo "2) Activer le pare-feu"
+    echo "3) Désactiver le pare-feu"
     read -r choix
     case $choix in
     1)
         echo "Définition de règle"
         echo "Que voulez-vous faire ?"
-        echo "1 : Autoriser adresse"
-        echo "2 : Interdire adresse"
+        echo "1) Autoriser adresse"
+        echo "2) Interdire adresse"
         read -r choix2
         case $choix2 in
         1)
@@ -177,9 +181,9 @@ function action_logiciel()
     echo "Gestion de logiciels"
     echo "--------------------"
     echo "Que voulez-vous faire ?"
-    echo "1 : Installer un logiciel"
-    echo "2 : Supprimer un logiciel"
-    echo "3 : Exécuter un script"
+    echo "1) Installer un logiciel"
+    echo "2) Supprimer un logiciel"
+    echo "3) Exécuter un script"
     read -r choix
     case $choix in
     1)
