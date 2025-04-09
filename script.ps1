@@ -20,7 +20,11 @@ switch ($choix)
 {
 #1 fonctionne
     1 {New-LocalUser}
-    2 {Set-LocalUser}
+#2 en travaux
+    2 {
+    $passwd = Read-Host -Prompt "Quel nouveau mot de passe voulez vous utiliser ?" 
+    Set-LocalUser -Password $passwd
+    }
     3 {Remove-LocalUser}
     4 {Disable-LocalUser}
     Default {Write-Host "Je ne comprends pas votre commande"}
