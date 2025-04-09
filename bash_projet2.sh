@@ -1,82 +1,135 @@
 #!/bin/bash
 
-#Squelette projet 2 => sprint 1 
+# ------------------------------ #
+#           FONCTIONS
+# ------------------------------ #
 
-# Faire des logs a chaques actions pour garder une trace => journalisation log_evt.log
-# Pour le serveur windows, dans C:\Windows\System32\LogFiles
-# Pour le serveur Linux, dans /var/log
-# <Date>-<Heure>-<Utilisateur>-<Evenement>
-# Avec :
-# <Date> : Date de l’evenement au format yyyymmdd
-# <Heure> : Heure de l'événement au format hhmmss
-# <Utilisateur> : Nom de l’utilisateur courant exécutant le script
-# <Evenement> : Action effectuée (à définir par le groupe)
-
-
-#Fonction 1 :
-# - Création compte utilisateur local 
-# - Changement de mot de passe 
-# - Suppression compte utilisateur local
-# - Désactivation compte utilisateur local 
-
-function utilisateur_local() 
+function action_utilisateur_local() 
 {
-    user=$1
-    echo "Que voulez vous faire Mister ?"
-    echo "1 : création d'un compte utilisateur local."
-    echo "2 : Changement de mot de passe."
-    echo "3 : Suppression compte utilisateur local."
-    echo "4 : Désactivation compte utilisateur local."
+    #Fonction 1 :
+    # - Création compte utilisateur local 
+    # - Changement de mot de passe 
+    # - Suppression compte utilisateur local
+    # - Désactivation compte utilisateur local 
+    echo "Que voulez vous faire ?"
+    echo "1) Création d'un compte utilisateur local."
+    echo "2) Changement de mot de passe."
+    echo "3) Suppression compte utilisateur local."
+    echo "4) Désactivation compte utilisateur local."
     read -r choix
     case $choix in
         1) 
-        adduser "$user" ;;
+        echo "Merci de donner un nom d'utilisateur."
+        read -r nom_user
+        adduser "$nom_user" ;;
         2) 
-        passwd "$user" ;;
+        echo "Merci de donner le nom d'utilisateur a qui vous voulez changer de mot de passe"
+        read -r nom_passwd
+        passwd "$nom_passwd" ;;
         3) 
-        deluser "$user" ;;
+        echo "Merci de donner l'utilisateur que vous souhaitez supprimer"
+        read -r user_del
+        deluser "$user_del" ;;
         4)
-        usermod -L "$user" ;;
+        echo "Merci de donner l'utilisateur que vous voulez désactiver"
+        read -r user_desactive
+        usermod -L "$user_desactive" ;;
         #chage -E 0 username
     esac
 }
-
-#Fonction 2 : 
-# - Ajout à un groupe local 
-# - Sortie d'un groupe local 
-
-#Fonction 3 : 
-# - Arret 
-# - Redémarrage 
-# - Vérouillage 
-
-#Fonction 4 : 
-# - Mise-à-jour du système 
-
-#Fonction 5 :
-# - Création de répertoire 
-# - Modification de repertoire 
-# - -Suppression de répertoire 
-
-#Fonction 6 : 
-# Cette fonction nécessite d'avoir une connexion ssh disponible (voir ssh.service et openssh)
-# - Prise en main a distance (CLI)
-function prise_en_main()
+function action_groupe_local()
+{
+    #Fonction 2 : 
+    # - Ajout à un groupe local 
+    # - Sortie d'un groupe local 
+    echo "Que voulez vous faire ?"
+    echo "1) Ajout à un groupe local"
+    echo "2) Sortie d'un groupe local"
+    read -r choix_groupe_local 
+    case $choix_groupe_local in 
+        1)
+        echo "A quel groupe voulez vous être ajouté ?"
+        read -r group_add
+        groupadd "$group_add" ;; 
+        2)
+        echo "Vous voulez sortir de quel groupe ?"
+        read -r group_out
+        usermod -r "$group_out" ;;
+    esac
+}
+function action_shut()
+{
+    #Fonction 3 : 
+    # - Arret 
+    # - Redémarrage 
+    # - Vérouillage 
+    echo "Que voulez vous faire ?"
+    echo "1 : Arret"
+    echo "2 : Redémarrage"
+    echo "3 : Vérouillage"
+    read -r choix_shut
+    case $choix_shut in
+        1)
+        poweroff ;; 
+        2)
+        reboot ;; 
+        3) 
+        nano /etc/passwd ;;
+        esac
+}
+function action_update()
+{
+    #Fonction 4 : 
+    # - Mise-à-jour du système 
+    apt update && apt upgrade -y 
+}
+function action_repertoire()
 {   
+    #Fonction 5 :
+    # - Création de répertoire 
+    # - Modification de repertoire 
+    # - -Suppression de répertoire 
+    echo "Que voulez vous faire ?"
+    echo "1 : Création de répertoire"
+    echo "2 : Modification de répertoire"
+    echo "3 : Suppréssion de repertoire"
+    read -r choix_repertoire
+    case $choix_repertoire in 
+        1)
+        echo "Comment voulez vous nommer le repertoire ?"
+        read -r name_dir
+        mkdir "$name_dir" ;;
+        2) 
+        echo "Quel repertoire voulez vous modifier ?"
+        read -r mod_dir
+        echo "Quel est le nouveau nom ?"
+        read -r new_dir
+        mv "$mod_dir" "$new_dir" ;; 
+        3) 
+        echo "Quel repertoire voulez vous supprimer ?"
+        read -r dir_del
+        rmdir "$dir_del" ;;
+        esac
+}
+function action_prise_en_main()
+{   
+    #Fonction 6 : 
+    # Cette fonction nécessite d'avoir une connexion ssh disponible (voir ssh.service et openssh)
+    # - Prise en main a distance (CLI)
     user=$1
     computer=$2
     echo "Prise en main à distance"
     echo "--------------------"
     ssh "$user@$computer"
 }
-
-# Fonction 7 : 
-# Cette fonction nécessitera d'avoir installé UFW (uncomplicated firewall)
-# - Définition de règle de pare-feu 
-# - Activation du pare-feu
-# - Désactivation du pare feu 
-function pare_feu()
+function action_pare_feu()
 {
+
+    # Fonction 7 : 
+    # Cette fonction nécessitera d'avoir installé UFW (uncomplicated firewall)
+    # - Définition de règle de pare-feu 
+    # - Activation du pare-feu
+    # - Désactivation du pare feu 
     echo "Gestion du pare-feu"
     echo "--------------------"
     echo "Que voulez-vous faire ?"
@@ -114,14 +167,13 @@ function pare_feu()
         ;;
     esac
 }
-
-#Fonction 8 : 
-# - Installation de logiciel
-# - Désinstallation de logiciel 
-# - Execution de script sur la machine distante 
-# ./script.sh
-function logiciel()
+function action_logiciel()
 {
+    #Fonction 8 : 
+    # - Installation de logiciel
+    # - Désinstallation de logiciel 
+    # - Execution de script sur la machine distante 
+    # ./script.sh
     echo "Gestion de logiciels"
     echo "--------------------"
     echo "Que voulez-vous faire ?"
@@ -148,16 +200,15 @@ function logiciel()
         ;;
     esac
 }
-
-#Fonction 9 :
-# - Date de dernière connexion d’un utilisateur
-# Commande last $user
-# - Date de dernière modification du mot de passe
-# Commande passwd $user -S
-# - Liste des sessions ouvertes par l'utilisateur
-# Commande last $user
 function info_compte()
 {
+    #Fonction 9 :
+    # - Date de dernière connexion d’un utilisateur
+    # Commande last $user
+    # - Date de dernière modification du mot de passe
+    # Commande passwd $user -S
+    # - Liste des sessions ouvertes par l'utilisateur
+    # Commande last $user
     user=$1
     echo "Informations sur le compte"
     echo "--------------------"
@@ -182,12 +233,11 @@ function info_compte()
     esac
 
 }
-
-#Fonction 10 : 
-# - Groupe d’appartenance d’un utilisateur
-# - Historique des commandes exécutées par l'utilisateur
-function groupe()
+function info_groupe()
 {
+    #Fonction 10 : 
+    # - Groupe d’appartenance d’un utilisateur
+    # - Historique des commandes exécutées par l'utilisateur
     user=$1
     echo "Info groupe & commandes"
     echo "--------------------"
@@ -206,14 +256,12 @@ function groupe()
             ;;
     esac
 }
-
-
-#Fonction 11 : 
-# - Droits/permissions de l’utilisateur sur un dossier
-# Utiliser getfacl
-# - Droits/permissions de l’utilisateur sur un fichier
-function droits()
+function info_droits()
 {
+    #Fonction 11 : 
+    # - Droits/permissions de l’utilisateur sur un dossier
+    # Utiliser getfacl
+    # - Droits/permissions de l’utilisateur sur un fichier
     user=$1
     target=$2
     echo "Info droits fichier/dossier"
@@ -231,16 +279,13 @@ function droits()
             ;;
     esac
 }
-
-function os_version()
+function info_os_version()
 {
     #Fonction 12 : 
     # - Version de l'OS
     cat /etc/os-release | grep "PRETTY_NAME" | cut -d = -f 2 | tr -d '"'
 }
-
-
-function disk_number()
+function info_disk_number()
 {
     #Fonction 13 : 
     # - Nombre de disque
@@ -262,28 +307,86 @@ function disk_number()
         ;;
     esac
 }
+function info_app()
+{
+    echo "Que voulez vous faire ?"
+    echo "1) Voir la liste des applications/paquets installées"
+    echo "2) Voir la liste des services en cours d'execution"
+    echo "3) Voir la liste des utilisateurs locaux"
+    read -r choix_app
+    case $choix_app in 
+        1) 
+            apt --installed list
+            ;;
+        2)
+            systemctl
+            ;;
+        3)
+            cut -d: -f1 /etc/passwd
+            ;;
+    esac
+}
+function info_computer()
+{
+    #Fonction 15 : 
+    # - Type de CPU, nombre de coeurs, etc.
+    # - Mémoire RAM totale
+    # - Utilisation de la RAM
+    # - Utilisation du disque
+    # - Utilisation du processeur
+    # INSTALLATION htop requise
+    echo "Que voulez vous faire ?"
+    echo "1) Voir le type de CPU, le nombre de coeur, etc."
+    echo "2) Voir la mémoire RAM total"
+    echo "3) Voir l'utilisation de la RAM"
+    echo "4) Voir l'utilisation du disque"
+    echo "5) Voir l'utilisation du processeur"
+    case $choix_computeur in 
+        1) 
+            lscpu
+            ;;
+        2) 
+            free
+            ;;
+        3) 
+            free
+            ;;
+        4)
+            df
+            ;;
+        5)
+            sudo apt install htop
+            htop
+            ;;
+    esac
+}
+function info_search()
+{
+    #Fonction 16 : 
+    # - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
+    # - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
+    echo "Que voulez vous faire ?"
+    echo "1) Rechercher des évenements dans le fichier log_evt.log pour un utilisateur"
+    echo "2) Rechercher des évenements dans le fichier log_evt.log pour un ordinateur"
+    case $choix_search in 
+        1)
+            echo "Quel évenement recherchez vous ?"
+            read -r event_user
+            cat log_evt.log | grep $event_user
+            ;;
+        2)
+            echo "Quel évenement recherchez vous ?"
+            read -r event_computer
+            cat log_evt.log | grep $event_computer
+            ;;
+    esac
+}
 
-#Fonction 14 : -> sheldon
-# - Liste des applications/paquets installées
-# - Liste des services en cours d'execution
-# - Liste des utilisateurs locaux
-
-#Fonction 15 : -> sheldon
-# - Type de CPU, nombre de coeurs, etc.
-# - Mémoire RAM totale
-# - Utilisation de la RAM
-# - Utilisation du disque
-# - Utilisation du processeur
-
-#Fonction 16 : 
-# - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
-# - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
-
-# Fonction log
-# Journalisation dans log_evt.log
-# Format: Date-Heure-User-Event
 function log_events()
 {
+    # Fonction log
+    # Journalisation dans log_evt.log
+    # Format: Date-Heure-User-Event
     event=$1
     logDate=$(date -I | tr -d -)
     logHeure=$(date +%H%M%S)
@@ -293,31 +396,160 @@ function log_events()
     # echo $log >> /var/log/log_evt.log
 }
 
-
-# ------------------------------
-# EXECUTION
+# ------------------------------ #
+#           EXECUTION
+# ------------------------------ #
 
 # Variable pour gérer l'arrêt
-#run=1
-#while [ $run -eq 1 ]
-#do
-#    echo "Que voulez-vous faire ?"
-#    echo "--------------------"
-#    echo "1) Gestion du pare feu"
-#    echo "2) Fonction 2"
-#    echo "3) Fonction 3"
-#    echo "q) Quitter"
-#    read -r choix
-#
-#    case $choix in
-#        1)
-#            pare_feu
-#            ;;
-#        2)
-#            echo "Choix 2"
-#            ;;
-#        q)
-#            exit 0
-#            ;;
-#    esac
-#done
+run=1
+while [ $run -eq 1 ]
+do
+    #clear
+    echo "Que voulez-vous faire ?"
+    echo "--------------------"
+    echo "1) Effectuer une action"
+    echo "2) Récupérer une information"
+    echo "q) Quitter"
+    read -r choix
+    case $choix in
+        1)
+            #clear
+            echo "Sur quelle cible effectuer l'action ?"
+            echo "--------------------"
+            echo "1) Utilisateur"
+            echo "2) Ordinateur"
+            echo "q) Quitter"
+            read -r choix2
+            case $choix2 in
+                1)
+                    #clear
+                    echo "Que voulez-vous faire ?"
+                    echo "--------------------"
+                    echo "1) Gestion compte utilisateur"
+                    echo "2) Gestion groupe utilisateur"
+                    echo "q) Quitter"
+                    read -r choix3
+                    case $choix3 in
+                        1)
+                            action_utilisateur_local
+                            ;;
+                        2)
+                            action_groupe_local
+                            ;;
+                        q)
+                            exit 0
+                            ;;
+                    esac
+                    ;;
+                2)
+                    #clear
+                    echo "Que voulez-vous faire ?"
+                    echo "--------------------"
+                    echo "1) Gestion alimentation ordinateur"
+                    echo "2) Mise à jour système"
+                    echo "3) Gestion des répertoires"
+                    echo "4) Prise en main à distance"
+                    echo "5) Gestion du pare-feu"
+                    echo "6) Gestion des logiciels"
+                    echo "q) Quitter"
+                    read -r choix3
+                    case $choix3 in
+                        1)
+                            action_shut
+                            ;;
+                        2)
+                            action_update
+                            ;;
+                        3)
+                            action_repertoire
+                            ;;
+                        4)
+                            action_prise_en_main
+                            ;;
+                        5)
+                            action_pare_feu
+                            ;;
+                        6)
+                            action_logiciel
+                            ;;
+                        q)
+                            exit 0
+                            ;;
+                    esac
+                    ;;
+                q)
+                    exit 0
+                    ;;
+            esac
+            ;;
+        2)
+            #clear
+            echo "Sur quelle cible récupérer l'information ?"
+            echo "--------------------"
+            echo "1) Utilisateur"
+            echo "2) Ordinateur"
+            echo "q) Quitter"
+            read -r choix2
+            case $choix2 in
+                1)
+                    #clear
+                    echo "Que voulez-vous savoir ?"
+                    echo "--------------------"
+                    echo "1) Informations compte utilisateur"
+                    echo "2) Informations groupes et commandes utilisateur"
+                    echo "3) Droits et permissions utilisateur"
+                    echo "q) Quitter"
+                    read -r choix3
+                    case $choix3 in
+                        1)
+                            info_compte
+                            ;;
+                        2)
+                            info_groupe
+                            ;;
+                        3)
+                            info_droits
+                            ;;
+                        q)
+                            exit 0
+                            ;;
+                    esac
+                    ;;
+                2)
+                    #clear
+                    echo "Que voulez-vous savoir ?"
+                    echo "--------------------"
+                    echo "1) Informations OS"
+                    echo "2) Informations disques"
+                    echo "3) Informations matériel"
+                    echo "4) Recherche dans les logs"
+                    echo "q) Quitter"
+                    read -r choix3
+                    case $choix3 in
+                        1)
+                            info_os_version
+                            ;;
+                        2)
+                            info_disk_number
+                            ;;
+                        3)
+                            info_computer
+                            ;;
+                        4)
+                            info_search
+                            ;;
+                        q)
+                            exit 0
+                            ;;
+                    esac
+                    ;;
+                q)
+                    exit 0
+                    ;;
+            esac
+            ;;
+        q)
+            exit 0
+            ;;
+    esac
+done
