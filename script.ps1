@@ -95,4 +95,11 @@ switch ($choix_repertoire)
 {
     1 { $choix_repertoire1 = Read-Host -Prompt "Comment voulez vous appeler le dossier ?"
         new-item -itemType Directory -name $choix_repertoire1 }
+    2 { $choix_repertoire2 = Read-Host -Prompt "Quel dossier voulez vous modifier ? Veuillez mettre le chemin avec le nom"
+        $choix_repertoire3 = Read-Host -Prompt "Par quel nom voulez vous le remplacer ?"
+        rename-item : -path $choix_repertoire2 -newname $choix_repertoire3
+        }
+    3 { $choix_repertoire4 = Read-Host -Prompt "Quel dossier voulez vous supprimer ? Veuillez mettre le chemin avec le nom"
+        remove-item $choix_repertoire4
+        }
 }
