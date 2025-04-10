@@ -25,11 +25,19 @@ function utilisateur_local
 
     switch ($choix)
     {
-        1 {
+        1 
+        {
             $choix1 = Read-Host -Prompt "Quel est le nom du nouvel utilisateur ?"
             New-LocalUser $choix1
-            }
-        2 {Set-LocalUser}
+        }
+        
+        2 
+        {
+        $choix2 = Read-Host -Prompt "De quel compte voulez vous modifier le mot de passe ?"
+        #la commande marche pas alors que ca devrait. bizarre
+        Set-ADAccountPassword -Identity $choix2 -Reset
+        }
+        
         3 {Remove-LocalUser}
         4 {Disable-LocalUser}
         default { Write-Host "Je ne comprends pas" }
