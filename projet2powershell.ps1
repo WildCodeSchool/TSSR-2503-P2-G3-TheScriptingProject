@@ -181,6 +181,18 @@ $choix_logiciel = Read-Host -Prompt "Que voulez vous faire ?"
 # - Date de dernière connexion d’un utilisateur
 # - Date de dernière modification du mot de passe
 # - Liste des sessions ouvertes par l'utilisateur
+function user 
+{
+    user = @"
+1) Date de dernière connexion d'un utilisateur 
+2) Date de dernière modifiction du mot de passe 
+3) Liste des sessions ouverte par l'utilisateur
+"@
+$choix_user = Read-Host -Prompt "Que voulez vous faire ?"
+    switch $choix_user 
+    1) 
+#besoin d'une fonction dans cette fonction pour log le journal utilisateur ??
+
 
 #Fonction 10 : 
 # - Groupe d’appartenance d’un utilisateur
