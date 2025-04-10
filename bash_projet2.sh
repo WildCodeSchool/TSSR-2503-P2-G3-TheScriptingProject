@@ -13,31 +13,40 @@ function action_utilisateur_local()
     # - Désactivation compte utilisateur local 
     echo "Que voulez vous faire ?"
     echo "--------------------"
-    echo "1) Création d'un compte utilisateur local."
-    echo "2) Changement de mot de passe."
-    echo "3) Suppression compte utilisateur local."
-    echo "4) Désactivation compte utilisateur local."
+    echo "1) Création d'un compte utilisateur"
+    echo "2) Changement de mot de passe"
+    echo "3) Suppression compte utilisateur"
+    echo "4) Désactivation compte utilisateur"
     read -r choix
     case $choix in
         1) 
-        echo "Merci de donner un nom d'utilisateur."
+        echo "Client où créer l'utilisateur :"
+        read -r client
+        echo "Merci de donner un nom d'utilisateur"
         read -r nom_user
-        adduser "$nom_user" ;;
+        ssh $client adduser "$nom_user" ;;
         2) 
+        echo "Client où modifier le mot de passe :"
+        read -r client
         echo "Merci de donner le nom d'utilisateur a qui vous voulez changer de mot de passe"
         read -r nom_passwd
-        passwd "$nom_passwd" ;;
+        ssh $client passwd "$nom_passwd" ;;
         3) 
+        echo "Client où supprimer un utilisateur :"
+        read -r client
         echo "Merci de donner l'utilisateur que vous souhaitez supprimer"
         read -r user_del
         deluser "$user_del" ;;
         4)
+        echo "Client où désactiver un compte utilisateur :"
+        read -r client
         echo "Merci de donner l'utilisateur que vous voulez désactiver"
         read -r user_desactive
         usermod -L "$user_desactive" ;;
         #chage -E 0 username
     esac
 }
+#SSH
 function action_groupe_local()
 {
     #Fonction 2 : 
@@ -59,6 +68,7 @@ function action_groupe_local()
         usermod -r "$group_out" ;;
     esac
 }
+#SSH
 function action_shut()
 {
     #Fonction 3 : 
@@ -80,12 +90,14 @@ function action_shut()
         nano /etc/passwd ;;
         esac
 }
+#SSH
 function action_update()
 {
     #Fonction 4 : 
     # - Mise-à-jour du système 
     apt update && apt upgrade -y 
 }
+#SSH
 function action_repertoire()
 {   
     #Fonction 5 :
@@ -115,6 +127,7 @@ function action_repertoire()
         rmdir "$dir_del" ;;
         esac
 }
+#SSH
 function action_prise_en_main()
 {   
     #Fonction 6 : 
@@ -126,6 +139,7 @@ function action_prise_en_main()
     echo "--------------------"
     ssh "$user@$computer"
 }
+#SSH
 function action_pare_feu()
 {
 
@@ -171,6 +185,7 @@ function action_pare_feu()
         ;;
     esac
 }
+#SSH
 function action_logiciel()
 {
     #Fonction 8 : 
@@ -204,6 +219,7 @@ function action_logiciel()
         ;;
     esac
 }
+#SSH
 function info_compte()
 {
     #Fonction 9 :
@@ -237,6 +253,7 @@ function info_compte()
     esac
 
 }
+#SSH
 function info_groupe()
 {
     #Fonction 10 : 
@@ -260,6 +277,7 @@ function info_groupe()
             ;;
     esac
 }
+#SSH
 function info_droits()
 {
     #Fonction 11 : 
@@ -283,12 +301,14 @@ function info_droits()
             ;;
     esac
 }
+#SSH
 function info_os_version()
 {
     #Fonction 12 : 
     # - Version de l'OS
     cat /etc/os-release | grep "PRETTY_NAME" | cut -d = -f 2 | tr -d '"'
 }
+#SSH
 function info_disk_number()
 {
     #Fonction 13 : 
@@ -311,6 +331,7 @@ function info_disk_number()
         ;;
     esac
 }
+#SSH
 function info_app()
 {
     echo "Que voulez vous faire ?"
@@ -330,6 +351,7 @@ function info_app()
             ;;
     esac
 }
+#SSH
 function info_computer()
 {
     #Fonction 15 : 
@@ -364,6 +386,7 @@ function info_computer()
             ;;
     esac
 }
+#SSH
 function info_search()
 {
     #Fonction 16 : 
@@ -399,6 +422,8 @@ function log_events()
     echo $log
     # echo $log >> /var/log/log_evt.log
 }
+
+# FONCTIONS INFO A LOGGER AUSSI
 
 # ------------------------------ #
 #           EXECUTION
