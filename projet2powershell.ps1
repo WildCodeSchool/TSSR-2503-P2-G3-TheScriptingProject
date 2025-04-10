@@ -38,9 +38,22 @@ function utilisateur_local
         Set-ADAccountPassword -Identity $choix2 -Reset
         }
         
-        3 {Remove-LocalUser}
-        4 {Disable-LocalUser}
-        default { Write-Host "Je ne comprends pas" }
+        3 
+        {
+        $choix3 = Read-Host -Prompt "Quel utilisateur voulez vous supprimer ?"
+        Remove-LocalUser -Name $choix3
+        }
+        
+        4 
+        {
+        $choix4 = Read-Host -Prompt "Quel utilisateur voulez vous bloquer ?"
+        Disable-LocalUser -Name $choix4
+        }
+        
+        default 
+        { 
+        Write-Host "Je ne comprends pas" 
+        }
     }
 }
 
