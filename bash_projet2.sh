@@ -36,13 +36,13 @@ function action_utilisateur_local()
         read -r client
         echo "Merci de donner l'utilisateur que vous souhaitez supprimer"
         read -r user_del
-        deluser "$user_del" ;;
+        ssh $client deluser "$user_del" ;;
         4)
         echo "Client où désactiver un compte utilisateur :"
         read -r client
         echo "Merci de donner l'utilisateur que vous voulez désactiver"
         read -r user_desactive
-        usermod -L "$user_desactive" ;;
+        ssh $client usermod -L "$user_desactive" ;;
         #chage -E 0 username
     esac
 }
