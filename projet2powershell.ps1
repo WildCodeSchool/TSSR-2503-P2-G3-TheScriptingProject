@@ -12,23 +12,28 @@
 # - Suppression compte utilisateur local
 # - Désactivation compte utilisateur local 
 function utilisateur_local
-{$utilisateur_local = @"
-Taper 1 pour créer un compte utilisateur 
-Taper 2 pour changer le mot de passe 
-Taper 3 pour supprimer un compte utilisateur 
-Taper 4 pour désactiver un compte
-"@
-
-$utilisateur_local
-$choix = Read-Host -Prompt "choix ?"
-
-switch ($utilisateur_local)
 {
-    1 {New-LocalUser}
-    2 {Set-LocalUser}
-    3 {Remove-LocalUser}
-    4 {Disable-LocalUser}
-}
+    $utilisateur_local = @"
+    Taper 1 pour créer un compte utilisateur 
+    Taper 2 pour changer le mot de passe 
+    Taper 3 pour supprimer un compte utilisateur 
+    Taper 4 pour désactiver un compte
+    "@
+
+    $utilisateur_local
+    $choix = Read-Host -Prompt "choix ?"
+
+    switch ($choix)
+    {
+        1 {
+            $choix1 = Read-Host -Prompt "Quel est le nom du nouvel utilisateur ?"
+            New-LocalUser $choix1
+            }
+        2 {Set-LocalUser}
+        3 {Remove-LocalUser}
+        4 {Disable-LocalUser}
+        default { Write-Host "Je ne comprends pas" }
+    }
 }
 
 
