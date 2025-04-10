@@ -46,7 +46,7 @@ function action_utilisateur_local()
         #chage -E 0 username
     esac
 }
-#SSH
+
 function action_groupe_local()
 {
     #Fonction 2 : 
@@ -59,16 +59,24 @@ function action_groupe_local()
     read -r choix_groupe_local 
     case $choix_groupe_local in 
         1)
-        echo "A quel groupe voulez vous être ajouté ?"
+        echo "Client de l'utilisateur à ajouter à un groupe ?"
+        read -r client
+        echo "Quel utilisateur voulez-vous ajouter à un groupe ?"
+        read -r userName
+        echo "A quel groupe voulez-vous ajouter l'utilisateur ?"
         read -r group_add
-        groupadd "$group_add" ;; 
+        ssh $client usermod -a -G $group_add $userName ;; 
         2)
-        echo "Vous voulez sortir de quel groupe ?"
+        echo "Client de l'utilisateur à sortir d'un groupe ?"
+        read -r client
+        echo "Quel utilisateur voulez-vous sortir d'un groupe ?"
+        read -r userName
+        echo "De quel groupe voulez-vous sortir l'utilisateur ?"
         read -r group_out
-        usermod -r "$group_out" ;;
+        ssh $client usermod -r -G $group_out $userName ;;
     esac
 }
-#SSH
+
 function action_shut()
 {
     #Fonction 3 : 
@@ -83,21 +91,29 @@ function action_shut()
     read -r choix_shut
     case $choix_shut in
         1)
-        poweroff ;; 
+        echo "Quel client voulez-vous arrêter ?"
+        read -r client
+        ssh $client poweroff ;; 
         2)
-        reboot ;; 
+        echo "Quel client voulez-vous redémarrer ?"
+        read -r client
+        ssh $client reboot ;; 
         3) 
-        nano /etc/passwd ;;
-        esac
+        echo "Quel client voulez-vous verrouiller ?"
+        read -r client
+        ssh $client gnome-session-quit;;
+    esac
 }
-#SSH
+
 function action_update()
 {
     #Fonction 4 : 
     # - Mise-à-jour du système 
-    apt update && apt upgrade -y 
+    echo "Quel client voulez-vous mettre à jour ?"
+    read -r client
+    ssh $client apt update && apt upgrade -y 
 }
-#SSH
+
 function action_repertoire()
 {   
     #Fonction 5 :
@@ -112,34 +128,37 @@ function action_repertoire()
     read -r choix_repertoire
     case $choix_repertoire in 
         1)
+        echo "Sur quel client voulez-vous créer un répertoire ?"
+        read -r client
         echo "Comment voulez vous nommer le repertoire ?"
         read -r name_dir
-        mkdir "$name_dir" ;;
+        ssh $client mkdir "$name_dir" ;;
         2) 
+        echo "Sur quel client voulez-vous modifier un répertoire ?"
+        read -r client
         echo "Quel repertoire voulez vous modifier ?"
         read -r mod_dir
         echo "Quel est le nouveau nom ?"
         read -r new_dir
-        mv "$mod_dir" "$new_dir" ;; 
-        3) 
+        ssh $client mv "$mod_dir" "$new_dir" ;; 
+        3)
+        echo "Sur quel client voulez-vous supprimer un répertoire ?"
+        read -r client 
         echo "Quel repertoire voulez vous supprimer ?"
         read -r dir_del
-        rmdir "$dir_del" ;;
-        esac
+        ssh $client rmdir "$dir_del" ;;
+    esac
 }
-#SSH
+
 function action_prise_en_main()
 {   
     #Fonction 6 : 
-    # Cette fonction nécessite d'avoir une connexion ssh disponible (voir ssh.service et openssh)
     # - Prise en main a distance (CLI)
-    user=$1
-    computer=$2
-    echo "Prise en main à distance"
-    echo "--------------------"
-    ssh "$user@$computer"
+    echo "Sur quel ordinateur voulez-vous prendre la main ?"
+    read -r client
+    ssh $client
 }
-#SSH
+
 function action_pare_feu()
 {
 
@@ -157,6 +176,8 @@ function action_pare_feu()
     read -r choix
     case $choix in
     1)
+        echo "Sur quel client voulez-vous définir une règle de pare-feu ?"
+        read -r client
         echo "Définition de règle"
         echo "Que voulez-vous faire ?"
         echo "1) Autoriser adresse"
@@ -166,26 +187,30 @@ function action_pare_feu()
         1)
             echo "Entrez adresse à autoriser"
             read -r adresse
-            ufw allow from $adresse
+            ssh $client ufw allow from $adresse
             ;;
         2)
             echo "Entrez adresse à interdire"
             read -r adresse
-            ufw deny from $adresse
+            ssh $client ufw deny from $adresse
             ;;
         esac
         ;;
     2)
+        echo "Sur quel client voulez-vous activer le pare-feu ?"
+        read -r client
         echo "Activation du pare-feu"
-        ufw enable
+        ssh $client ufw enable
         ;;
     3)
+        echo "Sur quel client voulez-vous désactiver le pare-feu ?"
+        read -r client
         echo "Désactivation du pare-feu"
-        ufw disable
+        ssh $client ufw disable
         ;;
     esac
 }
-#SSH
+
 function action_logiciel()
 {
     #Fonction 8 : 
@@ -194,6 +219,9 @@ function action_logiciel()
     # - Execution de script sur la machine distante 
     # ./script.sh
     echo "Gestion de logiciels"
+    echo "--------------------"
+    echo "Sur quel client voulez-vous gérer vos logiciels ?"
+    read -r client
     echo "--------------------"
     echo "Que voulez-vous faire ?"
     echo "1) Installer un logiciel"
@@ -204,22 +232,22 @@ function action_logiciel()
     1)
         echo "Quel logiciel souhaitez-vous installer ?"
         read -r logiciel
-        apt install $logiciel
+        ssh $client apt install $logiciel
         ;;
     2)
         echo "Remove"
         echo "Quel logiciel souhaitez-vous supprimer ?"
         read -r logiciel
-        apt remove $logiciel
+        ssh $client apt remove $logiciel
         ;;
     3)
         echo "Quel script souhaitez-vous lancer ?"
         read -r script
-        ./$script
+        ssh $client ./$script # Pas sûr que cette fonction là marche
         ;;
     esac
 }
-#SSH
+
 function info_compte()
 {
     #Fonction 9 :
@@ -232,6 +260,8 @@ function info_compte()
     user=$1
     echo "Informations sur le compte"
     echo "--------------------"
+    echo "Sur quel client récupérer vos informations ?"
+    read -r client
     echo "Que voulez-vous savoir ?"
     echo "1) Date de dernière connexion de $user"
     echo "2) Date de dernière modification du mot de passe de $user"
@@ -240,28 +270,31 @@ function info_compte()
     case $choix in
         1) 
             echo "Date de dernière connexion :"
-            last $user | head -n 1
+            ssh $client last $user | head -n 1
             ;;
         2)
             echo "Dernière modification de mot de passe :"
-            passwd $user -S
+            ssh $client passwd $user -S
             ;;
         3)
             echo "Sessions :"
-            last $user
+            ssh $client last $user
             ;;
     esac
 
 }
-#SSH
+
 function info_groupe()
 {
     #Fonction 10 : 
     # - Groupe d’appartenance d’un utilisateur
     # - Historique des commandes exécutées par l'utilisateur
-    user=$1
     echo "Info groupe & commandes"
     echo "--------------------"
+    echo "Sur quel client récupérer vos informations ?"
+    read -r client
+    echo "Sur quel utilisateur récupếrer vos informations ?"
+    read -r user
     echo "Que voulez-vous savoir ?"
     echo "1) Groupe de $user"
     echo "2) Historique commandes de $user"
@@ -269,11 +302,11 @@ function info_groupe()
     case $choix in
         1)
             echo "Groupes de l'utilisateur :"
-            groups $user
+            ssh $client groups $user
             ;;
         2)
             echo "Historiques des commandes :"
-            cat /home/$user/.bash_history
+            ssh $client cat /home/$user/.bash_history
             ;;
     esac
 }
