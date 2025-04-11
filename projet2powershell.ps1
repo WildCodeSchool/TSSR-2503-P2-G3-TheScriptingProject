@@ -4,6 +4,40 @@
 #{
 #   instructions
 #    }
+######################################################################################################
+# Les applets de commande Windows PowerShell sont incluses dans les outils d'administration de serveur distant Windows (RSAT). 
+#Pour installer RSAT sous Windows 10 version 1809 ou ultérieure, utilisez la commande suivante :
+#
+#Get-WindowsCapability -Name RSAT.ActiveDirectory* -Online | Add-WindowsCapability -Online
+#
+#Si vous utilisez une version antérieure de Windows, vous devrez télécharger et installer RSAT manuellement.
+########################################################################################################
+
+########################################################################################################
+#
+#    Cliquez  sur Démarrer  et recherchez « PowerShell » . Choisissez  « Windows PowerShell » dans les résultats.
+#    Installez le module PowerShell AD en exécutant l'  applet de commande Install-WindowsFeature . Pour ajouter des fonctionnalités enfants, veillez à inclure les paramètres indiqués ici :
+#
+#Install-WindowsFeature -Name “RSAT-AD-PowerShell” -IncludeAllSubFeature
+#
+#Méthode 2 : Installation à l'aide de PowerShell
+#Étape 2 : Importer le module PowerShell Active Directory
+#
+#Une fois le module installé, vous devez l'ajouter à votre session actuelle. Les étapes suivantes sont valables pour Windows 10 et toutes les versions de Windows Server :
+#
+#    Cliquez sur Démarrer  et recherchez  « PowerShell ».  Choisissez « WindowsPowerShell » dans les résultats.
+#    Exécutez la commande suivante pour vérifier que le module est disponible sur votre système :
+#
+#Get-Module -Name ActiveDirectory -ListAvailable
+#
+#Étape 2 : Importer le module PowerShell Active Directory
+#
+#    Importez le module à l'aide de l'applet de commande Import-Module comme suit :
+#
+#Import-Module -Name ActiveDirectory
+#
+#
+############################################################################################
 
 
 #Fonction 1 :
