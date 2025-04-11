@@ -310,63 +310,72 @@ function info_groupe()
             ;;
     esac
 }
-#SSH
+
 function info_droits()
 {
     #Fonction 11 : 
     # - Droits/permissions de l’utilisateur sur un dossier
     # Utiliser getfacl
     # - Droits/permissions de l’utilisateur sur un fichier
-    user=$1
-    target=$2
     echo "Info droits fichier/dossier"
     echo "--------------------"
+    echo "Sur quel client récupérer vos informations ?"
+    read -r client
+    echo "Sur quel dossier récupérer vos informations ?"
+    read -r target
     echo "Que voulez-vous savoir ?"
     echo "1) Droits de $user sur dossier $target"
     echo "2) Droits de $user sur fichier $target"
     read -r choix
     case $choix in
         1) 
-            getfacl $target 
+            ssh $client getfacl $target 
             ;;
         2)
-            getfacl $target 
+            ssh $client getfacl $target 
             ;;
     esac
 }
-#SSH
+
 function info_os_version()
 {
     #Fonction 12 : 
     # - Version de l'OS
-    cat /etc/os-release | grep "PRETTY_NAME" | cut -d = -f 2 | tr -d '"'
+    echo "Sur quel client récupérer vos informations ?"
+    read -r client
+    ssh $client cat /etc/os-release | grep "PRETTY_NAME" | cut -d = -f 2 | tr -d '"'
 }
-#SSH
+
 function info_disk_number()
 {
     #Fonction 13 : 
     # - Nombre de disque
     # - Partition (nombre, nom, FS, taille) par disque
     # Nécessite d'avoir installé hwinfo
-    echo "Que voulez-vous savoir ?"
+    echo "Infos disque"
     echo "--------------------"
+    echo "Sur quel client voulez-vous récupérer vos informations ?"
+    read -r client
+    echo "Que voulez-vous savoir ?"
     echo "1) Nombre de disques"
     echo "2) Partitions par disque"
     read -r choix
     case $choix in
     1)
-        amount=$(hwinfo --disk --short | wc -l)
+        amount=$(ssh $client hwinfo --disk --short | wc -l)
         amount=$(($amount-1))
         echo "Vous avez $amount disques installés."
         ;;
     2)
-        lsblk -f
+        ssh $client lsblk -f
         ;;
     esac
 }
-#SSH
+
 function info_app()
 {
+    echo "Sur quel client voulez-vous récupérer vos informations ?"
+    read -r client
     echo "Que voulez vous faire ?"
     echo "1) Voir la liste des applications/paquets installées"
     echo "2) Voir la liste des services en cours d'execution"
@@ -374,17 +383,17 @@ function info_app()
     read -r choix_app
     case $choix_app in 
         1) 
-            apt --installed list
+            ssh $client apt --installed list
             ;;
         2)
-            systemctl
+            ssh $client systemctl
             ;;
         3)
-            cut -d: -f1 /etc/passwd
+            ssh $client cut -d: -f1 /etc/passwd
             ;;
     esac
 }
-#SSH
+
 function info_computer()
 {
     #Fonction 15 : 
@@ -394,6 +403,8 @@ function info_computer()
     # - Utilisation du disque
     # - Utilisation du processeur
     # INSTALLATION htop requise
+    echo "Sur quel client voulez-vous récupérer vos informations ?"
+    read -r client
     echo "Que voulez vous faire ?"
     echo "1) Voir le type de CPU, le nombre de coeur, etc."
     echo "2) Voir la mémoire RAM total"
@@ -402,24 +413,24 @@ function info_computer()
     echo "5) Voir l'utilisation du processeur"
     case $choix_computeur in 
         1) 
-            lscpu
+            ssh $client lscpu
             ;;
         2) 
-            free
+            ssh $client free
             ;;
         3) 
-            free
+            ssh $client free
             ;;
         4)
-            df
+            ssh $client df
             ;;
         5)
-            sudo apt install htop
-            htop
+            #sudo apt install htop
+            ssh $client htop
             ;;
     esac
 }
-#SSH
+
 function info_search()
 {
     #Fonction 16 : 
