@@ -411,7 +411,8 @@ function info_computer()
     echo "3) Voir l'utilisation de la RAM"
     echo "4) Voir l'utilisation du disque"
     echo "5) Voir l'utilisation du processeur"
-    case $choix_computeur in 
+    read -r choix
+    case $choix in 
         1) 
             ssh $client lscpu
             ;;
@@ -459,6 +460,7 @@ function log_events()
     # Journalisation dans log_evt.log
     # Format: Date-Heure-User-Event
     event=$1
+    touch /var/log/log_evt.log
     logDate=$(date -I | tr -d -)
     logHeure=$(date +%H%M%S)
     user=$(whoami)
