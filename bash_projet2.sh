@@ -322,6 +322,8 @@ function info_droits()
     echo "--------------------"
     echo "Sur quel client récupérer vos informations ?"
     read -r client
+    echo "Sur quel utilisateur récupérer vos informations ?"
+    read -r user
     echo "Sur quel dossier récupérer vos informations ?"
     read -r target
     echo "Que voulez-vous savoir ?"
