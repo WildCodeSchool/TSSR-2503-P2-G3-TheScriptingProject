@@ -257,11 +257,12 @@ function info_compte()
     # Commande passwd $user -S
     # - Liste des sessions ouvertes par l'utilisateur
     # Commande last $user
-    user=$1
     echo "Informations sur le compte"
     echo "--------------------"
     echo "Sur quel client récupérer vos informations ?"
     read -r client
+    echo "Sur quel utilisateur récupérer vos informations ?"
+    read -r user
     echo "Que voulez-vous savoir ?"
     echo "1) Date de dernière connexion de $user"
     echo "2) Date de dernière modification du mot de passe de $user"
@@ -358,13 +359,13 @@ function info_disk_number()
     read -r client
     echo "Que voulez-vous savoir ?"
     echo "1) Nombre de disques"
-    echo "2) Partitions par disque"
+    echo "2) Partitions"
     read -r choix
     case $choix in
     1)
         amount=$(ssh $client hwinfo --disk --short | wc -l)
         amount=$(($amount-1))
-        echo "Vous avez $amount disques installés."
+        echo "Nombre de disques : $amount"
         ;;
     2)
         ssh $client lsblk -f
@@ -407,7 +408,7 @@ function info_computer()
     read -r client
     echo "Que voulez vous faire ?"
     echo "1) Voir le type de CPU, le nombre de coeur, etc."
-    echo "2) Voir la mémoire RAM total"
+    echo "2) Voir la mémoire RAM totale"
     echo "3) Voir l'utilisation de la RAM"
     echo "4) Voir l'utilisation du disque"
     echo "5) Voir l'utilisation du processeur"
