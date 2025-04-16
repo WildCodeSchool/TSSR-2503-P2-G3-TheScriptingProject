@@ -243,7 +243,7 @@ function action_logiciel()
     3)
         echo "Quel script souhaitez-vous lancer ?"
         read -r script
-        ssh $client ./$script # Pas sûr que cette fonction là marche
+        ssh $client bash $script 
         ;;
     esac
 }
