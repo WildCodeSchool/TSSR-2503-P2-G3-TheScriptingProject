@@ -87,7 +87,7 @@ function action_shut()
     echo "--------------------"
     echo "1) Arret"
     echo "2) Redémarrage"
-    echo "3) Verrouillage"
+    echo "3) Déconnecter utilisateur"
     read -r choix_shut
     case $choix_shut in
         1)
@@ -99,9 +99,11 @@ function action_shut()
         read -r client
         ssh $client reboot ;; 
         3) 
-        echo "Quel client voulez-vous verrouiller ?"
+        echo "Quel client voulez-vous déconnecter ?"
         read -r client
-        ssh $client gnome-session-quit --logout  --no-prompt ;;
+        echo "Quel utilisateur voulez-vous déconnecter ?"
+        read -r user
+        ssh $client pkill -KILL -u $user ;;
     esac
 }
 
