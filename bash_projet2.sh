@@ -299,11 +299,9 @@ function info_groupe()
     read -r choix
     case $choix in
         1)
-            echo "Groupes de l'utilisateur :"
             ssh $client groups $user
             ;;
         2)
-            echo "Historiques des commandes :"
             ssh $client cat /home/$user/.bash_history
             ;;
     esac
