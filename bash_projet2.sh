@@ -56,7 +56,6 @@ function action_utilisateur_local()
     esac
 }
 
-
 function action_groupe_local()
 {
     #Fonction 2 : 
@@ -90,7 +89,6 @@ function action_groupe_local()
             ;;
     esac
 }
-
 
 function action_shut()
 {
@@ -138,7 +136,6 @@ function action_update()
     log_events "ActionMiseAJour"
 }
 
-
 function action_repertoire()
 {   
     #Fonction 5 :
@@ -181,7 +178,6 @@ function action_repertoire()
     esac
 }
 
-
 function action_prise_en_main()
 {   
     #Fonction 6 : 
@@ -191,7 +187,6 @@ function action_prise_en_main()
     ssh $client
     log_events "ActionPriseEnMain"
 }
-
 
 function action_pare_feu()
 {
@@ -249,7 +244,6 @@ function action_pare_feu()
     esac
 }
 
-
 function action_logiciel()
 {
     #Fonction 8 : 
@@ -289,7 +283,6 @@ function action_logiciel()
         ;;
     esac
 }
-
 
 function info_compte()
 {
@@ -549,8 +542,6 @@ function log_events()
 
 function log_info()
 {
-    # <NomDuPC>_<NomDeLUtilisateur>
-    # <NomDuPC>-GEN
     logCible=$1
     logRes=$2
     logDate=$(date -I | tr -d -)
