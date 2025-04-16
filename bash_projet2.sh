@@ -343,7 +343,10 @@ function info_os_version()
     # - Version de l'OS
     echo "Sur quel client récupérer vos informations ?"
     read -r client
-    ssh $client cat /etc/os-release | grep "PRETTY_NAME" | cut -d = -f 2 | tr -d '"'
+    command=$(ssh $client cat /etc/os-release | grep "PRETTY_NAME" | cut -d = -f 2 | tr -d '"')
+    echo $command
+    log_events "InfoOS"
+    log_info $client-GEN "$command"
 }
 
 function info_disk_number()
@@ -454,19 +457,33 @@ function info_search()
     esac
 }
 
+
+# LOGS
+
 function log_events()
 {
     # Fonction log
     # Journalisation dans log_evt.log
     # Format: Date-Heure-User-Event
     event=$1
-    touch /var/log/log_evt.log
+    sudo touch /var/log/log_evt.log
     logDate=$(date -I | tr -d -)
     logHeure=$(date +%H%M%S)
     user=$(whoami)
     log="$logDate"-"$logHeure"-"$user"-"$event"
-    echo $log
-    # echo $log >> /var/log/log_evt.log
+    sudo echo $log >> /var/log/log_evt.log
+}
+
+function log_info()
+{
+    # <NomDuPC>_<NomDeLUtilisateur>
+    # <NomDuPC>-GEN
+    logCible=$1
+    logRes=$2
+    logDate=$(date -I | tr -d -)
+    logFile=info_"$logCible"_"$logDate".txt
+    touch $logFile
+    echo "$logRes" >> log/"$logFile"
 }
 
 # FONCTIONS INFO A LOGGER AUSSI
