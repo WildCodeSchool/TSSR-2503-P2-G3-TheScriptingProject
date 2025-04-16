@@ -482,7 +482,7 @@ function log_info()
     logRes=$2
     logDate=$(date -I | tr -d -)
     logFile=info_"$logCible"_"$logDate".txt
-    touch $logFile
+    touch log/"$logFile"
     echo "$logRes" >> log/"$logFile"
 }
 
