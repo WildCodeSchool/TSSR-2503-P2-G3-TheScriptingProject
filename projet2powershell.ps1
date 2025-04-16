@@ -47,14 +47,13 @@
 # - Désactivation compte utilisateur local 
 function utilisateur_local
 {
-    $utilisateur_local = @"
+utilisateur_local = @"
     Taper 1 pour créer un compte utilisateur 
     Taper 2 pour changer le mot de passe 
     Taper 3 pour supprimer un compte utilisateur 
     Taper 4 pour désactiver un compte
-    "@
+"@
 
-    $utilisateur_local
     $choix = Read-Host -Prompt "choix ?"
 
     switch ($choix)
@@ -104,10 +103,13 @@ Taper 2 pour sortir d'un groupe local
 $choix_groupe_local = Read-Host -Prompt "Que voulez vous faire ?"
 switch ($choix_groupe_local)
 {
-    1 { $choix_groupe_local1 = Read-Host -Prompt "Quel groupe voulez vous intégrer ?"
+    1 
+    { 
+    $choix_groupe_local1 = Read-Host -Prompt "Quel groupe voulez vous intégrer ?"
     add-localgroupmember -group $choix_groupe_local1
     }
-    2 { $choix_groupe_local2 = Read-Host -Prompt "Quel groupe voulez vous quitter ?"
+    2 
+    { $choix_groupe_local2 = Read-Host -Prompt "Quel groupe voulez vous quitter ?"
     remove-localgroupmember -group $choix_groupe_local2
     }
 }
@@ -241,6 +243,7 @@ $choix_logiciel = Read-Host -Prompt "Que voulez vous faire ?"
 # - Date de dernière connexion d’un utilisateur
 # - Date de dernière modification du mot de passe
 # - Liste des sessions ouvertes par l'utilisateur
+#https://hichamkadiri.wordpress.com/2018/07/15/active-directory-tip-of-the-week-howto-connaitre-la-date-de-changement-du-mot-de-passe-de-votre-comptes-users-ad-via-powershell/
 function user 
 {
     user = @"
@@ -251,25 +254,100 @@ function user
 $choix_user = Read-Host -Prompt "Que voulez vous faire ?"
     switch $choix_user 
     1) 
-#besoin d'une fonction dans cette fonction pour log le journal utilisateur ??
+    $choix_user1 = read-Host -Prompt "Quel utilisateur voulez vous voir la derniere connexion ?"
+    #last-logon est un attribut.
+    #L'attribut "lastLogon" contient la date et l'heure de la dernière ouverture de session d'un utilisateur, 
+    #c'est-à-dire sa dernière connexion au domaine Active Directory. 
+    Last-Logon -identity $choix_user1
+    2)
+    $choix_user2 Read-Host -Prompt "Quel utilisateur voulez voir voir la derniere modification du mot de passe ?"
+    Get-ADUser -identity $choix_user2 -Properties Name, PasswordLastSet | Select Name, PasswordLastSet
+    3)
+    $choix_user3 = Read-Host -Prompt "Quel utilisateur voulez vous voir sa liste d'ouverture de sessions ?"
+    Get-PSSession -identity $choix_user3
+}
+
 
 
 #Fonction 10 : 
 # - Groupe d’appartenance d’un utilisateur
 # - Historique des commandes exécutées par l'utilisateur
+function groupe_user
+{
+    groupe_user =@"
+1) Groupe d’appartenance d’un utilisateur
+2) Historique des commandes exécutées par l'utilisateur
+"@
+$choix_groupe_user = Read-Host -Prompt "Que voulez vous faire ?"
+    switch $choix_groupe_user
+    1)
+    $choix_groupe_user1 = Read-host -Prompt "A quel utilisateur voulez vous voir le groupe ?"
+    Get-ADUser -Identity $choix_groupe_user1 -Properties memberof | Select-Object memberof -ExpandProperty memberof
+    2) 
+    $choix_groupe_user2 = Read-host -Prompt "A quel utilisateur voulez vous voir l'historique ?"
+    Get-content %$choix_groupe_user2%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+}
 
 #Fonction 11 : 
 # - Droits/permissions de l’utilisateur sur un dossier
 # - Droits/permissions de l’utilisateur sur un fichier
+function Droits
+{
+    Droits = @"
+1) Droits/permissions de l’utilisateur sur un dossier
+2) Droits/permissions de l’utilisateur sur un fichier
+"@
+$choix_droits = Read-Host -Prompt "Que voulez vous faire ?"
+    switch $choix_droits
+    1)
+    $choix_droits1 = Read-host -Prompt "Quel dossier ? Syntaxte .\<nom dossier>\"
+    Get-NTFSAccess $choix_droits1
+    2) 
+    $choix_droits2 = Read-host -Prompt "Quel fichier ? Syntaxte .\<nom dossier>\"
+    Get-NTFSAccess $choix_droits2
+}
+
 
 #Fonction 12 : 
 # - Version de l'OS
+function OS
+{
+    Get-WmiObject Win32_OperatingSystem | Select-Object Caption, Version
+}
 
 #Fonction 13 : 
 # - Nombre de disque
 # - Partition (nombre, nom, FS, taille) par disque
+function partition 
+{
+    partition = @"
+1) Nombre de disque 
+2) Partition (nombre, nom, FS, taille) par disque
+"@
+$choix_partition = Read-Host -Prompt "Que voulez vous faire ?"
+switch $choix_partition
+    1)
+    Get-disk
+    2)
+    Get-Partition
+}
 
 #Fonction 14 : 
 # - Liste des applications/paquets installées
 # - Liste des services en cours d'execution
 # - Liste des utilisateurs locaux
+function paquets{
+    paquets = @"
+1) Liste des applications/paquets installées
+2) Liste des services en cours d'execution
+3) Liste des utilisateurs locaux
+"@
+$choix_paquets = Read-Host -Prompt "Que voulez vous faire ?"
+switch $choix_paquets
+    1)
+    Get-AppxPackage
+    2)
+    Get-Service
+    3)
+    Get-LocalUser
+}
