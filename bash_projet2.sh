@@ -434,20 +434,20 @@ function info_app()
         1) 
             command=$(ssh $client apt --installed list)
             echo $command
-            #log_info $client-GEN "$command"
-            #log_events "InfoApplisInstallées"
+            log_info $client-GEN "$command"
+            log_events "InfoApplisInstallées"
             ;;
         2)
             command=$(ssh $client systemctl)
             echo $command
-            #log_info $client-GEN "$command"
-            #log_events "InfoServicesEnCours"
+            log_info $client-GEN "$command"
+            log_events "InfoServicesEnCours"
             ;;
         3)
             command=$(ssh $client cut -d: -f1 /etc/passwd)
             echo $command
-            #log_info $client-GEN "$command"
-            #log_events "InfoUtilisateursLocaux"
+            log_info $client-GEN "$command"
+            log_events "InfoUtilisateursLocaux"
             ;;
     esac
 }
