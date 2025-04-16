@@ -270,15 +270,12 @@ function info_compte()
     read -r choix
     case $choix in
         1) 
-            echo "Date de dernière connexion :"
             ssh $client last $user | head -n 1
             ;;
         2)
-            echo "Dernière modification de mot de passe :"
             ssh $client passwd $user -S
             ;;
         3)
-            echo "Sessions :"
             ssh $client last $user
             ;;
     esac
