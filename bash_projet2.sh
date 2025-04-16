@@ -101,7 +101,7 @@ function action_shut()
         3) 
         echo "Quel client voulez-vous verrouiller ?"
         read -r client
-        ssh $client gnome-session-quit;;
+        ssh $client logout;;
     esac
 }
 
