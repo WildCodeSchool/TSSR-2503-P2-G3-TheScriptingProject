@@ -18,6 +18,8 @@ Démarrer le service : `Start-Service -Name "sshd"`
 
 Lancement automatique du service : `Set-Service -Name "sshd" -StartupType Automatic`
 
+Modifier fichier *sshd_config* dans *%programdata%\ssh\* en ajoutant `AllowUsers *`
+
 Dépendances script bash :
 
 * ufw
