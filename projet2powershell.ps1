@@ -420,16 +420,16 @@ switch $choix_search_log
 
 #Journalisation 
 #https://www.it-connect.fr/powershell-creer-un-evenement-log-observateur-evenements-windows/
-function journalisation 
-{
-    New-EventLog -LogName "log_evt.log" -Source "script_powershell"
+#function journalisation 
+#{
+#    New-EventLog -LogName "log_evt.log" -Source "script_powershell"
     #mettre nom final script 
-    $Event = @{
-    LogName = "log_evt.log"
-    Source = "script_powershell"
-    EntryType = "Informational, SuccessAudit, FailureAudit"
-    }
+#    $Event = @{
+#    LogName = "log_evt.log"
+#    Source = "script_powershell"
+#    EntryType = "Informational, SuccessAudit, FailureAudit"
+#    }
+#Write-EventLog @Event
+#}
 
-
-Write-EventLog @Event
-}
+Start-Transcript -Path C:\ -Name log_evt.log 
