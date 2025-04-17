@@ -1,0 +1,71 @@
+#Les informations recueilli sur la cible (utilisateur ou ordinateur) 
+#sont enregistrées dans un fichier info_<Cible>_<Date>.txt
+#Avec :
+#Si <Cible> est un ordinateur => sous la forme <NomDuPC>-GEN
+#Si <Cible> est un utilisateur => sous la forme <NomDuPC>_<NomDeLUtilisateur>
+#<Date> : Date du recueil des informations au format yyyymmdd
+
+
+#https://www.it-connect.fr/chapitres/powershell-get-date-manipuler-la-date-et-heure/
+#date 
+$Date = Get-Date -Format "yyyyMMdd"
+
+#date et heure 
+Get-Date -Format "yyyyMMdd_HHmm"
+
+#heure
+Get-Date -DisplayHint Time
+
+
+        #Commande pour mettre infos dans fichier dans repertoire du script.
+        #A chaque action du script => un fichier 
+#https://learn.microsoft.com/fr-fr/powershell/module/microsoft.powershell.utility/trace-command?view=powershell-7.5
+#Trace-Command -Name cmdlet -FilePath info_<Cible>_<Date>.txt  
+Trace-Command -Name cmdlet -Expression { commande du switch des fonctions } -FilePath C:\poutati info_<Cible>_$Date.txt 
+        #exemple 
+        Trace-Command -Name cmdlet -Expression { systeminfo.exe } -FilePath C:\Users\Sheldon\log\poutati info_<Cible>_$Date.txt 
+#Pour <Cible> créer deux variables, une pour ordinateur et l'autre pour utiliateur ?
+#Chiant mais faisable
+
+
+#Celui la a l'air mieux
+#https://learn.microsoft.com/fr-fr/powershell/module/microsoft.powershell.utility/set-tracesource?view=powershell-7.5
+#Set-TraceSource
+#DE LA MERDE 
+
+#######################################################################################################################
+#######################################################################################################################
+
+#!ps1
+
+#Fonction 5 :
+# - Création de répertoire 
+# - Modification de repertoire 
+# - -Suppression de répertoire 
+function repertoire
+{
+$repertoire = @"
+Taper 1 pour créer un dossier
+Taper 2 pour modifier un dossier 
+Taper 3 pour supprimer un dossier
+"@
+Write-Host $repertoire
+$choix_repertoire = Read-Host -Prompt "Que voulez vous faire ?"
+switch ($choix_repertoire)
+    {
+    1 { $choix_repertoire1 = Read-Host -Prompt "Comment voulez vous appeler le dossier ?"
+        new-item -itemType Directory -name $choix_repertoire1 }
+    2 { $choix_repertoire2 = Read-Host -Prompt "Quel dossier voulez vous modifier ? Veuillez mettre le chemin avec le nom"
+        $choix_repertoire3 = Read-Host -Prompt "Par quel nom voulez vous le remplacer ?"
+        rename-item : -path $choix_repertoire2 -newname $choix_repertoire3
+        }
+    3 { $choix_repertoire4 = Read-Host -Prompt "Quel dossier voulez vous supprimer ? Veuillez mettre le chemin avec le nom"
+        remove-item $choix_repertoire4
+    }
+    }
+}
+
+$Date = Get-Date -Format "yyyyMMdd"
+
+
+Trace-Command -Name metadata,parameterbinding,cmdlet -Expression { repertoire } -FilePath C:\Users\Sheldon\info_CLIWIN01-GEN_$Date.txt 
