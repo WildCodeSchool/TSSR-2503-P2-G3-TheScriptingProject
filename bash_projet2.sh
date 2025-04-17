@@ -575,6 +575,7 @@ do
             echo "--------------------"
             echo "1) Utilisateur"
             echo "2) Ordinateur"
+            echo "r) Retour"
             echo "q) Quitter"
             read -r choix2
             case $choix2 in
@@ -584,6 +585,7 @@ do
                     echo "--------------------"
                     echo "1) Gestion compte utilisateur"
                     echo "2) Gestion groupe utilisateur"
+                    echo "r) Retour"
                     echo "q) Quitter"
                     read -r choix3
                     case $choix3 in
@@ -593,8 +595,14 @@ do
                         2)
                             action_groupe_local
                             ;;
+                        r)
+                            echo "Retour"
+                            ;;
                         q)
                             break
+                            ;;
+                        *)
+                            echo "Entrée erronée"
                             ;;
                     esac
                     ;;
@@ -608,6 +616,7 @@ do
                     echo "4) Prise en main à distance"
                     echo "5) Gestion du pare-feu"
                     echo "6) Gestion des logiciels"
+                    echo "r) Retour"
                     echo "q) Quitter"
                     read -r choix3
                     case $choix3 in
@@ -629,8 +638,14 @@ do
                         6)
                             action_logiciel
                             ;;
+                        r)
+                            echo "Retour"
+                            ;;
                         q)
                             break
+                            ;;
+                        *)
+                            echo "Entrée erronée"
                             ;;
                     esac
                     ;;
@@ -645,6 +660,7 @@ do
             echo "--------------------"
             echo "1) Utilisateur"
             echo "2) Ordinateur"
+            echo "r) Retour"
             echo "q) Quitter"
             read -r choix2
             case $choix2 in
@@ -655,6 +671,7 @@ do
                     echo "1) Informations compte utilisateur"
                     echo "2) Informations groupes et commandes utilisateur"
                     echo "3) Droits et permissions utilisateur"
+                    echo "r) Retour"
                     echo "q) Quitter"
                     read -r choix3
                     case $choix3 in
@@ -667,8 +684,14 @@ do
                         3)
                             info_droits
                             ;;
+                        r)
+                            echo "Retour"
+                            ;;
                         q)
                             break
+                            ;;
+                        *)
+                            echo "Entrée erronée"
                             ;;
                     esac
                     ;;
@@ -681,6 +704,7 @@ do
                     echo "3) Informations applications"
                     echo "4) Informations matériel"
                     echo "5) Recherche dans les logs"
+                    echo "r) Retour"
                     echo "q) Quitter"
                     read -r choix3
                     case $choix3 in
@@ -699,10 +723,19 @@ do
                         5)
                             info_search
                             ;;
+                        r)
+                            echo "Retour"
+                            ;;
                         q)
                             break
                             ;;
+                        *)
+                            echo "Entrée erronnée"
+                            ;;
                     esac
+                    ;;
+                r)
+                    echo "Retour"
                     ;;
                 q)
                     break
@@ -711,6 +744,9 @@ do
             ;;
         q)
             break
+            ;;
+        *)
+            echo "Entrée erronée"
             ;;
     esac
 done
