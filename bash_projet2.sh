@@ -532,12 +532,12 @@ function log_events()
     # Journalisation dans log_evt.log
     # Format: Date-Heure-User-Event
     event=$1
-    sudo touch /var/log/log_evt.log
+    touch /var/log/log_evt.log
     logDate=$(date -I | tr -d -)
     logHeure=$(date +%H%M%S)
     user=$(whoami)
     log="$logDate"-"$logHeure"-"$user"-"$event"
-    sudo echo $log >> /var/log/log_evt.log
+    echo $log >> /var/log/log_evt.log
 }
 
 function log_info()
