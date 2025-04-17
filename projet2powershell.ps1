@@ -351,3 +351,68 @@ switch $choix_paquets
     3)
     Get-LocalUser
 }
+
+
+#Fonction 15 : 
+# - Type de CPU, nombre de coeurs, etc.
+# - Mémoire RAM totale
+# - Utilisation de la RAM
+# - Utilisation du disque
+# - Utilisation du processeur
+function CPU
+{
+    CPU = @"
+1) Type de CPU, nombre de coeurs, etc.
+2) Mémoire RAM totale
+3) Utilisation de la RAM
+4) Utilisation du disque
+5) Utilisation du processeur
+"@
+$choix_CPU = Read-Host -Prompt "Que voulez vous faire ?"
+switch $choix_paquets
+    1)
+    systeminfo.exe
+    2)
+    systeminfo.exe
+    3)
+    systeminfo.exe
+    4)
+    Get-CimInstance -ClassName Win32_LogicalDisk 
+    5)
+    Get-Counter
+
+}
+
+#Fonction 16 : 
+# - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
+# - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
+#https://learn.microsoft.com/fr-fr/powershell/module/microsoft.powershell.management/get-eventlog?view=powershell-5.1
+function search_log 
+{
+    search_log = @"
+1) Recherche des evenements dans le fichier log_evt.log pour un utilisateur
+2) Recherche des evenements dans le fichier log_evt.log pour un ordinateur
+"@
+$choix_search_log = Read-Host -Prompt "Que voulez vous faire ?"
+switch $choix_search_log
+    1
+    {
+        #$choix_search_log1 = Read-Host -Prompt "Sur quel machine ?"
+        $choix_search_log1 = Read-Host -Prompt "Quel utilisateur ?"
+        #Get-EventLog -ComputerName $choix_search_log1 
+        #A confirmer
+        #Juste chercher dans fichier log_evt.log ?
+        Select-String -Path "C:\" -Pattern $choix_search_log1
+        #mettre chemin dossier log
+    }
+    2
+    {
+        $choix_search_log2 = Read-Host -Prompt "Sur quel machine ?"
+        Select-String -Path "C:\" -Pattern $choix_search_log2
+        #mettre chemin dossier log
+    }
+
+}
+
+#get execution policy 
+#set execution policy => bypass
