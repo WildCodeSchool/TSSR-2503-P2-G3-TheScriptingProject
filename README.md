@@ -20,6 +20,8 @@ Lancement automatique du service : `Set-Service -Name "sshd" -StartupType Automa
 
 Modifier fichier *sshd_config* dans *%programdata%\ssh\* en ajoutant `AllowUsers *`
 
+Pour lancer une commande en ssh à distance il faut ajouter `powershell.exe` à la ligne de commande, par exemple : `ssh wilder@cliwin01 powershell.exe Get-ChildItem`
+
 Dépendances script bash :
 
 * ufw
