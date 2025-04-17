@@ -3,6 +3,7 @@
 ## Install
 
 Installer openssh-server : `sudo apt install openssh-server`
+
 Modifier fichier */etc/ssh/sshd_config* en y ajoutant *PermitRootLogin yes*
 
 Dépendances script bash :
