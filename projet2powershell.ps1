@@ -416,3 +416,20 @@ switch $choix_search_log
 
 #get execution policy 
 #set execution policy => bypass
+
+
+#Journalisation 
+#https://www.it-connect.fr/powershell-creer-un-evenement-log-observateur-evenements-windows/
+function journalisation 
+{
+    New-EventLog -LogName "log_evt.log" -Source "script_powershell"
+    #mettre nom final script 
+    $Event = @{
+    LogName = "log_evt.log"
+    Source = "script_powershell"
+    EntryType = "Informational, SuccessAudit, FailureAudit"
+    }
+
+
+Write-EventLog @Event
+}
