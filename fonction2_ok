@@ -1,0 +1,36 @@
+#Fonction 2 : 
+# - Ajout à un groupe local 
+# - Sortie d'un groupe local 
+function groupe_local
+{
+
+$groupe_local = @"
+Tapez 1 pour vous ajouter a un groupe local
+Taper 2 pour sortir d'un groupe local
+"@
+
+Write-Host $groupe_local
+
+$choix_groupe_local = Read-Host -Prompt "Que voulez vous faire ?"
+
+    switch ($choix_groupe_local)
+    {
+        1 
+        { 
+        $choix_groupe_local1 = Read-Host -Prompt "Quel groupe voulez vous intégrer ?"
+        #donner la liste des groupes ? get-localgroup
+        $choix_groupe_local2 = Read-Host -Prompt "Quel utilisateur voulez vous intégrer au groupe $choix_groupe_local1 ?"
+        #donner liste utilisateur ? get-localuser
+        add-localgroupmember -group $choix_groupe_local1 -Member $choix_groupe_local2
+        }
+
+        2 
+        { 
+        $choix_groupe_local3 = Read-Host -Prompt "Quel groupe voulez vous quitter ?"
+        $choix_groupe_local4 = Read-Host -Prompt "Quel utilisateur voulez vous faire quitter le groupe $choix_groupe_local3 ?"
+        remove-localgroupmember -group $choix_groupe_local3 -Member $choix_groupe_local4
+        }
+    }
+
+}
+
