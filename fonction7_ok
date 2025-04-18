@@ -1,0 +1,46 @@
+# Fonction 7 : 
+# - Définition de règle de pare-feu 
+# - Activation du pare-feu
+# - Désactivation du pare feu 
+function pare_feu
+{
+
+$pare_feu = @"
+1) Définition de règle de pare feu
+2) Activation de pare feu
+3) Désactivation de pare feu
+"@
+
+Write-Host $pare_feu
+
+$choix_pare_feu = Read-Host -Prompt "Que voulez vous faire ?"
+
+    switch ($choix_pare_feu)
+    {
+        1
+        {
+        $choix_pare_feu1 = Read-Host -Prompt "Quel règle voulez vous définir ? Veuiller enseigner :
+        -Name 
+        -DisplayName 
+        -Profile 
+        -Enabled 
+        -Protocol 
+        -LocalPort 
+        -Action 
+        -LocalAddress 
+        Exemple : -Name ""SSH"" -DisplayName ""Autoriser SSH (Port 22)"" -Profile Domain -Enabled True -Protocol TCP -LocalPort 22 -Action Allow -LocalAddress 192.168.100.13"
+        New-NetFirewallRule $choix_pare_feu1
+        }
+
+        2
+        {
+        Set-NetFirewallProfile -Profile * -Enabled True
+        }
+
+        3
+        {
+        Set-NetFirewallProfile -Profile * -Enabled False
+        }
+
+    }    
+}
