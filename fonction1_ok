@@ -1,0 +1,54 @@
+#Fonction 1 :
+# - Création compte utilisateur local 
+# - Changement de mot de passe 
+# - Suppression compte utilisateur local
+# - Désactivation compte utilisateur local 
+function utilisateur_local
+{
+
+$utilisateur_local = @"
+    Taper 1 pour créer un compte utilisateur 
+    Taper 2 pour changer le mot de passe 
+    Taper 3 pour supprimer un compte utilisateur 
+    Taper 4 pour désactiver un compte
+"@
+
+Write-Host $utilisateur_local
+
+    $choix = Read-Host -Prompt "choix ?"
+
+    switch ($choix)
+    {
+        1 
+        {
+            $choix1 = Read-Host -Prompt "Quel est le nom du nouvel utilisateur ?"
+            New-LocalUser $choix1
+        }
+        
+        2 
+        {
+        $choix2 = Read-Host -Prompt "De quel compte voulez vous modifier le mot de passe ?"
+        $choix3 = Read-Host -Prompt "Quel est le nouveau mot de passe ?" -AsSecureString
+        #$choix3 = $choix3Text | ConvertTo-SecureString -AsPlainText -Force
+        #la commande marche pas alors que ca devrait. bizarre
+        Get-LocalUser -Name $choix2 | Set-LocalUser -Password $choix3
+        }
+        
+        3 
+        {
+        $choix4 = Read-Host -Prompt "Quel utilisateur voulez vous supprimer ?"
+        Remove-LocalUser -Name $choix4
+        }
+        
+        4 
+        {
+        $choix5 = Read-Host -Prompt "Quel utilisateur voulez vous bloquer ?"
+        Disable-LocalUser -Name $choix5
+        }
+        
+        default 
+        { 
+        Write-Host "Je ne comprends pas" 
+        }
+    }
+}
