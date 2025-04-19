@@ -31,7 +31,7 @@ function action_utilisateur_local()
             # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client adduser "$nom_user"
             # On log l'action effectuée
-            log_events "ActionCreerUtilisateur"
+            log_events "ActionCreerUtilisateur$client"
             ;;
         2) 
             # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
@@ -43,7 +43,7 @@ function action_utilisateur_local()
             # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client passwd "$nom_passwd"
             # On log l'action effectuée
-            log_events "ActionModifierMDP"
+            log_events "ActionModifierMDP$client"
             ;;
         3)
             # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action 
@@ -55,7 +55,7 @@ function action_utilisateur_local()
             # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client deluser "$user_del"
             # On log l'action effectuée
-            log_events "ActionSupprimerUtilisateur"
+            log_events "ActionSupprimerUtilisateur$client"
             ;;
         4)
             # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action 
@@ -67,7 +67,7 @@ function action_utilisateur_local()
             # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client usermod -L "$user_desactive"
             # On log l'action effectuée
-            log_events "ActionDesactiverUtilisateur"
+            log_events "ActionDesactiverUtilisateur$client"
             ;;
     esac
 }
@@ -95,7 +95,7 @@ function action_groupe_local()
             # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client usermod -a -G $group_add $userName
             # On log l'action effectuée 
-            log_events "ActionAjouterUtilisateurGroupe"
+            log_events "ActionAjouterUtilisateurGroupe$client"
             ;; 
         2)
             # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action 
@@ -110,7 +110,7 @@ function action_groupe_local()
             # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client usermod -r -G $group_out $userName
             # On log l'action effectuée 
-            log_event "ActionSupprimerUtilisateurGroupe"
+            log_event "ActionSupprimerUtilisateurGroupe$client"
             ;;
     esac
 }
@@ -133,7 +133,7 @@ function action_shut()
             # On lance la commande sur la machine ciblée
             ssh $client poweroff
             # On log l'action effectuée 
-            log_events "ActionEteindre"
+            log_events "ActionEteindre$client"
             ;; 
         2)
             # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action 
@@ -142,7 +142,7 @@ function action_shut()
             # On lance la commande sur la machine ciblée
             ssh $client reboot
             # On log l'action effectuée
-            log_events "ActionRedemarrer"
+            log_events "ActionRedemarrer$client"
             ;; 
         3)
             # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action  
@@ -153,7 +153,7 @@ function action_shut()
             # On lance la commande sur la machine ciblée
             ssh $client pkill -KILL -u $user
             # On log l'action effectuée
-            log_events "ActionDeconnecter"
+            log_events "ActionDeconnecter$client"
             ;;
     esac
 }
@@ -166,7 +166,7 @@ function action_update()
     # On lance la commande sur la machine ciblée
     ssh $client apt update && apt upgrade -y
     # On log l'action effectuée
-    log_events "ActionMiseAJour"
+    log_events "ActionMiseAJour$client"
 }
 # Gestion des répertoires
 function action_repertoire()
@@ -190,7 +190,7 @@ function action_repertoire()
             # On lance la commande sur la machine ciblée
             ssh $client mkdir "$name_dir"
             # On log l'action effectuée
-            log_events "ActionCreerDossier"
+            log_events "ActionCreerDossier$client"
             ;;
         2) 
             # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
@@ -205,7 +205,7 @@ function action_repertoire()
             # On lance la commande sur la machine ciblée
             ssh $client mv "$mod_dir" "$new_dir"
             # On log l'action effectuée
-            log_events "ActionModifDossier"
+            log_events "ActionModifDossier$client"
             ;; 
         3)
             # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
@@ -217,7 +217,7 @@ function action_repertoire()
             # On lance la commande sur la machine cible
             ssh $client rmdir "$dir_del"
             # On log l'action effectuée
-            log_events "ActionSupprimerDossier"
+            log_events "ActionSupprimerDossier$client"
             ;;
     esac
 }
@@ -230,7 +230,7 @@ function action_prise_en_main()
     # On prend la main sur la machine
     ssh $client
     # On log l'action effectuée
-    log_events "ActionPriseEnMain"
+    log_events "ActionPriseEnMain$client"
 }
 # Gestion pare-feu
 function action_pare_feu()
@@ -264,7 +264,7 @@ function action_pare_feu()
             # On lance la commande sur la machine cible
             ssh $client ufw allow from $adresse
             # On log l'action effectuée
-            log_events "ActionAutorPareFeu"
+            log_events "ActionAutorPareFeu$client"
             ;;
         2)
             # On demande à l'utilisateur l'adresse à gérer
@@ -273,7 +273,7 @@ function action_pare_feu()
             # On lance la commande sur la machine cible
             ssh $client ufw deny from $adresse
             # On log l'action effectuée
-            log_events "ActionSupprPareFeu"
+            log_events "ActionSupprPareFeu$client"
             ;;
         esac
         ;;
@@ -284,7 +284,7 @@ function action_pare_feu()
         # On lance la commande sur la machine cible
         ssh $client ufw enable
         # On log l'action effectuée
-        log_events "ActionActiverPareFeu"
+        log_events "ActionActiverPareFeu$client"
         ;;
     3)
         # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
@@ -293,7 +293,7 @@ function action_pare_feu()
         # On lance la commande sur la machine cible
         ssh $client ufw disable
         # On log l'action effectuée
-        log_events "ActionDesactiverPareFeu"
+        log_events "ActionDesactiverPareFeu$client"
         ;;
     esac
 }
@@ -321,7 +321,7 @@ function action_logiciel()
         # On lance la commande sur la machine ciblée
         ssh $client apt install $logiciel
         # On log l'action effectuée
-        log_events "ActionInstallApp"
+        log_events "ActionInstallApp$client"
         ;;
     2)
         # On demande quel logiciel supprimer
@@ -330,7 +330,7 @@ function action_logiciel()
         # On lance la commande sur la machine ciblée
         ssh $client apt remove $logiciel
         # On log l'action effectuée
-        log_events "ActionSupprApp"
+        log_events "ActionSupprApp$client"
         ;;
     3)
         # On demande quel script lancer
@@ -339,7 +339,7 @@ function action_logiciel()
         # On lance la commande sur la machine ciblée
         ssh $client bash $script 
         # On log l'action effectuée
-        log_events "ActionLancerScript"
+        log_events "ActionLancerScript$client"
         ;;
     esac
 }
@@ -370,7 +370,7 @@ function info_compte()
             # On log l'information récupérée
             log_info "$client"_"$user" "$command"
             # On log l'action effectuée
-            log_events "InfoDateConnexion"
+            log_events "InfoDateConnexion$client"
             ;;
         2)
             # On garde l'information voulue dans une variable
@@ -380,7 +380,7 @@ function info_compte()
             # On log l'information récupérée
             log_info "$client"_"$user" "$command"
             # On log l'action effectuée
-            log_events "InfoDateModifMDP"
+            log_events "InfoDateModifMDP$client"
             ;;
         3)
             # On garde l'information voulue dans une variable
@@ -390,7 +390,7 @@ function info_compte()
             # On log l'information récupérée
             log_info "$client"_"$user" "$command"
             # On log l'action effectuée
-            log_events "InfoSessions"
+            log_events "InfoSessions$client"
             ;;
     esac
 
@@ -422,7 +422,7 @@ function info_groupe()
             # On log l'information récupérée
             log_info "$client"_"$user" "$command"
             # On log l'action effectuée
-            log_events "InfoGroupeUtilisateur"
+            log_events "InfoGroupeUtilisateur$client"
             ;;
         2)
             # On garde l'information voulue dans une variable
@@ -432,7 +432,7 @@ function info_groupe()
             # On log l'information récupée
             log_info "$client"_"$user" "$command"
             # On log l'action effectuée
-            log_events "InfoHistoriqueUtilisateur"
+            log_events "InfoHistoriqueUtilisateur$client"
             ;;
     esac
 }
@@ -457,7 +457,7 @@ function info_droits()
     # On log l'information récupérée
     log_info "$client"_"$user" "$command"
     # On log l'action effectuée
-    log_events "InfoDroitsRepertoire"
+    log_events "InfoDroitsRepertoire$client"
 }
 # Informations sur l'OS
 function info_os_version()
@@ -472,7 +472,7 @@ function info_os_version()
     # On log l'information récupérée
     log_info $client-GEN "$command"
     # On log l'action effectuée
-    log_events "InfoOS"
+    log_events "InfoOS$client"
 }
 # Informations sur les disques
 function info_disk_number()
@@ -498,7 +498,7 @@ function info_disk_number()
         # On log l'information récupérée
         log_info $client-GEN "$command"
         # On log l'action effectuée
-        log_events "InfoNombreDisques"
+        log_events "InfoNombreDisques$client"
         ;;
     2)
         # On garde l'information voulue dans une variable
@@ -508,7 +508,7 @@ function info_disk_number()
         # On log l'information récupérée
         log_info $client-GEN "$command"
         # On log l'action effectuée
-        log_events "InfoPartitions"
+        log_events "InfoPartitions$client"
         ;;
     esac
 }
@@ -534,7 +534,7 @@ function info_app()
             # On log l'information récupérée
             log_info $client-GEN "$command"
             # On log l'action effectuée
-            log_events "InfoApplisInstallées"
+            log_events "InfoApplisInstallées$client"
             ;;
         2)
             # On garde l'information voulue dans une variable
@@ -544,7 +544,7 @@ function info_app()
             # On log l'information récupérée
             log_info $client-GEN "$command"
             # On log l'action effectuée
-            log_events "InfoServicesEnCours"
+            log_events "InfoServicesEnCours$client"
             ;;
         3)
             # On garde l'information voulue dans une variable
@@ -554,7 +554,7 @@ function info_app()
             # On log l'information récupérée
             log_info $client-GEN "$command"
             # On log l'action effectuée
-            log_events "InfoUtilisateursLocaux"
+            log_events "InfoUtilisateursLocaux$client"
             ;;
     esac
 }
@@ -582,7 +582,7 @@ function info_computer()
             # On log l'information récupérée
             log_info $client-GEN "$command"
             # On log l'action effectuée
-            log_events "InfoCPU"
+            log_events "InfoCPU$client"
             ;;
         2)
             # On garde l'information voulue dans une variable 
@@ -592,7 +592,7 @@ function info_computer()
             # On log l'information récupérée
             log_info $client-GEN "$command"
             # On log l'action effectuée
-            log_events "InfoRAM"
+            log_events "InfoRAM$client"
             ;;
         3) 
             # On garde l'information voulue dans une variable
@@ -602,7 +602,7 @@ function info_computer()
             # On log l'information récupérée
             log_info $client-GEN "$command"
             # On log l'action effectuée
-            log_events "InfoRAM"
+            log_events "InfoRAM$client"
             ;;
         4)  
             # On garde l'information voulue dans une variable
@@ -612,7 +612,7 @@ function info_computer()
             # On log l'information récupérée
             log_info $client-GEN "$command"
             # On log l'action effectuée
-            log_events "InfoUtilisationDisque"
+            log_events "InfoUtilisationDisque$client"
             ;;
         5)
             # On garde l'information voulue dans une variable
@@ -622,7 +622,7 @@ function info_computer()
             # On log l'information récupérée
             log_info $client-GEN "$command"
             # On log l'action effectuée
-            log_events "InfoUtilisationCPU"
+            log_events "InfoUtilisationCPU$client"
             ;;
     esac
 }
