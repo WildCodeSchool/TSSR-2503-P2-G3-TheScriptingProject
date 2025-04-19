@@ -1,6 +1,8 @@
-# Guide d'installation
+# 🖥️ GUIDE D'INSTALLATION
 
-## Install SSH
+## ⚡ Prérequis techniques
+
+## 🧑‍💻 Configuration de OpenSSH
 
 ### Sur Ubuntu
 
@@ -27,3 +29,5 @@ Dépendances script bash :
 * ufw
 * hwinfo
 * htop
+
+## ❓ FAQ
