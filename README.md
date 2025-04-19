@@ -1,29 +1,45 @@
-# TSSR-2503-P2-G3-TheScriptingProject
+# Administration de clients à distance
 
-## Install SSH
+## 🎯 Présentation générale du projet
 
-### Sur Ubuntu
+### Présentation
 
-Installer openssh-server : `sudo apt install openssh-server`
+### Objectifs finaux
 
-Modifier fichier */etc/ssh/sshd_config* en y ajoutant *PermitRootLogin yes*
+## 📜 Introduction
 
-Activer le compte root `sudo passwd root` puis `sudo passwd -u root`
+Les guides d'installation et d'utilisation sont disponibles respectivement dans les fichiers **INSTALL.md** et **USER_GUIDE.md**. 
 
-### Sur Windows
+## 👥 Membres du groupe par sprint
 
-Installer openssh-server : `Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0`
+### Sprint 1
 
-Démarrer le service : `Start-Service -Name "sshd"`
+### Sprint 2
 
-Lancement automatique du service : `Set-Service -Name "sshd" -StartupType Automatic`
+### Sprint 3
 
-Modifier fichier *sshd_config* dans *%programdata%\ssh\* en ajoutant `AllowUsers *`
+### Sprint 4
 
-Pour lancer une commande en ssh à distance il faut ajouter `powershell.exe` à la ligne de commande, par exemple : `ssh wilder@cliwin01 powershell.exe Get-ChildItem`
+## ⚙️ Choix techniques
 
-Dépendances script bash :
+### Machines
 
-* ufw
-* hwinfo
-* htop
+#### Configuration de la machine serveur Debian
+
+#### Configuration de la machine client Ubuntu
+
+#### Configuration de la machine serveur Windows
+
+#### Configuration de la machine client Windows
+
+### Dépendances
+
+#### Dépendances Linux
+
+#### Dépendances Windows
+
+## 🧗 Difficultés rencontrées
+
+## 💡 Solutions trouvées
+
+## 🚀 Améliorations possibles
