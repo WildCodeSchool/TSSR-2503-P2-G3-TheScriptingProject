@@ -3,3 +3,5 @@
 ## 🐧 Utilisation Linux  
 
 ## 🪟 Utilisation Windows
+
+## ❓ FAQ
