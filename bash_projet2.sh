@@ -641,14 +641,14 @@ function info_search()
             echo "Quel utilisateur recherchez vous ?"
             read -r event_user
             # On affiche l'information voulue
-            cat log_evt.log | grep $event_user
+            cat var/log/log_evt.log | grep $event_user
             ;;
         2)
             # On demande à l'utilisateur quel machine il cherche
             echo "Quel ordinateur recherchez vous ?"
             read -r event_computer
             # On affiche l'information voulue
-            cat log_evt.log | grep $event_computer
+            cat var/log/log_evt.log | grep $event_computer
             ;;
     esac
 }
