@@ -1,17 +1,17 @@
 #!/bin/bash
 
-# ------------------------------ #
-#           FONCTIONS
-# ------------------------------ #
+# @Authors : Brendan Borne, Sheldon Thurm
 
+# Script permettant la gestion de machines client Ubuntu depuis une machine serveur Debian. 
 
+# --------------------------------- #
+#             FONCTIONS             #     
+# --------------------------------- #
+
+# Gestion des utilisateurs 
 function action_utilisateur_local() 
 {
-    #Fonction 1 :
-    # - Création compte utilisateur local 
-    # - Changement de mot de passe 
-    # - Suppression compte utilisateur local
-    # - Désactivation compte utilisateur local 
+    # On demande à l'utilisateur ce qu'il souhaite faire
     echo "Que voulez vous faire ?"
     echo "--------------------"
     echo "1) Création d'un compte utilisateur"
@@ -19,183 +19,223 @@ function action_utilisateur_local()
     echo "3) Suppression compte utilisateur"
     echo "4) Désactivation compte utilisateur"
     read -r choix
+    # On applique le choix de l'utilisateur
     case $choix in
         1) 
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
             echo "Client où créer l'utilisateur :"
             read -r client
+            # On demande à l'utilisateur sur quel utilisateur il souhaite réaliser son action
             echo "Merci de donner un nom d'utilisateur"
             read -r nom_user
+            # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client adduser "$nom_user"
+            # On log l'action effectuée
             log_events "ActionCreerUtilisateur"
             ;;
         2) 
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
             echo "Client où modifier le mot de passe :"
             read -r client
+            # On demande à l'utilisateur sur quel utilisateur il souhaite réaliser son action
             echo "Merci de donner le nom d'utilisateur a qui vous voulez changer de mot de passe"
             read -r nom_passwd
+            # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client passwd "$nom_passwd"
+            # On log l'action effectuée
             log_events "ActionModifierMDP"
             ;;
-        3) 
+        3)
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action 
             echo "Client où supprimer un utilisateur :"
             read -r client
+            # On demande à l'utilisateur sur quel utilisateur il souhaite réaliser son action
             echo "Merci de donner l'utilisateur que vous souhaitez supprimer"
             read -r user_del
+            # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client deluser "$user_del"
+            # On log l'action effectuée
             log_events "ActionSupprimerUtilisateur"
             ;;
         4)
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action 
             echo "Client où désactiver un compte utilisateur :"
             read -r client
+            # On demande à l'utilisateur sur quel utilisateur il souhaite réaliser son action
             echo "Merci de donner l'utilisateur que vous voulez désactiver"
             read -r user_desactive
+            # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client usermod -L "$user_desactive"
+            # On log l'action effectuée
             log_events "ActionDesactiverUtilisateur"
             ;;
-        #chage -E 0 username
     esac
 }
-
+# Gestion des groupes
 function action_groupe_local()
 {
-    #Fonction 2 : 
-    # - Ajout à un groupe local 
-    # - Sortie d'un groupe local 
+    # On demande à l'utilisateur ce qu'il souhaite faire
     echo "Que voulez vous faire ?"
     echo "--------------------"
     echo "1) Ajout à un groupe local"
     echo "2) Sortie d'un groupe local"
-    read -r choix_groupe_local 
+    read -r choix_groupe_local
+    # On applique le choix de l'utilisateur 
     case $choix_groupe_local in 
         1)
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action 
             echo "Client de l'utilisateur à ajouter à un groupe ?"
             read -r client
+            # On demande à l'utilisateur sur quel utilisateur il souhaite réaliser son action
             echo "Quel utilisateur voulez-vous ajouter à un groupe ?"
             read -r userName
+            # On demande à l'utilisateur sur quel groupe il souhaite réaliser son action
             echo "A quel groupe voulez-vous ajouter l'utilisateur ?"
             read -r group_add
-            ssh $client usermod -a -G $group_add $userName 
+            # On lance la commande sur la machine et l'utilisateur ciblés
+            ssh $client usermod -a -G $group_add $userName
+            # On log l'action effectuée 
             log_events "ActionAjouterUtilisateurGroupe"
             ;; 
         2)
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action 
             echo "Client de l'utilisateur à sortir d'un groupe ?"
             read -r client
+            # On demande à l'utilisateur sur quel utilisateur il souhaite réaliser son action
             echo "Quel utilisateur voulez-vous sortir d'un groupe ?"
             read -r userName
+            # On demande à l'utilisateur sur quel groupe il souhaite réaliser son action
             echo "De quel groupe voulez-vous sortir l'utilisateur ?"
             read -r group_out
+            # On lance la commande sur la machine et l'utilisateur ciblés
             ssh $client usermod -r -G $group_out $userName
+            # On log l'action effectuée 
             log_event "ActionSupprimerUtilisateurGroupe"
             ;;
     esac
 }
-
+# Gestion alimentation
 function action_shut()
 {
-    #Fonction 3 : 
-    # - Arret 
-    # - Redémarrage 
-    # - Vérouillage 
+    # On demande à l'utilisateur ce qu'il souhaite faire
     echo "Que voulez vous faire ?"
     echo "--------------------"
     echo "1) Arret"
     echo "2) Redémarrage"
     echo "3) Déconnecter utilisateur"
     read -r choix_shut
+    # On applique le choix de l'utilisateur 
     case $choix_shut in
         1)
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action 
             echo "Quel client voulez-vous arrêter ?"
             read -r client
+            # On lance la commande sur la machine ciblée
             ssh $client poweroff
+            # On log l'action effectuée 
             log_events "ActionEteindre"
             ;; 
         2)
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action 
             echo "Quel client voulez-vous redémarrer ?"
             read -r client
+            # On lance la commande sur la machine ciblée
             ssh $client reboot
+            # On log l'action effectuée
             log_events "ActionRedemarrer"
             ;; 
-        3) 
+        3)
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action  
             echo "Quel client voulez-vous déconnecter ?"
             read -r client
             echo "Quel utilisateur voulez-vous déconnecter ?"
             read -r user
+            # On lance la commande sur la machine ciblée
             ssh $client pkill -KILL -u $user
+            # On log l'action effectuée
             log_events "ActionDeconnecter"
             ;;
     esac
 }
-
+# Mise à jour client
 function action_update()
 {
-    #Fonction 4 : 
-    # - Mise-à-jour du système 
+    # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action  
     echo "Quel client voulez-vous mettre à jour ?"
     read -r client
+    # On lance la commande sur la machine ciblée
     ssh $client apt update && apt upgrade -y
+    # On log l'action effectuée
     log_events "ActionMiseAJour"
 }
-
+# Gestion des répertoires
 function action_repertoire()
 {   
-    #Fonction 5 :
-    # - Création de répertoire 
-    # - Modification de repertoire 
-    # - -Suppression de répertoire 
+    # On demande à l'utilisateur ce qu'il souhaite faire
     echo "Que voulez vous faire ?"
     echo "--------------------"
     echo "1) Création de répertoire"
     echo "2) Modification de répertoire"
     echo "3) Suppression de répertoire"
     read -r choix_repertoire
+    # On applique le choix de l'utilisateur
     case $choix_repertoire in 
         1)
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action  
             echo "Sur quel client voulez-vous créer un répertoire ?"
             read -r client
+            # On demande à l'utilisateur quel nom donner au répertoire
             echo "Comment voulez vous nommer le repertoire ?"
             read -r name_dir
+            # On lance la commande sur la machine ciblée
             ssh $client mkdir "$name_dir"
+            # On log l'action effectuée
             log_events "ActionCreerDossier"
             ;;
         2) 
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
             echo "Sur quel client voulez-vous modifier un répertoire ?"
             read -r client
+            # On demande à l'utilisateur quel répertoire modifier
             echo "Quel repertoire voulez vous modifier ?"
             read -r mod_dir
+            # On demande à l'utilisateur le nouveau nom du répertoire
             echo "Quel est le nouveau nom ?"
             read -r new_dir
+            # On lance la commande sur la machine ciblée
             ssh $client mv "$mod_dir" "$new_dir"
+            # On log l'action effectuée
             log_events "ActionModifDossier"
             ;; 
         3)
+            # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
             echo "Sur quel client voulez-vous supprimer un répertoire ?"
             read -r client 
+            # On demande à l'utilisateur le nom du répertoire à supprimer
             echo "Quel repertoire voulez vous supprimer ?"
             read -r dir_del
+            # On lance la commande sur la machine cible
             ssh $client rmdir "$dir_del"
+            # On log l'action effectuée
             log_events "ActionSupprimerDossier"
             ;;
     esac
 }
-
+# Prise en main à distance
 function action_prise_en_main()
 {   
-    #Fonction 6 : 
-    # - Prise en main a distance (CLI)
+    # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
     echo "Sur quel ordinateur voulez-vous prendre la main ?"
     read -r client
+    # On prend la main sur la machine
     ssh $client
+    # On log l'action effectuée
     log_events "ActionPriseEnMain"
 }
-
+# Gestion pare-feu
 function action_pare_feu()
 {
-
-    # Fonction 7 : 
-    # Cette fonction nécessitera d'avoir installé UFW (uncomplicated firewall)
-    # - Définition de règle de pare-feu 
-    # - Activation du pare-feu
-    # - Désactivation du pare feu 
+    # On demande à l'utilisateur ce qu'il souhaite faire
     echo "Gestion du pare-feu"
     echo "--------------------"
     echo "Que voulez-vous faire ?"
@@ -203,266 +243,328 @@ function action_pare_feu()
     echo "2) Activer le pare-feu"
     echo "3) Désactiver le pare-feu"
     read -r choix
+    # On applique le choix de l'utilisateur
     case $choix in
     1)
+        # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
         echo "Sur quel client voulez-vous définir une règle de pare-feu ?"
         read -r client
+        # On demande à l'utilisateur ce qu'il souhaite faire
         echo "Définition de règle"
         echo "Que voulez-vous faire ?"
         echo "1) Autoriser adresse"
         echo "2) Interdire adresse"
         read -r choix2
+        # On applique le choix de l'utilisateur
         case $choix2 in
         1)
+            # On demande à l'utilisateur l'adresse à gérer
             echo "Entrez adresse à autoriser"
             read -r adresse
+            # On lance la commande sur la machine cible
             ssh $client ufw allow from $adresse
+            # On log l'action effectuée
             log_events "ActionAutorPareFeu"
             ;;
         2)
+            # On demande à l'utilisateur l'adresse à gérer
             echo "Entrez adresse à interdire"
             read -r adresse
+            # On lance la commande sur la machine cible
             ssh $client ufw deny from $adresse
+            # On log l'action effectuée
             log_events "ActionSupprPareFeu"
             ;;
         esac
         ;;
     2)
+        # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
         echo "Sur quel client voulez-vous activer le pare-feu ?"
         read -r client
-        echo "Activation du pare-feu"
+        # On lance la commande sur la machine cible
         ssh $client ufw enable
+        # On log l'action effectuée
         log_events "ActionActiverPareFeu"
         ;;
     3)
+        # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
         echo "Sur quel client voulez-vous désactiver le pare-feu ?"
         read -r client
-        echo "Désactivation du pare-feu"
+        # On lance la commande sur la machine cible
         ssh $client ufw disable
+        # On log l'action effectuée
         log_events "ActionDesactiverPareFeu"
         ;;
     esac
 }
-
+# Gestion des logiciels
 function action_logiciel()
 {
-    #Fonction 8 : 
-    # - Installation de logiciel
-    # - Désinstallation de logiciel 
-    # - Execution de script sur la machine distante 
-    # ./script.sh
     echo "Gestion de logiciels"
     echo "--------------------"
+    # On demande à l'utilisateur sur quelle machine il souhaite réaliser son action
     echo "Sur quel client voulez-vous gérer vos logiciels ?"
     read -r client
     echo "--------------------"
+    # On demande à l'utilisateur ce qu'il souhaite faire
     echo "Que voulez-vous faire ?"
     echo "1) Installer un logiciel"
     echo "2) Supprimer un logiciel"
     echo "3) Exécuter un script"
     read -r choix
+    # On applique le choix de l'utilisateur
     case $choix in
     1)
+        # On demande quel logiciel installer
         echo "Quel logiciel souhaitez-vous installer ?"
         read -r logiciel
+        # On lance la commande sur la machine ciblée
         ssh $client apt install $logiciel
+        # On log l'action effectuée
         log_events "ActionInstallApp"
         ;;
     2)
-        echo "Remove"
+        # On demande quel logiciel supprimer
         echo "Quel logiciel souhaitez-vous supprimer ?"
         read -r logiciel
+        # On lance la commande sur la machine ciblée
         ssh $client apt remove $logiciel
+        # On log l'action effectuée
         log_events "ActionSupprApp"
         ;;
     3)
+        # On demande quel script lancer
         echo "Quel script souhaitez-vous lancer ?"
         read -r script
+        # On lance la commande sur la machine ciblée
         ssh $client bash $script 
+        # On log l'action effectuée
         log_events "ActionLancerScript"
         ;;
     esac
 }
-
+# Informations sur comptes utilisateurs
 function info_compte()
 {
-    #Fonction 9 :
-    # - Date de dernière connexion d’un utilisateur
-    # Commande last $user
-    # - Date de dernière modification du mot de passe
-    # Commande passwd $user -S
-    # - Liste des sessions ouvertes par l'utilisateur
-    # Commande last $user
     echo "Informations sur le compte"
     echo "--------------------"
+    # On demande sur quelle machine récupérer les informations
     echo "Sur quel client récupérer vos informations ?"
     read -r client
+    # On demande sur quel utilisateur récupérer les informations
     echo "Sur quel utilisateur récupérer vos informations ?"
     read -r user
+    # On demande l'information désirée
     echo "Que voulez-vous savoir ?"
     echo "1) Date de dernière connexion de $user"
     echo "2) Date de dernière modification du mot de passe de $user"
     echo "3) Liste des sessions de $user"
     read -r choix
+    # On applique le choix de l'utilisateur
     case $choix in
         1) 
+            # On garde l'information voulue dans une variable
             command=$(ssh $client last $user | head -n 1)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info "$client"_"$user" "$command"
+            # On log l'action effectuée
             log_events "InfoDateConnexion"
             ;;
         2)
+            # On garde l'information voulue dans une variable
             command=$(ssh $client passwd $user -S)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info "$client"_"$user" "$command"
+            # On log l'action effectuée
             log_events "InfoDateModifMDP"
             ;;
         3)
+            # On garde l'information voulue dans une variable
             command=$(ssh $client last $user)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info "$client"_"$user" "$command"
+            # On log l'action effectuée
             log_events "InfoSessions"
             ;;
     esac
 
 }
-
+# Informations sur groupes
 function info_groupe()
 {
-    #Fonction 10 : 
-    # - Groupe d’appartenance d’un utilisateur
-    # - Historique des commandes exécutées par l'utilisateur
+    
     echo "Info groupe & commandes"
     echo "--------------------"
+    # On demande sur quelle machine récupérer les informations
     echo "Sur quel client récupérer vos informations ?"
     read -r client
+    # On demande sur quel utilisateur récupérer les informations
     echo "Sur quel utilisateur récupếrer vos informations ?"
     read -r user
+    # On demande l'information désirée
     echo "Que voulez-vous savoir ?"
     echo "1) Groupe de $user"
     echo "2) Historique commandes de $user"
     read -r choix
+    # On applique le choix de l'utilisateur
     case $choix in
         1)
+            # On garde l'information voulue dans une variable
             command=$(ssh $client groups $user)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info "$client"_"$user" "$command"
+            # On log l'action effectuée
             log_events "InfoGroupeUtilisateur"
             ;;
         2)
+            # On garde l'information voulue dans une variable
             command=$(ssh $client cat /home/$user/.bash_history)
+            # On affiche l'information
             echo $command
+            # On log l'information récupée
             log_info "$client"_"$user" "$command"
+            # On log l'action effectuée
             log_events "InfoHistoriqueUtilisateur"
             ;;
     esac
 }
-
+# Informations sur les droits
 function info_droits()
 {
-    #Fonction 11 : 
-    # - Droits/permissions de l’utilisateur sur un dossier
-    # Utiliser getfacl
-    # - Droits/permissions de l’utilisateur sur un fichier
     echo "Info droits fichier/dossier"
     echo "--------------------"
+    # On demande sur quelle machine récupérer les informations
     echo "Sur quel client recuperer vos informations ?"
     read -r client
+    # On demande sur quel utilisateur récupérer les informations
     echo "Sur quel utilisateur recuperer vos informations ?"
     read -r user
+    # On demande sur quel élément récupérer les informations
     echo "Sur quel dossier/fichier recuperer vos informations ?"
     read -r target
+    # On garde l'information voulue dans une variable
     command=$(ssh $client getfacl $target)
+    # On affiche l'information
     echo $command
+    # On log l'information récupérée
     log_info "$client"_"$user" "$command"
+    # On log l'action effectuée
     log_events "InfoDroitsRepertoire"
 }
-
+# Informations sur l'OS
 function info_os_version()
 {
-    #Fonction 12 : 
-    # - Version de l'OS
+    # On demande sur quelle machine récupérer les informations
     echo "Sur quel client récupérer vos informations ?"
     read -r client
+    # On garde l'information voulue dans une variable
     command=$(ssh $client cat /etc/os-release | grep "PRETTY_NAME" | cut -d = -f 2 | tr -d '"')
+    # On affiche l'information
     echo $command
+    # On log l'information récupérée
     log_info $client-GEN "$command"
+    # On log l'action effectuée
     log_events "InfoOS"
 }
-
+# Informations sur les disques
 function info_disk_number()
 {
-    #Fonction 13 : 
-    # - Nombre de disque
-    # - Partition (nombre, nom, FS, taille) par disque
-    # Nécessite d'avoir installé hwinfo
     echo "Infos disque"
     echo "--------------------"
+    # On demande sur quelle machine récupérer les informations
     echo "Sur quel client voulez-vous récupérer vos informations ?"
     read -r client
+    # On demande l'information désirée
     echo "Que voulez-vous savoir ?"
     echo "1) Nombre de disques"
     echo "2) Partitions"
     read -r choix
+    # On applique le choix de l'utilisateur
     case $choix in
     1)
+        # Calcul du nombre de disques
         amount=$(ssh $client hwinfo --disk --short | wc -l)
         amount=$(($amount-1))
+        # On garde l'information voulue dans une variable
         command=$(echo "Nombre de disques : $amount")
+        # On log l'information récupérée
         log_info $client-GEN "$command"
+        # On log l'action effectuée
         log_events "InfoNombreDisques"
         ;;
     2)
+        # On garde l'information voulue dans une variable
         command=$(ssh $client lsblk -f)
+        # On affiche l'information
         echo $command
+        # On log l'information récupérée
         log_info $client-GEN "$command"
+        # On log l'action effectuée
         log_events "InfoPartitions"
         ;;
     esac
 }
-
+# Informations sur les applis installées
 function info_app()
 {
+    # On demande sur quelle machine on souhaite récupérer l'information
     echo "Sur quel client voulez-vous récupérer vos informations ?"
     read -r client
+    # On demande l'information désirée
     echo "Que voulez vous faire ?"
     echo "1) Voir la liste des applications/paquets installées"
     echo "2) Voir la liste des services en cours d'execution"
     echo "3) Voir la liste des utilisateurs locaux"
     read -r choix_app
+    # On applique le choix de l'utilisateur
     case $choix_app in 
         1) 
+            # On garde l'information voulue dans une variable
             command=$(ssh $client apt --installed list)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info $client-GEN "$command"
+            # On log l'action effectuée
             log_events "InfoApplisInstallées"
             ;;
         2)
+            # On garde l'information voulue dans une variable
             command=$(ssh $client systemctl)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info $client-GEN "$command"
+            # On log l'action effectuée
             log_events "InfoServicesEnCours"
             ;;
         3)
+            # On garde l'information voulue dans une variable
             command=$(ssh $client cut -d: -f1 /etc/passwd)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info $client-GEN "$command"
+            # On log l'action effectuée
             log_events "InfoUtilisateursLocaux"
             ;;
     esac
 }
-
+# Informations sur le PC
 function info_computer()
 {
-    #Fonction 15 : 
-    # - Type de CPU, nombre de coeurs, etc.
-    # - Mémoire RAM totale
-    # - Utilisation de la RAM
-    # - Utilisation du disque
-    # - Utilisation du processeur
-    # INSTALLATION htop requise
+    # On demande sur quelle machine récupérer l'information
     echo "Sur quel client voulez-vous récupérer vos informations ?"
     read -r client
+    # On demande l'information désirée
     echo "Que voulez vous faire ?"
     echo "1) Voir le type de CPU, le nombre de coeur, etc."
     echo "2) Voir la mémoire RAM totale"
@@ -470,107 +572,144 @@ function info_computer()
     echo "4) Voir l'utilisation du disque"
     echo "5) Voir l'utilisation du processeur"
     read -r choix
+    # On applique le choix de l'utilisateur
     case $choix in 
         1) 
+            # On garde l'information voulue dans une variable
             command=$(ssh $client lscpu)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info $client-GEN "$command"
+            # On log l'action effectuée
             log_events "InfoCPU"
             ;;
-        2) 
+        2)
+            # On garde l'information voulue dans une variable 
             command=$(ssh $client free)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info $client-GEN "$command"
+            # On log l'action effectuée
             log_events "InfoRAM"
             ;;
         3) 
+            # On garde l'information voulue dans une variable
             command=$(ssh $client free)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info $client-GEN "$command"
+            # On log l'action effectuée
             log_events "InfoRAM"
             ;;
-        4)
+        4)  
+            # On garde l'information voulue dans une variable
             command=$(ssh $client df)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info $client-GEN "$command"
+            # On log l'action effectuée
             log_events "InfoUtilisationDisque"
             ;;
         5)
+            # On garde l'information voulue dans une variable
             command=$(ssh $client htop)
+            # On affiche l'information
             echo $command
+            # On log l'information récupérée
             log_info $client-GEN "$command"
+            # On log l'action effectuée
             log_events "InfoUtilisationCPU"
             ;;
     esac
 }
-
+# Recherche dans les logs
 function info_search()
 {
-    #Fonction 16 : 
-    # - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
-    # - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
+    # On demande à l'utilisateur l'information qu'il désire
     echo "Que voulez vous faire ?"
     echo "1) Rechercher des évenements dans le fichier log_evt.log pour un utilisateur"
     echo "2) Rechercher des évenements dans le fichier log_evt.log pour un ordinateur"
+    # On applique le choix de l'utilisateur
     case $choix_search in 
         1)
+            # On demande à l'utilisateur quel nom d'utilisateur il cherche
             echo "Quel utilisateur recherchez vous ?"
             read -r event_user
+            # On affiche l'information voulue
             cat log_evt.log | grep $event_user
             ;;
         2)
+            # On demande à l'utilisateur quel machine il cherche
             echo "Quel ordinateur recherchez vous ?"
             read -r event_computer
+            # On affiche l'information voulue
             cat log_evt.log | grep $event_computer
             ;;
     esac
 }
-
+# Journalisation des actions
 function log_events()
 {
-    # Fonction log
-    # Journalisation dans log_evt.log
-    # Format: Date-Heure-User-Event
+    # On passe l'action effectuée en premier argument positionnel de la fonction
     event=$1
+    # Au cas où le fichier de log n'existe pas déjà, on le crée
     touch /var/log/log_evt.log
+    # On récupère la date au format yyyymmjj
     logDate=$(date -I | tr -d -)
+    # On récupère l'heure au format hhmmss
     logHeure=$(date +%H%M%S)
+    # On récupère le nom de l'utilisateur du script
     user=$(whoami)
+    # On construit la chaîne de caractère du log
     log="$logDate"-"$logHeure"-"$user"-"$event"
+    # On ajoute la chaîne au fichier de log
     echo $log >> /var/log/log_evt.log
 }
-
+# Journalisation des informations récupérées
 function log_info()
 {
+    # On passe la cible sur laquelle a été récupérée l'information en premier paramètre positionnel de la fonction
     logCible=$1
+    # On passe l'information à logger en second paramètre positionnel de la fonction
     logRes=$2
+    # On récupère la date au format yyyymmjj
     logDate=$(date -I | tr -d -)
+    # On crée le nom du fichier à construire
     logFile=info_"$logCible"_"$logDate".txt
+    #On créé le fichier
     touch log/"$logFile"
+    # On ajoute les informations récupérées dans le fichier
     echo "$logRes" >> log/"$logFile"
 }
 
 # ------------------------------ #
-#           EXECUTION
+#           EXECUTION            #
 # ------------------------------ #
 
 # On inscrit dans les logs le début de l'exécution du script
 log_events "********StartScript********"
-# Variable pour gérer l'arrêt
+# Variable pour gérer l'arrêt du script
 run=1
 # On lance la boucle
 while [ $run -eq 1 ]
 do
     #clear
+    # On demande l'action que l'utilisateur souhaite faire
     echo "Que voulez-vous faire ?"
     echo "--------------------"
     echo "1) Effectuer une action"
     echo "2) Récupérer une information"
     echo "q) Quitter"
     read -r choix
+    # On applique le choix de l'utilisateur
     case $choix in
         1)
             #clear
+            # On demande à l'utilisateur sur quelle cible il souhaite effectuer son action
             echo "Sur quelle cible effectuer l'action ?"
             echo "--------------------"
             echo "1) Utilisateur"
@@ -578,9 +717,11 @@ do
             echo "r) Retour"
             echo "q) Quitter"
             read -r choix2
+            # On applique le choix de l'utilisateur
             case $choix2 in
                 1)
                     #clear
+                    # On demande à l'utilisateur quelle action il souhaite effectuer
                     echo "Que voulez-vous faire ?"
                     echo "--------------------"
                     echo "1) Gestion compte utilisateur"
@@ -588,6 +729,7 @@ do
                     echo "r) Retour"
                     echo "q) Quitter"
                     read -r choix3
+                    # On applique le choix de l'utilisateur
                     case $choix3 in
                         1)
                             action_utilisateur_local
@@ -608,6 +750,7 @@ do
                     ;;
                 2)
                     #clear
+                    # On demande à l'utilisateur quelle action il souhaite effectuer
                     echo "Que voulez-vous faire ?"
                     echo "--------------------"
                     echo "1) Gestion alimentation ordinateur"
@@ -619,6 +762,7 @@ do
                     echo "r) Retour"
                     echo "q) Quitter"
                     read -r choix3
+                    # On applique le choix de l'utilisateur
                     case $choix3 in
                         1)
                             action_shut
@@ -656,6 +800,7 @@ do
             ;;
         2)
             #clear
+            # On demande à l'utilisateur sur quelle cible il souhaite récupérer son information
             echo "Sur quelle cible récupérer l'information ?"
             echo "--------------------"
             echo "1) Utilisateur"
@@ -663,9 +808,11 @@ do
             echo "r) Retour"
             echo "q) Quitter"
             read -r choix2
+            # On applique le choix de l'utilisateur
             case $choix2 in
                 1)
                     #clear
+                    # On demande à l'utilisateur quelle information il souhaite récupérer
                     echo "Que voulez-vous savoir ?"
                     echo "--------------------"
                     echo "1) Informations compte utilisateur"
@@ -674,6 +821,7 @@ do
                     echo "r) Retour"
                     echo "q) Quitter"
                     read -r choix3
+                    # On applique le choix de l'utilisateur
                     case $choix3 in
                         1)
                             info_compte
@@ -697,6 +845,7 @@ do
                     ;;
                 2)
                     #clear
+                    # On demande à l'utilisateur quelle information il souhaite récupérer
                     echo "Que voulez-vous savoir ?"
                     echo "--------------------"
                     echo "1) Informations OS"
@@ -707,6 +856,7 @@ do
                     echo "r) Retour"
                     echo "q) Quitter"
                     read -r choix3
+                    # On applique le choix de l'utilisateur
                     case $choix3 in
                         1)
                             info_os_version
