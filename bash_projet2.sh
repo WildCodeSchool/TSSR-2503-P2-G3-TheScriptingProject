@@ -633,6 +633,7 @@ function info_search()
     echo "Que voulez vous faire ?"
     echo "1) Rechercher des évenements dans le fichier log_evt.log pour un utilisateur"
     echo "2) Rechercher des évenements dans le fichier log_evt.log pour un ordinateur"
+    read -r choix_search
     # On applique le choix de l'utilisateur
     case $choix_search in 
         1)
