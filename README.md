@@ -4,15 +4,40 @@
 
 ### Présentation
 
+Ce projet est le deuxième projet réalisé au sein de la Wild Code School, dans le cadre d'un bootcamp Technicien Systèmes et Réseaux.
+
+Ce projet a pour objectif de travailler sur la configuration de machines en réseau, et sur l'implémentation de scripts.
+
 ### Objectifs finaux
 
+Ce projet est divisé en deux objectifs, un objectif principal et un objectif secondaire.
+
+L'objectif principal est de réaliser deux scripts. Le premier doit être en mesure d'administrer des machines client Ubuntu depuis une machine serveur Debian. Le second doit être en mesure d'administrer des machines client Windows depuis une machine serveur Windows Server.
+
+L'objectif secondaire est lui aussi de réaliser deux scripts. Cette fois, il faut pouvoir administrer des clients Windows depuis une machine serveur Debian, et des machines client Ubuntu depuis une machine serveur Windows Server.
+
+Les machines en question, client comme serveur, doivent également être configurées et mises en réseau par nos soins sur Proxmox.
+
 ## 📜 Introduction
+
+Ce projet a été réalisé par Sheldon THURM, Brendan BORNE et Mamadou DRAME.
+
+Il a pour but de mobiliser les compétences suivantes :
+* Configuration de machines serveur et client en réseau
+* Installation et configuration d'OpenSSH
+* Prise en main de Proxmox
+* Implémentation de script
+* Réalisation de projet en équipe
+* Documentation de projet
+* Démonstration de la réalisation finale
 
 Les guides d'installation et d'utilisation sont disponibles respectivement dans les fichiers **INSTALL.md** et **USER_GUIDE.md**. 
 
 ## 👥 Membres du groupe par sprint
 
-Pour réaliser ce projet, nous avons implémenté la méthode de gestion de projet Scrum. Le projet a duré 4 semaines, et a donc été divisé en 4 sprints différents. Les rôles de Product Owner et Scrum Master ont tourné toutes les semaines. A partir de la deuxième semaine, nous n'étions plus que deux à travailler sur ce projet. Les rôles ont donc été plus fluides, puisque la communication était plus directe et constante.
+Pour réaliser ce projet, nous avons implémenté la méthode de gestion de projet Scrum. Le projet a duré 4 semaines, et a donc été divisé en 4 sprints différents. Les rôles de Product Owner et Scrum Master ont tourné toutes les semaines.
+
+A partir de la deuxième semaine, nous n'étions plus que deux à travailler sur ce projet, Mamadou ayant quitté l'équipe. Les rôles ont donc été plus fluides, puisque la communication était plus directe et constante.
 
 Les tableaux suivants résument la répartition des rôles par sprint, ainsi que la répartition des tâches à effectuer.
 
@@ -49,7 +74,17 @@ Les tableaux suivants résument la répartition des rôles par sprint, ainsi que
 
 ### Configuration Réseau
 
+L'adresse du réseau configuré est **172.16.30.0**. Le masque de sous-réseau est **255.255.255.0**. 
+
+L'adresse de passerelle par défaut est **172.16.30.254**. Le DNS est **8.8.8.8**
+
+Les adresses de chaque machine sont spécifiées dans la partie _Configuration Machines_.
+
+La configuration d'OpenSSH pour toutes nos machines est détaillée dans le fichier **INSTALL.md**
+
 ### Configuration Proxmox
+
+Nous travaillons sur le noeud **wcs-cyber-node06**. Nos machines sont les machines **641** à **642**.
 
 ### Configuration Machines
 
@@ -59,6 +94,8 @@ Les caractéristiques de chaque machine sont résumées ci-dessous.
 
 * Nom : **SRVLX01**
 * Langue : **US**
+* Adresse IP : **172.16.30.10**
+* ID Proxmox : **644**
 * Compte utilisateur :
     * **root/Azerty1***
     * **wilder/Azerty1*** (dans le groupe sudo)
@@ -67,6 +104,8 @@ Les caractéristiques de chaque machine sont résumées ci-dessous.
 
 * Nom : **CLILIN01**
 * Langue : **Français**
+* Adresse IP : **172.16.30.30**
+* ID Proxmox : **642**
 * Compte utilisateur :
     * **wilder** (dans le groupe sudo)
     * Mot de passe : **Azerty1**
@@ -75,6 +114,8 @@ Les caractéristiques de chaque machine sont résumées ci-dessous.
 
 * Nom : **SRVWIN01**
 * Langue : **US**
+* Adresse IP : **172.16.30.5**
+* ID Proxmox : **643**
 * Compte utilisateur :
     * **Administrateur/Azerty1***
     * **Wilder/Azerty1***
@@ -83,6 +124,8 @@ Les caractéristiques de chaque machine sont résumées ci-dessous.
 
 * Nom : **CLIWIN01**
 * Langue : **Français**
+* Adresse IP : **172.16.30.20**
+* ID Proxmox : **641**
 * Compte utilisateur :
     * **Wilder** (dans le groupe admin local)
     * Mot de passe : **Azerty1**
