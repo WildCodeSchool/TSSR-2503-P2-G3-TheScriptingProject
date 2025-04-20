@@ -681,7 +681,7 @@ function log_info()
     logDate=$(date -I | tr -d -)
     # On crée le nom du fichier à construire
     logFile=info_"$logCible"_"$logDate".txt
-    #On créé le fichier
+    # On créé le fichier
     touch log/"$logFile"
     # On ajoute les informations récupérées dans le fichier
     echo "$logRes" >> log/"$logFile"
