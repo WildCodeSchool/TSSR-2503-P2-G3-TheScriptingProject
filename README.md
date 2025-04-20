@@ -47,15 +47,45 @@ Les tableaux suivants résument la répartition des rôles par sprint, ainsi que
 
 ## ⚙️ Choix techniques
 
-### Machines
+### Configuration Réseau
+
+### Configuration Proxmox
+
+### Configuration Machines
+
+Les caractéristiques de chaque machine sont résumées ci-dessous.
 
 #### Configuration de la machine serveur Debian
 
+* Nom : **SRVLX01**
+* Langue : **US**
+* Compte utilisateur :
+    * **root/Azerty1***
+    * **wilder/Azerty1*** (dans le groupe sudo)
+
 #### Configuration de la machine client Ubuntu
+
+* Nom : **CLILIN01**
+* Langue : **Français**
+* Compte utilisateur :
+    * **wilder** (dans le groupe sudo)
+    * Mot de passe : **Azerty1**
 
 #### Configuration de la machine serveur Windows
 
+* Nom : **SRVWIN01**
+* Langue : **US**
+* Compte utilisateur :
+    * **Administrateur/Azerty1***
+    * **Wilder/Azerty1***
+
 #### Configuration de la machine client Windows
+
+* Nom : **CLIWIN01**
+* Langue : **Français**
+* Compte utilisateur :
+    * **Wilder** (dans le groupe admin local)
+    * Mot de passe : **Azerty1**
 
 ### Dépendances
 
