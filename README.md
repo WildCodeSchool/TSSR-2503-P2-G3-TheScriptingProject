@@ -104,6 +104,28 @@ _Aucune dépendance Windows_
 
 ## 🧗 Difficultés rencontrées
 
+### 1. Découverte du langage PowerShell
+
+Avant la réalisation de ce projet, aucun membre de l'équipe n'avait de connaissances sur le langage PowerShell. Il a donc fallu attendre d'avoir les cours sur le langage avant de pouvoir attaquer sérieusement la réalisation du script. 
+
 ## 💡 Solutions trouvées
 
+### 1. Se documenter en ligne
+
+Afin de palier aux manques que nous avions en PowerShell, nous avons beaucoup eu recours à la documentation officielle de PowerShell, ainsi qu'à des questions qu'avaient posées des utilisateurs du forum StackOverflow.
+
 ## 🚀 Améliorations possibles
+
+Nous avons de nombreuses pistes d'améliorations possibles pour nos deux scripts d'administration.
+
+### 1. Contrôle du bon déroulement des actions
+
+En l'état actuel, nos scripts réalisent les actions d'administration demandées sans vérifier si elles sont possibles ni si elles ont bien été réalisées. Le script repose sur la gestion des erreurs intégrée des commandes auxquelles il fait appel.
+
+Nous pourrions programmer nos propres vérifications et messages d'erreur afin de rendre plus claire l'utilisation du script.
+
+### 2. Formatage des informations recueillies
+
+En l'état actuel, nos scripts récupèrent les informations demandées en faisant appel à des fonctions récupérant les informations, sans en changer la sortie ni le format. Parfois, ces résultats sont assez lourds visuellement, ou assez peu lisibles.
+
+Nous pourrions faire un travail de formatage des informations demandées afin de les rendre plus agréables à lire.
