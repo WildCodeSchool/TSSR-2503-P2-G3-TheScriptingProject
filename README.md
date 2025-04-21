@@ -108,7 +108,7 @@ Les caractéristiques de chaque machine sont résumées ci-dessous.
 * ID Proxmox : **642**
 * Compte utilisateur :
     * **wilder** (dans le groupe sudo)
-    * Mot de passe : **Azerty1**
+    * Mot de passe : **Azerty1***
 
 #### Configuration de la machine serveur Windows
 
@@ -128,7 +128,7 @@ Les caractéristiques de chaque machine sont résumées ci-dessous.
 * ID Proxmox : **641**
 * Compte utilisateur :
     * **Wilder** (dans le groupe admin local)
-    * Mot de passe : **Azerty1**
+    * Mot de passe : **Azerty1***
 
 ### Dépendances
 
