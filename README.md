@@ -84,7 +84,7 @@ La configuration d'OpenSSH pour toutes nos machines est détaillée dans le fich
 
 ### Configuration Proxmox
 
-Nous travaillons sur le noeud **wcs-cyber-node06**. Nos machines sont les machines **641** à **642**.
+Nous travaillons sur le noeud **wcs-cyber-node06**. Nos machines sont les machines **641** à **644**.
 
 ### Configuration Machines
 
