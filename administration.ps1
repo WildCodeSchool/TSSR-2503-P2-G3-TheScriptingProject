@@ -1,7 +1,7 @@
 # Fonction gestion des comptes utilisateurs
 function utilisateur_local{
 
-    # On demande à l'utilisateur l'action qu'il souhaite effectuer
+# On demande à l'utilisateur l'action qu'il souhaite effectuer
 $utilisateur_local = @"
     Taper 1 pour créer un compte utilisateur 
     Taper 2 pour changer le mot de passe 
@@ -23,8 +23,10 @@ $utilisateur_local = @"
             # On demande quel sera le nom du nouvel utilisateur
             $choix1 = Read-Host -Prompt "Quel est le nom du nouvel utilisateur ?"
             # On lance la commande
-            ssh $client powershell.exe New-LocalUser $choix1
+            # ssh $client powershell.exe New-LocalUser $choix1
+            Invoke-Command -ComputerName $client -ScriptBlock {New-LocalUser $choix1}
             # On log l'action effectuée
+            log_events "ActionCreerUtilisateur$client"
         }
         
         2{
@@ -36,6 +38,8 @@ $utilisateur_local = @"
             $choix3 = Read-Host -Prompt "Quel est le nouveau mot de passe ?" -AsSecureString
             # On lance la commande
             ssh $client powershell.exe Get-LocalUser -Name $choix2 | Set-LocalUser -Password $choix3
+            # On log l'action effectuée
+            log_events "ActionModifierMDP$client"
         }
         
         3{
@@ -45,6 +49,8 @@ $utilisateur_local = @"
             $choix4 = Read-Host -Prompt "Quel utilisateur voulez vous supprimer ?"
             # On lance la commande
             ssh $client powershell.exe Remove-LocalUser -Name $choix4
+            # On log l'action effectuée
+            log_events "ActionSupprimerUtilisateur$client"
         }
         
         4{
@@ -54,6 +60,8 @@ $utilisateur_local = @"
             $choix5 = Read-Host -Prompt "Quel utilisateur voulez vous bloquer ?"
             # On lance la commande
             ssh $client powershell.exe Disable-LocalUser -Name $choix5
+            # On log l'action effectuée
+            log_events "ActionDesactiverUtilisateur$client"
         }
         
         default 
@@ -286,33 +294,48 @@ $choix_logiciel = Read-Host -Prompt "Que voulez vous faire ?"
 }
 
 
-#Fonction 11 : 
-# - Droits/permissions de l’utilisateur sur un dossier
-# - Droits/permissions de l’utilisateur sur un fichier
-function Droits
+# Fonctions infos droits utilisateur
+function droits
 {
-    $Droits = @"
-1) Droits/permissions de l’utilisateur sur un dossier
-2) Droits/permissions de l’utilisateur sur un fichier
+# On demande à l'utilisateur ce qu'il souhaite faire
+$droits = @"
+1) Consulter droits/permissions de l’utilisateur sur un dossier
+2) Consulter droits/permissions de l’utilisateur sur un fichier
 "@
+    Write-Host $droits
 
-Write-Host $Droits
+    # On lit le choix de l'utilisateur
+    $choix_droits = Read-Host -Prompt "Que voulez vous faire ?"
 
-$choix_droits = Read-Host -Prompt "Que voulez vous faire ?"
+    # On applique son choix
     switch ($choix_droits)
-    {
-        1
         {
-        $choix_droits1 = Read-host -Prompt "Quel dossier ? Syntaxte chemin absolu .\<nom dossier>\"
-        Get-Acl -Path $choix_droits1
+            1{
+                # On demande sur quel client récupérer l'information
+                $client Read-Host -Prompt "Sur quel client récupérer l'info ?"
+                # On demande sur quel dossier récupérer l'information
+                $choix_droits1 = Read-host -Prompt "Quel dossier ? Syntaxte chemin absolu .\<nom dossier>\"
+                # On lance la commande
+                ssh $client powershell.exe Get-Acl -Path $choix_droits1
+                # On log l'info obtenue
+                log_info ""
+                # On log l'action effectuée
+                log_events "ActionCreerUtilisateur$client"
+            }
+            
+            2{
+                # On demande sur quel client récupérer l'information
+                $client Read-Host -Prompt "Sur quel client récupérer l'info ?" 
+                # On demande sur quel dossier récupérer l'information
+                $choix_droits2 = Read-host -Prompt "Quel fichier ? Syntaxte chemin absolu .\<nom dossier>\ avec le .txt par exemple" 
+                # On lance la commande
+                ssh $client powershell.exe Get-Acl -Path $choix_droits1
+                # On log l'info obtenue
+                log_info ""
+                # On log l'action effectuée
+                log_events "ActionCreerUtilisateur$client"
+            }
         }
-        
-        2
-        { 
-        $choix_droits2 = Read-host -Prompt "Quel fichier ? Syntaxte chemin absolu .\<nom dossier>\ avec le .txt par exemple" 
-        Get-Acl -Path $choix_droits1
-        }
-    }
 }
 
 
