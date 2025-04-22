@@ -292,12 +292,12 @@ $choix_logiciel = Read-Host -Prompt "Que voulez vous faire ?"
 
 
 # Fonctions infos droits utilisateur
-function droits
+function info_droits
 {
-# On demande à l'utilisateur ce qu'il souhaite faire
-$droits = @"
-1) Consulter droits/permissions de l’utilisateur sur un dossier
-2) Consulter droits/permissions de l’utilisateur sur un fichier
+    # On demande à l'utilisateur ce qu'il souhaite faire
+    $droits = @"
+    1) Consulter droits/permissions de l’utilisateur sur un dossier
+    2) Consulter droits/permissions de l’utilisateur sur un fichier
 "@
     Write-Host $droits
 
@@ -309,181 +309,263 @@ $droits = @"
         {
             1{
                 # On demande sur quel client récupérer l'information
-                $client Read-Host -Prompt "Sur quel client récupérer l'info ?"
+                $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
                 # On demande sur quel dossier récupérer l'information
                 $choix_droits1 = Read-host -Prompt "Quel dossier ? Syntaxte chemin absolu .\<nom dossier>\"
                 # On lance la commande
-                # ssh $client powershell.exe Get-Acl -Path $choix_droits1
+                $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Acl -Path $Using:choix_droits1 }
+                # On affiche l'information
+                Write-Output $Info
                 # On log l'info obtenue
-                log_info ""
+                log_infos -LogCible $client -LogInfo $Info
                 # On log l'action effectuée
-                log_events "InfoDroitDossierUtilisateur$client"
+                log_events "InfoDroitDossier$client"
             }
             
             2{
                 # On demande sur quel client récupérer l'information
-                $client Read-Host -Prompt "Sur quel client récupérer l'info ?" 
+                $client = Read-Host -Prompt "Sur quel client récupérer l'info ?" 
                 # On demande sur quel dossier récupérer l'information
                 $choix_droits2 = Read-host -Prompt "Quel fichier ? Syntaxte chemin absolu .\<nom dossier>\ avec le .txt par exemple" 
                 # On lance la commande
-                # ssh $client powershell.exe Get-Acl -Path $choix_droits1
+                $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Acl -Path $Using:choix_droits1 }
+                # On affiche l'information
+                Write-Output $Info
                 # On log l'info obtenue
-                log_info ""
+                log_infos -LogCible $client -LogInfo $Info
                 # On log l'action effectuée
-                log_events "ActionCreerUtilisateur$client"
+                log_events "InfoDroitFichier$client"
             }
         }
 }
 
 
-#Fonction 12 : 
-# - Version de l'OS
-function OS
-{
-Get-WmiObject Win32_OperatingSystem | Select-Object Caption, Version
+# Fonction info OS
+function info_OS
+{   
+    # On demande sur quel client récupérer l'information
+    $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+    # On lance la c ommande
+    $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-WmiObject Win32_OperatingSystem | Select-Object Caption, Version }
+    # On affiche l'information
+    Write-Output $Info
+    # On log l'info obtenue
+    log_infos -LogCible $client -LogInfo $Info
+    # On log l'action effectée
+    log_events "InfoOS$client"
 }
 
 
 
-#Fonction 13 : 
-# - Nombre de disque
-# - Partition (nombre, nom, FS, taille) par disque
-function partition 
+# Fonction infos Disque
+function info_partition 
 {
-
-$partition = @"
-1) Nombre de disque 
-2) Partition (nombre, nom, FS, taille) par disque
+    # On demande à l'utilisateur ce qu'il souhaite faire
+    $partition = @"
+    1) Nombre de disque 
+    2) Partition (nombre, nom, FS, taille) par disque
 "@
+    Write-Host $partition
 
-Write-Host $partition
+    # On lit le choix de l'utilisateur 
+    $choix_partition = Read-Host -Prompt "Que voulez vous faire ?"
 
-$choix_partition = Read-Host -Prompt "Que voulez vous faire ?"
+    # On applique son choix
     switch ($choix_partition)
     {    
-        1
-        {
-        Get-disk
+        1{
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On lance la commande    
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Disk }
+            # On affiche l'information
+            Write-Ouput $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoDisques$client"
         }
     
-        2
-        {
-        Get-Partition
+        2{
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On lance la commande  
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Partition }
+            # On affiche l'information
+            Write-Ouput $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoPartitions$client"
         }
     }
 }
 
 
-#Fonction 14 : 
-# - Liste des applications/paquets installées
-# - Liste des services en cours d'execution
-# - Liste des utilisateurs locaux
-function paquets
+# Fonction infos applications installées
+function info_paquets
 {
-$paquets = @"
-1) Liste des applications/paquets installées
-2) Liste des services en cours d'execution
-3) Liste des utilisateurs locaux
+    # On demande à l'utilisateur ce qu'il souhaite faire
+    $paquets = @"
+    1) Liste des applications/paquets installées
+    2) Liste des services en cours d'execution
+    3) Liste des utilisateurs locaux
 "@
+    Write-Host $paquets
 
-Write-Host $paquets
-
-$choix_paquets = Read-Host -Prompt "Que voulez vous faire ?"
+    # On lit le choix de l'utilisateur
+    $choix_paquets = Read-Host -Prompt "Que voulez vous faire ?"
+    # On applique le choix de l'utilisateur
     switch ($choix_paquets)
     {
-        1
-        {
-        Get-AppxPackage
+        1{
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On lance la commande              
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-AppxPackage }
+            # On affiche l'information
+            Write-Ouput $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoApps$client"
         }
         
-        2
-        {
-        Get-Service
+        2{
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On lance la commande              
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Service }
+            # On affiche l'information
+            Write-Ouput $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoServices$client"
         }
         
-        3
-        {
-        Get-LocalUser
+        3{
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On lance la commande              
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-LocalUser }
+            # On affiche l'information
+            Write-Ouput $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoUtilisateurs$client"
         }
     }
 }
-
-
-#Fonction 15 : 
-# - Type de CPU, nombre de coeurs, etc.
-# - Mémoire RAM totale
-# - Utilisation de la RAM
-# - Utilisation du disque
-# - Utilisation du processeur
-function CPU
+# Fonction infos matériel
+function info_CPU
 {
-$CPU = @"
-1) Type de CPU, nombre de coeurs, etc.
-2) Mémoire RAM totale
-3) Utilisation de la RAM
-4) Utilisation du disque
-5) Utilisation du processeur
+    # On demande à l'utilisateur ce qu'il souhaite faire
+    $CPU = @"
+    1) Type de CPU, nombre de coeurs, etc.
+    2) Mémoire RAM totale
+    3) Utilisation de la RAM
+    4) Utilisation du disque
+    5) Utilisation du processeur
 "@
+    Write-Host $CPU
 
-Write-Host $CPU
-
-$choix_paquets = Read-Host -Prompt "Que voulez vous faire ?"
-switch ($choix_paquets)
-    {
-        1
-        {
-        systeminfo.exe
+    # On lit le choix de l'utilisateur
+    $choix_paquets = Read-Host -Prompt "Que voulez vous faire ?"
+    # On applique le choix de l'utilisateur
+    switch ($choix_paquets){
+        1{
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On lance la commande
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { systeminfo.exe }
+            # On affiche l'information
+            Write-Ouput $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoCPU$client"
         }
         
-        2
-        {
-        systeminfo.exe
+        2{
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On lance la commande
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { systeminfo.exe }
+            # On affiche l'information
+            Write-Ouput $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoRAM$client"
         }
         
-        3
-        {
-        systeminfo.exe
+        3{
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On lance la commande
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { systeminfo.exe }
+            # On affiche l'information
+            Write-Ouput $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoRAM$client"
         }
         
-        4
-        {
-        Get-CimInstance -ClassName Win32_LogicalDisk 
+        4{
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On lance la commande
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-CimInstance -ClassName Win32_LogicalDisk }
+            # On affiche l'information
+            Write-Ouput $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoUtilDisque$client"
         }
         
-        5
-        {
-        Get-Counter
+        5{
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On lance la commande
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Counter }
+            # On affiche l'information
+            Write-Ouput $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoUtilCPU$client"
         }
     }
 }
 
 
-#Fonction 16 : 
-# - Recherche des evenements dans le fichier log_evt.log pour un utilisateur
-# - Recherche des evenements dans le fichier log_evt.log pour un ordinateur
-#https://learn.microsoft.com/fr-fr/powershell/module/microsoft.powershell.management/get-eventlog?view=powershell-5.1
+# Fonction recherche dans les logs
 function search_log 
 {
+    # On demande à l'utilisateur ce qu'il veut faire
     $search_log = @"
     1) Recherche des evenements dans le fichier log_evt.log pour un utilisateur
     2) Recherche des evenements dans le fichier log_evt.log pour un ordinateur
 "@
+    # On lit la réponse de l'utilisateur
     $choix_search_log = Read-Host -Prompt "Que voulez vous faire ?"
+    # On applique le choix de l'utilisateur
     switch ($choix_search_log)
     {    
-        1
-        {
-        
-        $choix_search_log1 = Read-Host -Prompt "Quel utilisateur ?"
-        $choix_search_log2 = Read-Host -Prompt "Quel évenement ? Action ou Information ?"
-        Select-String -Path "C:\Windows\System32\LogFiles\log_evt.log" -Pattern $choix_search_log1 $choix_search_log2
+        1{
+            $choix_search_log1 = Read-Host -Prompt "Quel utilisateur ?"
+            #$choix_search_log2 = Read-Host -Prompt "Quel évenement ? Action ou Information ?"
+            Select-String -Path "C:\Windows\System32\LogFiles\log_evt.log" -Pattern $choix_search_log1 $choix_search_log2
         }
-        
-        2
-        {
-        $choix_search_log3 = Read-Host -Prompt "Sur quel machine ?"
-        $choix_search_log4 = Read-Host -Prompt "Quel évenement ? Action ou Information ?"
-        Select-String -Path "C:\Windows\System32\LogFiles\log_evt.log" -Pattern $choix_search_log3 $choix_search_log4
+
+        2{
+            $choix_search_log3 = Read-Host -Prompt "Sur quelle machine ?"
+            #$choix_search_log4 = Read-Host -Prompt "Quel évenement ? Action ou Information ?"
+            Select-String -Path "C:\Windows\System32\LogFiles\log_evt.log" -Pattern $choix_search_log3 $choix_search_log4
         }
     }
 }
