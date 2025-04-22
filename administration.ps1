@@ -692,8 +692,8 @@ While($run -eq 1){
                     # On demande à l'utilisateur quelle information il souhaite récupérer
                     Write-Host "Que voulez-vous savoir ?"
                     Write-Host "--------------------"
-                    Write-Host "1) Informations compte utilisateur [W.I.P]"
-                    Write-Host "2) Informations groupes et commandes utilisateur"
+                    Write-Host "1) Informations compte utilisateur / W.I.P \"
+                    Write-Host "2) Informations groupes et commandes utilisateur / W.I.P \"
                     Write-Host "3) Droits et permissions utilisateur"
                     Write-Host "r) Retour"
                     Write-Host "q) Quitter"
@@ -701,10 +701,10 @@ While($run -eq 1){
                     # On applique le choix de l'utilisateur
                     Switch($choix3){
                         "1" {
-                            Write-Host "// W.I.P \\"
+                            Write-Host "/ W.I.P \"
                         }
                         "2" {
-                            Write-Host "// W.I.P \\"
+                            Write-Host "/ W.I.P \"
                         }
                         "3" {
                             info_droits
