@@ -56,7 +56,7 @@ $utilisateur_local = @"
             # On demande quel utilisateur verrouiller
             $choix5 = Read-Host -Prompt "Quel utilisateur voulez vous bloquer ?"
             # On lance la commande
-            ssh $client powershell.exe Disable-LocalUser -Name $choix5
+            Invoke-Command -ComputerName $client -ScriptBlock { Disable-LocalUser -Name $Using:choix5 }
             # On log l'action effectuée
             log_events "ActionDesactiverUtilisateur$client"
         }
@@ -313,7 +313,7 @@ $droits = @"
                 # On demande sur quel dossier récupérer l'information
                 $choix_droits1 = Read-host -Prompt "Quel dossier ? Syntaxte chemin absolu .\<nom dossier>\"
                 # On lance la commande
-                ssh $client powershell.exe Get-Acl -Path $choix_droits1
+                # ssh $client powershell.exe Get-Acl -Path $choix_droits1
                 # On log l'info obtenue
                 log_info ""
                 # On log l'action effectuée
@@ -326,7 +326,7 @@ $droits = @"
                 # On demande sur quel dossier récupérer l'information
                 $choix_droits2 = Read-host -Prompt "Quel fichier ? Syntaxte chemin absolu .\<nom dossier>\ avec le .txt par exemple" 
                 # On lance la commande
-                ssh $client powershell.exe Get-Acl -Path $choix_droits1
+                # ssh $client powershell.exe Get-Acl -Path $choix_droits1
                 # On log l'info obtenue
                 log_info ""
                 # On log l'action effectuée
