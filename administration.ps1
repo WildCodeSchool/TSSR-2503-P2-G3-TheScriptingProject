@@ -691,33 +691,57 @@ While($run -eq 1){
                     $choix3 = Read-Host
                     # On applique le choix de l'utilisateur
                     #Switch($choix3){ # Là on met les fonctions}
+                        Switch ($choix3){
+                            1 {
+                                utilisateur_local
+                            }
+                            2{
+                                groupe_local
+                            }
+                            3 {
+                                break
+                            }
+                            4 {
+                                $run=0
+                            }
+                        }
                 }
                 "2" {
                     Write-Host "Que voulez-vous faire ?"
                     Write-Host "--------------------"
                     Write-Host "1) Gestion alimentation ordinateur"
-                    Write-Host "2) Mise à jour système"
-                    Write-Host "3) Gestion des répertoires"
-                    Write-Host "4) Prise en main à distance"
-                    Write-Host "5) Gestion du pare-feu"
-                    Write-Host "6) Gestion des logiciels"
+                    Write-Host "2) Gestion des répertoires"
+                    Write-Host "3) Gestion du pare-feu"
+                    Write-Host "4) Gestion des logiciels"
                     Write-Host "r) Retour"
                     Write-Host "q) Quitter"
                     $choix3 = Read-Host
                     # On applique le choix de l'utilisateur
                     #Switch($choix3) {# Là on met les fonctions}
+                    Switch ($choix3) {
+                        1 {
+                            shut
+                        }
+                        2 {
+                            repertoire
+                        }
+                        3 {
+                            pare_feu
+                        }
+                        4 {
+                            logiciel
+                        }
+                        "r" {
+                            break
+                        }
+                        "q" {
+                            $run=0
+                        }
+                        default {
+                            Write-Host "Entrée erronée"
+                        }
+                    }
                 }
-                "r" {
-                    break
-                }
-                "q" {
-                    $run=0
-                }
-                default {
-                    Write-Host "Entrée erronée"
-                }
-            }
-        }
         "2" {
             # On demande à l'utilisateur quelle action il souhaite effectuer
             Write-Host "Sur quelle cible récupérer l'information ?"
