@@ -317,7 +317,7 @@ $droits = @"
                 # On log l'info obtenue
                 log_info ""
                 # On log l'action effectuée
-                log_events "ActionCreerUtilisateur$client"
+                log_events "InfoDroitDossierUtilisateur$client"
             }
             
             2{
