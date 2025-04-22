@@ -20,11 +20,8 @@ $utilisateur_local = @"
         1{
             # On demande sur quel client lancer la commande
             $client = Read-Host -Prompt "Client où créer l'utilisateur ?"
-            # On demande quel sera le nom du nouvel utilisateur
-            $choix1 = Read-Host -Prompt "Quel est le nom du nouvel utilisateur ?"
             # On lance la commande
-            # ssh $client powershell.exe New-LocalUser $choix1
-            Invoke-Command -ComputerName $client -ScriptBlock {New-LocalUser $choix1}
+            Invoke-Command -ComputerName $client -ScriptBlock {New-LocalUser}
             # On log l'action effectuée
             log_events "ActionCreerUtilisateur$client"
         }
@@ -37,7 +34,7 @@ $utilisateur_local = @"
             # On demande le nouveau mot de passe
             $choix3 = Read-Host -Prompt "Quel est le nouveau mot de passe ?" -AsSecureString
             # On lance la commande
-            ssh $client powershell.exe Get-LocalUser -Name $choix2 | Set-LocalUser -Password $choix3
+            Invoke-Command -ComputerName $client -ScriptBlock { Get-LocalUser -Name $choix2 | Set-LocalUser -Password $choix3 }
             # On log l'action effectuée
             log_events "ActionModifierMDP$client"
         }
