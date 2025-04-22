@@ -227,6 +227,55 @@ $choix_pare_feu = Read-Host -Prompt "Que voulez vous faire ?"
 }
 
 
+#Fonction 8 :
+# - Installation de logiciel
+# - Désinstallation de logiciel 
+# - Execution de script sur la machine distante 
+function logiciel
+{
+$logiciel = @"
+1) Installation de logiciel
+2) Désinstallation de logiciel 
+3) Executer du script sur une machine distante
+"@
+
+Write-Host $logiciel
+
+$choix_logiciel = Read-Host -Prompt "Que voulez vous faire ?"
+
+    switch ($choix_logiciel)
+    {
+        1
+        {
+        Register-PackageSource -Name chocolatey -ProviderName Chocolatey -Location http://chocolatey.org/api/v2/
+        Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
+        Write-host "Nous allons vérifier si le logiciel voulu existe"
+        $choix_logiciel1 = Read-Host -Prompt "Quel logiciel voulez vous installer ?"
+        #Find-Package -Name *Adobe* -Source Chocolatey => pour savoir si le logiciel existe et son nom exacte ici AdobReader
+        Find-Package -Name $choix_logiciel1 -Source MyNuget
+        $choix_vrai_logiciel = Read-host -Prompt "Quel est le vrai nom du logiciel que vous voulez installer ?"
+        $choix_version = Read-host -Prompt "Quel est la version du logiciel que vous voulez installer ?"
+        #Find-Package -Name $choix_vrai_logiciel -RequiredVersion $choix_version | Install-Package
+        Install-Package -Name $choix_vrai_logiciel -Source MyNuget -RequiredVersion $choix_version
+        }
+
+        2
+        {
+        $choix_logiciel2 = Read-Host -Prompt "Quel logiciel voulez vous désinstaller ?"
+        uninstall-package $choix_logiciel2
+        }
+
+        3
+        {
+        $choix_logiciel3 = Read-Host -Prompt "Sur quelle machine voulez vous le faire ?"
+        $choix_logiciel4 = Read-Host -Prompt "Quel script voulez vous utiliser ? Merci d'écrire le nom du fichier avec son chemin absolu"
+        Invoke-Command -ComputerName $choix_logiciel3 -FilePath $choix_logiciel4
+        }
+    }
+}
+
+logiciel
+
 #Fonction 11 : 
 # - Droits/permissions de l’utilisateur sur un dossier
 # - Droits/permissions de l’utilisateur sur un fichier
