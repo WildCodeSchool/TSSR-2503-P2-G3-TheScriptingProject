@@ -25,12 +25,12 @@ Dans le même dossier que le script, lancer la commande suivante :
 
 ## ❓ FAQ
 
-### Comment installer le script ?
+#### Comment installer le script ?
 
-### Faut-il configurer des droits ou des permissions spécifiques ?
+#### Faut-il configurer des droits ou des permissions spécifiques ?
 
-### Comment ajouter de nouveaux hôtes cibles ?
+#### Comment ajouter de nouveaux hôtes cibles ?
 
-### Comment sont gérées les connexions SSH ?
+#### Comment sont gérées les connexions SSH ?
 
-### Le script stocke-t-il des identifiants ? Si oui, où et comment sont-ils protégés ?
+#### Le script stocke-t-il des identifiants ? Si oui, où et comment sont-ils protégés ?
