@@ -40,13 +40,13 @@ Modifier fichier *sshd_config* dans *%programdata%\ssh\* en ajoutant `AllowUsers
 ### Préparation Client Windows
 
 Exécutez la commande suivante pour démarrer le service WinRM :
-_Set-Service -Name winrm -StartupType Automatic_ 
+`Set-Service -Name winrm -StartupType Automatic`
 Pour démarrer le service immédiatement, utilise :
-_Start-Service -Name WinRM_ 
+`Start-Service -Name WinRM` 
 
 Configurez les paramètres de l'hôte distant pour permettre la connexion à distance :
 Exécutez la commande suivante pour configurer les paramètres de l'hôte distant :
-_Set-Item WSMan:\localhost\Client\TrustedHosts -Value SRVWIN01 -Force_
+`Set-Item WSMan:\localhost\Client\TrustedHosts -Value SRVWIN01 -Force`
 
 Une fois la configuration terminée, vous devriez pouvoir vous connecter au serveur
 Windows depuis le client Windows en utilisant PowerShell sans être invité à saisir un
@@ -54,22 +54,22 @@ mot de passe.
 Ouvrir une console PowerShell en administrateur
 
 Récupérer l'index de l'interface
-_$Index = (Get-NetConnectionProfile).InterfaceIndex_
+`$Index = (Get-NetConnectionProfile).InterfaceIndex`
 Modifier le profil en catégorie Privée
-_Set-NetConnectionProfile -InterfaceIndex $Index -NetworkCategory Private_
+`Set-NetConnectionProfile -InterfaceIndex $Index -NetworkCategory Private`
 Si le pare-feu est activé mettre l'exception WinRM
-_Enable-PSRemoting -Force_
-_Set-NetFirewallRule -Name "WINRM-HTTP-In-TCP" -Enabled True_
+`Enable-PSRemoting -Force`
+`Set-NetFirewallRule -Name "WINRM-HTTP-In-TCP" -Enabled True`
 OU
-_Enable-NetFirewallRule -DisplayName "Windows Remote Management (HTTP-In)"_
+`Enable-NetFirewallRule -DisplayName "Windows Remote Management (HTTP-In)"`
 
 Ouvrir un terminal cmd.exe en administrateur et exécuter les commandes :
 
 Configuration du LocalAccountTokenFilterPolicy
-_reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f_
+`reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f`
 
 Configuration du WinRM
-_winrm quickconfig_
+`winrm quickconfig`
 
 ## 👨‍💻 Installation des scripts
 
