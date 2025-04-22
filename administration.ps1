@@ -90,18 +90,26 @@ $choix_groupe_local = Read-Host -Prompt "Que voulez vous faire ?"
     {
         1 
         { 
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client où ajouter un utilisateur a un groupe local ?"
         $choix_groupe_local1 = Read-Host -Prompt "Quel groupe voulez vous intégrer ?"
         #donner la liste des groupes ? get-localgroup
         $choix_groupe_local2 = Read-Host -Prompt "Quel utilisateur voulez vous intégrer au groupe $choix_groupe_local1 ?"
         #donner liste utilisateur ? get-localuser
-        add-localgroupmember -group $choix_groupe_local1 -Member $choix_groupe_local2
+        Invoke-Command -ComputerName $client -ScriptBlock { add-localgroupmember -group $Using:choix_groupe_local1 -Member $Using:choix_groupe_local2 }
+        # On log l'action effectuée
+        log_events "ActionAjouterGroupeLocal$client"        
         }
 
         2 
-        { 
+        {
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client partir du groupe ?" 
         $choix_groupe_local3 = Read-Host -Prompt "Quel groupe voulez vous quitter ?"
         $choix_groupe_local4 = Read-Host -Prompt "Quel utilisateur voulez vous faire quitter le groupe $choix_groupe_local3 ?"
-        remove-localgroupmember -group $choix_groupe_local3 -Member $choix_groupe_local4
+        Invoke-Command -ComputerName $client -ScriptBlock { remove-localgroupmember -group $Using:choix_groupe_local3 -Member $Using:choix_groupe_local4 }
+        # On log l'action effectuée
+        log_events "ActionGroupeQuitter$client"
         }
     }
 
@@ -131,17 +139,26 @@ $choix_shut = Read-Host -Prompt "Que voulez vous faire ?"
     {
         1 
         { 
-        stop-computer 
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client voulez vous éteindre ?"
+        Invoke-Command -ComputerName $client -ScriptBlock { stop-computer } 
+        log_events "ActionEteindre$client"
         }
 
         2 
         {
-        restart-computer 
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client voulez vous redémarrer ?"
+        Invoke-Command -ComputerName $client -ScriptBlock { restart-computer } 
+        log_events "ActionRedemarrer$client"
         }
 
         3 
-        { 
-        rundll32.exe user32.dll,LockWorkStation 
+        {
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client voulez vous vérouiller ?" 
+        Invoke-Command -ComputerName $client -ScriptBlock  { rundll32.exe user32.dll,LockWorkStation } 
+        log_events "ActionVerouiller$client"
         }
 
     }
@@ -171,22 +188,31 @@ switch ($choix_repertoire)
 
     1 
         { 
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client où créer un dossier ?"
         $choix_repertoire1 = Read-Host -Prompt "Comment voulez vous appeler le dossier ?"
-        new-item -itemType Directory -name $choix_repertoire1 
+        Invoke-Command -ComputerName $client -ScriptBlock  { new-item -itemType Directory -name $Using:choix_repertoire1 }
         #laisser a l'utilisateur le choix de la localisation du dossier ?
+        log_events "ActionCreerDossier$client"
         }
 
     2 
         { 
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client où modifier le dossier ?"
         $choix_repertoire2 = Read-Host -Prompt "Quel dossier voulez vous modifier ? Veuillez mettre le chemin avec le nom"
         $choix_repertoire3 = Read-Host -Prompt "Par quel nom voulez vous le remplacer ?"
-        rename-item -path $choix_repertoire2 -newname $choix_repertoire3
+        Invoke-Command -ComputerName $client -ScriptBlock  { rename-item -path $Using:choix_repertoire2 -newname $Using:choix_repertoire3 }
+        log_events "ActionModifierDossier$client"
         }
 
     3 
         { 
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client où supprimer le dossier ?"
         $choix_repertoire4 = Read-Host -Prompt "Quel dossier voulez vous supprimer ? Veuillez mettre le chemin avec le nom"
-        remove-item $choix_repertoire4
+        Invoke-Command -ComputerName $client -ScriptBlock  { remove-item $choix_repertoire4 }
+        log_events "ActionSupprimerDossier$client"
         }
 
     }
@@ -216,6 +242,8 @@ $choix_pare_feu = Read-Host -Prompt "Que voulez vous faire ?"
     {
         1
         {
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client définir regle du pare feu ?"
         $choix_pare_feu1 = Read-Host -Prompt "Quel règle voulez vous définir ? Veuiller enseigner :
         -Name 
         -DisplayName 
@@ -226,17 +254,24 @@ $choix_pare_feu = Read-Host -Prompt "Que voulez vous faire ?"
         -Action 
         -LocalAddress 
         Exemple : -Name ""SSH"" -DisplayName ""Autoriser SSH (Port 22)"" -Profile Domain -Enabled True -Protocol TCP -LocalPort 22 -Action Allow -LocalAddress 192.168.100.13"
-        New-NetFirewallRule $choix_pare_feu1
+        Invoke-Command -ComputerName $client -ScriptBlock  { New-NetFirewallRule $Using:choix_pare_feu1 }
+        log_events "ActionPareFeu$client"
         }
 
         2
         {
-        Set-NetFirewallProfile -Profile * -Enabled True
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client ou activer le pare feu ?"
+        Invoke-Command -ComputerName $client -ScriptBlock  { Set-NetFirewallProfile -Profile * -Enabled True }
+        log_events "ActionActiverPareFeu$client"
         }
 
         3
         {
-        Set-NetFirewallProfile -Profile * -Enabled False
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client où désactiver le pare feu ?"
+        Invoke-Command -ComputerName $client -ScriptBlock  { Set-NetFirewallProfile -Profile * -Enabled False }
+        log_events "ActionDesactiverPareFeu$client"
         }
 
     }    
@@ -263,8 +298,10 @@ $choix_logiciel = Read-Host -Prompt "Que voulez vous faire ?"
     {
         1
         {
-        Register-PackageSource -Name chocolatey -ProviderName Chocolatey -Location http://chocolatey.org/api/v2/
-        Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client où installer un logiciel ?"
+        #Register-PackageSource -Name chocolatey -ProviderName Chocolatey -Location http://chocolatey.org/api/v2/
+        #Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
         Write-host "Nous allons vérifier si le logiciel voulu existe"
         $choix_logiciel1 = Read-Host -Prompt "Quel logiciel voulez vous installer ?"
         #Find-Package -Name *Adobe* -Source Chocolatey => pour savoir si le logiciel existe et son nom exacte ici AdobReader
@@ -272,20 +309,24 @@ $choix_logiciel = Read-Host -Prompt "Que voulez vous faire ?"
         $choix_vrai_logiciel = Read-host -Prompt "Quel est le vrai nom du logiciel que vous voulez installer ?"
         $choix_version = Read-host -Prompt "Quel est la version du logiciel que vous voulez installer ?"
         #Find-Package -Name $choix_vrai_logiciel -RequiredVersion $choix_version | Install-Package
-        Install-Package -Name $choix_vrai_logiciel -Source MyNuget -RequiredVersion $choix_version
+        Invoke-Command -ComputerName $client -ScriptBlock  { Install-Package -Name $Using:choix_vrai_logiciel -Source MyNuget -RequiredVersion $choix_version }
         }
 
         2
         {
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client où supprimer un logiciel ?"
         $choix_logiciel2 = Read-Host -Prompt "Quel logiciel voulez vous désinstaller ?"
-        uninstall-package $choix_logiciel2
+        Invoke-Command -ComputerName $client -ScriptBlock  { uninstall-package $Using:choix_logiciel2 }
         }
 
         3
         {
-        $choix_logiciel3 = Read-Host -Prompt "Sur quelle machine voulez vous le faire ?"
+        # On demande sur quel client lancer la commande
+        $client = Read-Host -Prompt "Client où lancer le script ?"
+        #$choix_logiciel3 = Read-Host -Prompt "Sur quelle machine voulez vous le faire ?"
         $choix_logiciel4 = Read-Host -Prompt "Quel script voulez vous utiliser ? Merci d'écrire le nom du fichier avec son chemin absolu"
-        Invoke-Command -ComputerName $choix_logiciel3 -FilePath $choix_logiciel4
+        Invoke-Command -ComputerName $client -FilePath $choix_logiciel4
         }
     }
 }
