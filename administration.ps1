@@ -693,14 +693,33 @@ While($run -eq 1){
                     # On demande à l'utilisateur quelle information il souhaite récupérer
                     Write-Host "Que voulez-vous savoir ?"
                     Write-Host "--------------------"
-                    Write-Host "1) Informations compte utilisateur"
+                    Write-Host "1) Informations compte utilisateur [W.I.P]"
                     Write-Host "2) Informations groupes et commandes utilisateur"
                     Write-Host "3) Droits et permissions utilisateur"
                     Write-Host "r) Retour"
                     Write-Host "q) Quitter"
                     $choix3 = Read-Host
                     # On applique le choix de l'utilisateur
-                    #Switch($choix3){# Là on met les fonctions}
+                    Switch($choix3){
+                        "1" {
+                            Write-Host "// W.I.P \\"
+                        }
+                        "2" {
+                            Write-Host "// W.I.P \\"
+                        }
+                        "3" {
+                            info_droits
+                        }
+                        "r" {
+                            break
+                        }
+                        "q" {
+                            $run=0
+                        }
+                        default {
+                            Write-Host "Entrée erronée"
+                        }
+                    }
                 }
                 "2" {
                     # On demande à l'utilisateur quelle information il souhaite récupérer
@@ -715,7 +734,32 @@ While($run -eq 1){
                     Write-Host "q) Quitter"
                     $choix3 = Read-Host
                     # On applique le choix de l'utilisateur
-                    #Switch($choix3){# Là on met les fonctions}
+                    Switch($choix3){
+                        "1" {
+                            info_OS
+                        }
+                        "2" {
+                            info_partition
+                        }
+                        "3" {
+                            info_paquets
+                        }
+                        "4" {
+                            info_CPU
+                        }
+                        "5" {
+                            search_log
+                        }
+                        "r" {
+                            break
+                        }
+                        "q" {
+                            $run=0
+                        }
+                        default {
+                            Write-Host "Entrée erronée"
+                        }
+                    }
                 }
                 "r" {
                     break
