@@ -610,7 +610,6 @@ function log_infos{
     # On créé le fichier avec les informations
     Write-Output $LogInfo >> log/$logFile
 }
-# log_infos -LogCible CLILIN01 -LogInfo Information
 
 # ------------------------------ #
 #           EXECUTION            #
