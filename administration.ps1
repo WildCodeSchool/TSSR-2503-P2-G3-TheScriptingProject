@@ -585,7 +585,7 @@ function log_events{
         [string[]]$Event
     )
     # On récupère la date au format yyyymmjj
-    $logDate = Get-Date -Format "yyyymmdd"
+    $logDate = Get-Date -Format "yyyyMMdd"
     # On récupère l'heure au format hhmmss
     $logHeure = Get-Date -Format "hhmmss"
     # On récupère le nom de l'utilisateur du script
@@ -604,8 +604,7 @@ function log_infos{
         [string[]]$LogInfo
     )
     # On récupère la date au format yyyymmjj
-    $logDate = Get-Date -Format "yyyymmdd"
-    Write-Output "Date=$logDate"
+    $logDate = Get-Date -Format "yyyyMMdd"
     # On crée le nom du fichier à construire
     $logFile = "info_$LogCible_$LogDate.txt"
     # On créé le fichier avec les informations
