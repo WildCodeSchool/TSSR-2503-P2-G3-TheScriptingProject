@@ -315,7 +315,7 @@ function info_droits
                 # On lance la commande
                 $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Acl -Path $Using:choix_droits1 }
                 # On affiche l'information
-                Write-Host $Info
+                Write-Output $Info
                 # On log l'info obtenue
                 log_infos -LogCible $client -LogInfo $Info
                 # On log l'action effectuée
@@ -330,7 +330,7 @@ function info_droits
                 # On lance la commande
                 $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Acl -Path $Using:choix_droits1 }
                 # On affiche l'information
-                Write-Host $Info
+                Write-Output $Info
                 # On log l'info obtenue
                 log_infos -LogCible $client -LogInfo $Info
                 # On log l'action effectuée
@@ -348,7 +348,7 @@ function info_OS
     # On lance la c ommande
     $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-WmiObject Win32_OperatingSystem | Select-Object Caption, Version }
     # On affiche l'information
-    Write-Host $Info
+    Write-Output $Info
     # On log l'info obtenue
     log_infos -LogCible $client -LogInfo $Info
     # On log l'action effectée
@@ -379,7 +379,7 @@ function info_partition
             # On lance la commande    
             $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Disk }
             # On affiche l'information
-            Write-Host $Info
+            Write-Output $Info
             # On log l'info obtenue
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
@@ -392,7 +392,7 @@ function info_partition
             # On lance la commande  
             $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Partition }
             # On affiche l'information
-            Write-Host $Info
+            Write-Output $Info
             # On log l'info obtenue
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
@@ -424,7 +424,7 @@ function info_paquets
             # On lance la commande              
             $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-AppxPackage }
             # On affiche l'information
-            Write-Host $Info
+            Write-Output $Info
             # On log l'info obtenue
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
@@ -437,7 +437,7 @@ function info_paquets
             # On lance la commande              
             $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Service }
             # On affiche l'information
-            Write-Host $Info
+            Write-Output $Info
             # On log l'info obtenue
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
@@ -450,7 +450,7 @@ function info_paquets
             # On lance la commande              
             $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-LocalUser }
             # On affiche l'information
-            Write-Host $Info
+            Write-Output $Info
             # On log l'info obtenue
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
@@ -481,7 +481,7 @@ function info_CPU
             # On lance la commande
             $Info = Invoke-Command -ComputerName $client -ScriptBlock { systeminfo.exe }
             # On affiche l'information
-            Write-Host $Info
+            Write-Output $Info
             # On log l'info obtenue
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
@@ -494,7 +494,7 @@ function info_CPU
             # On lance la commande
             $Info = Invoke-Command -ComputerName $client -ScriptBlock { systeminfo.exe }
             # On affiche l'information
-            Write-Host $Info
+            Write-Output $Info
             # On log l'info obtenue
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
@@ -507,7 +507,7 @@ function info_CPU
             # On lance la commande
             $Info = Invoke-Command -ComputerName $client -ScriptBlock { systeminfo.exe }
             # On affiche l'information
-            Write-Host $Info
+            Write-Output $Info
             # On log l'info obtenue
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
@@ -520,7 +520,7 @@ function info_CPU
             # On lance la commande
             $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-CimInstance -ClassName Win32_LogicalDisk }
             # On affiche l'information
-            Write-Host $Info
+            Write-Output $Info
             # On log l'info obtenue
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
@@ -533,7 +533,7 @@ function info_CPU
             # On lance la commande
             $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Counter }
             # On affiche l'information
-            Write-Host $Info
+            Write-Output $Info
             # On log l'info obtenue
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
