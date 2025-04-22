@@ -274,7 +274,6 @@ $choix_logiciel = Read-Host -Prompt "Que voulez vous faire ?"
     }
 }
 
-logiciel
 
 #Fonction 11 : 
 # - Droits/permissions de l’utilisateur sur un dossier
