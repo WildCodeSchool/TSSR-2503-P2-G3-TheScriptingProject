@@ -34,7 +34,7 @@ $utilisateur_local = @"
             # On demande le nouveau mot de passe
             $choix3 = Read-Host -Prompt "Quel est le nouveau mot de passe ?" -AsSecureString
             # On lance la commande
-            Invoke-Command -ComputerName $client -ScriptBlock { Get-LocalUser -Name $choix2 | Set-LocalUser -Password $choix3 }
+            Invoke-Command -ComputerName $client -ScriptBlock { Get-LocalUser -Name $Using:choix2 | Set-LocalUser -Password $Using:choix3 }
             # On log l'action effectuée
             log_events "ActionModifierMDP$client"
         }
@@ -45,7 +45,7 @@ $utilisateur_local = @"
             # On demande quel utilisateur supprimer
             $choix4 = Read-Host -Prompt "Quel utilisateur voulez vous supprimer ?"
             # On lance la commande
-            ssh $client powershell.exe Remove-LocalUser -Name $choix4
+            Invoke-Command -ComputerName $client -ScriptBlock { Remove-LocalUser -Name $Using:choix4 }
             # On log l'action effectuée
             log_events "ActionSupprimerUtilisateur$client"
         }
