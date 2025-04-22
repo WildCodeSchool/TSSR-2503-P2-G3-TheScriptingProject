@@ -605,10 +605,11 @@ function log_infos{
     )
     # On récupère la date au format yyyymmjj
     $logDate = Get-Date -Format "yyyymmdd"
+    Write-Output "Date=$logDate"
     # On crée le nom du fichier à construire
     $logFile = "info_$LogCible_$LogDate.txt"
     # On créé le fichier avec les informations
-    Write-Output $LogInfo >> log/$logFile
+    Write-Output $LogInfo >> log\$logFile
 }
 
 # ------------------------------ #
