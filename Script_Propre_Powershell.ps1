@@ -1,11 +1,7 @@
-#Fonction 1 :
-# - Création compte utilisateur local 
-# - Changement de mot de passe 
-# - Suppression compte utilisateur local
-# - Désactivation compte utilisateur local 
-function utilisateur_local
-{
+# Fonction gestion des comptes utilisateurs
+function utilisateur_local{
 
+    # On demande à l'utilisateur l'action qu'il souhaite effectuer
 $utilisateur_local = @"
     Taper 1 pour créer un compte utilisateur 
     Taper 2 pour changer le mot de passe 
@@ -13,43 +9,56 @@ $utilisateur_local = @"
     Taper 4 pour désactiver un compte
 "@
 
-Write-Host $utilisateur_local
+    Write-Host $utilisateur_local
 
+    # On lit le choix de l'utilisateur
     $choix = Read-Host -Prompt "choix ?"
 
+    # On applique le choix
     switch ($choix)
     {
-        1 
-        {
+        1{
+            # On demande sur quel client lancer la commande
             $client = Read-Host -Prompt "Client où créer l'utilisateur ?"
+            # On demande quel sera le nom du nouvel utilisateur
             $choix1 = Read-Host -Prompt "Quel est le nom du nouvel utilisateur ?"
+            # On lance la commande
             ssh $client powershell.exe New-LocalUser $choix1
         }
         
-        2 
-        {
+        2{
+            # On demande sur quel client lancer la commande
+            $client = Read-Host -Prompt "Client où modifier le mot de passe ?"
+            # On demande sur quel compte modifier le mot de passe
             $choix2 = Read-Host -Prompt "De quel compte voulez vous modifier le mot de passe ?"
+            # On demande le nouveau mot de passe
             $choix3 = Read-Host -Prompt "Quel est le nouveau mot de passe ?" -AsSecureString
-            #$choix3 = $choix3Text | ConvertTo-SecureString -AsPlainText -Force
-            #la commande marche pas alors que ca devrait. bizarre
-            Get-LocalUser -Name $choix2 | Set-LocalUser -Password $choix3
+            # On lance la commande
+            ssh $client powershell.exe Get-LocalUser -Name $choix2 | Set-LocalUser -Password $choix3
         }
         
-        3 
-        {
+        3{
+            # On demande sur quel client lancer la commande
+            $client = Read-Host -Prompt "Client où supprimer un utilisateur ?"
+            # On demande quel utilisateur supprimer
             $choix4 = Read-Host -Prompt "Quel utilisateur voulez vous supprimer ?"
-            Remove-LocalUser -Name $choix4
+            # On lance la commande
+            ssh $client powershell.exe Remove-LocalUser -Name $choix4
         }
         
-        4 
-        {
+        4{
+            # On demande sur quel client lancer la commande
+            $client = Read-Host -Prompt "Client où supprimer un utilisateur ?"
+            # On demande quel utilisateur verrouiller
             $choix5 = Read-Host -Prompt "Quel utilisateur voulez vous bloquer ?"
-            Disable-LocalUser -Name $choix5
+            # On lance la commande
+            ssh $client powershell.exe Disable-LocalUser -Name $choix5
         }
         
         default 
         { 
-            Write-Host "Je ne comprends pas" 
+            # Cas par défaut si l'entrée de l'utilisateur est erronnée
+            Write-Host "Entrée erronnée" 
         }
     }
 }
