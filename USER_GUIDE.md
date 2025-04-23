@@ -1,31 +1,66 @@
 # 🖥️ GUIDE D'UTILISATION
 
+## ⚙️ Généralités
+
+Le script d'administration à distance dispose des mêmes fonctionnalités sur Debian et Windows. En raison des différences entre ces deux OS, des différences peuvent exister entre les sorties exactes. 
+
+Les menus sont cependant identiques.
+
+Lorsque vous avez lancé le script, on vous demande de choisir si vous voulez effectuer une action d'administration, ou récupérer une information. Ensuite, on vous demande si votre cible est un utilisateur ou un ordinateur. Finalement, on vous demandera quelle fonctionnalité vous souhaitez utiliser exactement.
+
+> Pour chaque information que vous récupérez, le script les affiche sur l'écran. Il les garde également en mémoire dans un dossier **log** situé au même endroit que le script par défaut. De plus, chacune de vos actions est conservées dans un fichier **log_evt.log**.
+
+Dans les sous-menus du script, il est possible de revenir en arrière en apuyant sur **r**.
+
+Dans les menus et sous-menus du script, il est possible de quitter le script en appuyant sur **q**. Tant que vous n'avez pas quitté le script ainsi, il continuera à tourner afin que vous puissiez réaliser plusieurs actions durant la même exécution.
+
 ## 🐧 Utilisation Linux  
 
-* Connexion root
+Pour utiliser ce script, il faut être connecté en temps que **root**.
 
-Script exécuté depuis le terminal.
+Le script s'exécute directement depuis le terminal. 
 
-Dans le même dossier que le script, lancer la commande suivante :
+> Par défaut, le script est dans le dossier courant de l'utilisateur root, c'est à dire **/root**. Il est donc accessible directement lorsqu'on se connecte en temps que **root**.
+
+Lorsque que vous êtes dans le même dossier que le script, lancer la commande suivante :
 
 ```bash
 ./administration.sh
 ```
 
-> Script dans dossier :
+Si tout se passe bien, les lignes suivantes devraient s'afficher :
+
+![Affichage menu principal Debian](Ressources/debian_accueil.png) 
+
+Vous n'avez ensuite plus qu'à naviguer dans les menus pour effectuer les actions d'administration de votre choix, ou récupérer les informations qui vous intéressent.
+
+Voici par exemple à quoi peut ressembler le parcours des menus lorsque vous souhaitez obtenir la version de l'OS du PC **CLIWIN01**:
+
+![Affiche menu OS Debian](Ressources/debian_infoOS.png)
 
 ## 🪟 Utilisation Windows
 
-* Connexion Administrateur
+Pour utiliser ce script, il faut être connecté en temps que **Administrator**.
 
-Script exécuté depuis le terminal (PowerShell 7!)
+Le script s'exécute depuis un terminal **PowerShell (version 7)**.
 
-Dans le même dossier que le script, lancer la commande suivante :
+> Par défaut, le script est dans le dossier courant de l'utilisateur **Administrator**, c'est à dire **C:\Users\Administrator**. Il est donc accessible directement lorsqu'on se connecte en temps que **root**.
+
+Lorsque que vous êtes dans le même dossier que le script, lancer la commande suivante :
+
 ```PowerShell
 .\administration.ps1
 ```
 
-> Script dans dossier :
+Si tout se passe bien, les lignes suivantes devraient s'afficher :
+
+![Affichage menu principal Windows](Ressources/powershell_accueil.png) 
+
+Vous n'avez ensuite plus qu'à naviguer dans les menus pour effectuer les actions d'administration de votre choix, ou récupérer les informations qui vous intéressent.
+
+Voici par exemple à quoi peut ressembler le parcours des menus lorsque vous souhaitez obtenir la version de l'OS du PC **CLIWIN01**:
+
+![Affiche menu OS Windows](Ressources/powershell_infoOS.png)
 
 ## ❓ FAQ
 
@@ -39,7 +74,7 @@ Les scripts déjà présents sur les machines serveur ont le droit de s'exécute
 
 #### Comment ajouter de nouveaux hôtes cibles ?
 
-> Répondre à ça
+L'ajout de nouveaux hôtes doit se faire en ajoutant des machines sur le réseau, et en les configurant afin qu'elles soient sur le même réseau. Une fois cela fait, il faut encore configurer certains éléments sur la nouvelle machine, dépendant de son OS. Ces éléments de configuration sont détaillés dans **INSTALL.md**
 
 #### Comment sont gérées les connexions SSH ?
 
