@@ -18,13 +18,13 @@ Dans les menus et sous-menus du script, il est possible de quitter le script en 
 
 ## 🐧 Utilisation Linux  
 
-Pour utiliser ce script, il faut être connecté en temps que **root**.
+Pour utiliser ce script, il faut être connecté en tant que **root**.
 
 Le script s'exécute directement depuis le terminal. 
 
 > Par défaut, le script est dans le dossier courant de l'utilisateur root, c'est à dire **/root**. Il est donc accessible directement lorsqu'on se connecte en temps que **root**.
 
-Lorsque que vous êtes dans le même dossier que le script, lancer la commande suivante :
+Lorsque que vous êtes dans le même dossier que le script, lancer la commande suivante pour executer le script "administration.sh" :
 
 ```bash
 ./administration.sh
@@ -48,7 +48,7 @@ Le script s'exécute depuis un terminal **PowerShell (version 7)**.
 
 > Par défaut, le script est dans le dossier courant de l'utilisateur **Administrator**, c'est à dire **C:\Users\Administrator**. Il est donc accessible directement lorsqu'on se connecte en temps que **root**.
 
-Lorsque que vous êtes dans le même dossier que le script, lancer la commande suivante :
+Lorsque que vous êtes dans le même dossier que le script "administration.ps1", lancer la commande suivante :
 
 ```PowerShell
 .\administration.ps1
