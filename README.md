@@ -130,21 +130,6 @@ Les caractéristiques de chaque machine sont résumées ci-dessous.
     * **Wilder** (dans le groupe admin local)
     * Mot de passe : **Azerty1***
 
-### Dépendances
-
-#### Dépendances Linux
-
-Les dépendances pour l'exécution du script bash sont les suivantes : 
-* ufw
-* hwinfo
-* htop
-
-Le guide d'installation **INSTALL.md** traite de la manière d'installer ces dépendances.
-
-#### Dépendances Windows
-
-_Aucune dépendance Windows_
-
 ## 🧗 Difficultés rencontrées
 
 ### 1. Découverte du langage PowerShell
