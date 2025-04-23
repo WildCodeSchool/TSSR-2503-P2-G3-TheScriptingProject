@@ -655,9 +655,11 @@ While($run -eq 1){
                     Write-Host "Que voulez-vous faire ?"
                     Write-Host "--------------------"
                     Write-Host "1) Gestion alimentation ordinateur"
-                    Write-Host "2) Gestion des répertoires"
-                    Write-Host "3) Gestion du pare-feu"
-                    Write-Host "4) Gestion des logiciels"
+                    Write-Host "2) Mise à jour système / W.I.P \"
+                    Write-Host "3) Gestion des répertoires"
+                    Write-Host "4) Prise en main à distance / W.I.P \"
+                    Write-Host "5) Gestion du pare-feu"
+                    Write-Host "6) Gestion des logiciels"
                     Write-Host "r) Retour"
                     Write-Host "q) Quitter"
                     $choix3 = Read-Host
@@ -667,12 +669,18 @@ While($run -eq 1){
                             shut
                         }
                         "2" {
-                            repertoire
+                            Write-Host "/ W.I.P \"
                         }
                         "3" {
-                            pare_feu
+                            repertoire
                         }
                         "4" {
+                            Write-Host "/ W.I.P \"
+                        }
+                        "5" {
+                            pare_feu
+                        }
+                        "6" {
                             logiciel
                         }
                         "r" {
