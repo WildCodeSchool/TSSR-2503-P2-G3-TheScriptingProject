@@ -68,7 +68,7 @@ function groupe_local
 {
     # On demande à l'utilisateur ce qu'il souhaite faire
     $groupe_local = @"
-    Tapez 1 pour vous ajouter a un groupe local
+    Taper 1 pour vous ajouter a un groupe local
     Taper 2 pour sortir d'un groupe local
 "@
     Write-Host $groupe_local
@@ -108,9 +108,9 @@ function shut
 {
     # On demande ce que l'utilisateur souhaite faire
     $shut = @"
-    Tapez 1 pour éteindre le système 
-    Tapez 2 pour redémarrer le système
-    Tapez 3 pour vérrouiller le système
+    Taper 1 pour éteindre le système 
+    Taper 2 pour redémarrer le système
+    Taper 3 pour vérrouiller le système
 "@
     Write-Host $shut
     # On lit le choix de l'utilisateur
