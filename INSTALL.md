@@ -89,8 +89,7 @@ winrm quickconfig
 
 ##### Registre distant 
 
-Configuration sur les Clients du démarrage automatique du service Registre Distant via la
-commande PowerShell :
+Configuration sur les Clients du démarrage automatique du service Registre Distant via la commande PowerShell :
 
 Définir le démarrage automatique du service "Registre Distant"
 ```PowerShell
@@ -124,12 +123,10 @@ Add-LocalGroupMember -Group "Administrateurs" -Member "Administrator"
 
 Il faut dans un premier temps installer sur chaque Client PSWindowsUpdate via la
 commande :
-
 ```PowerShell
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Install-Module -Name PSWindowsUpdate -RequiredVersion 2.2.0.3 -Force -Confirm:$false
 ```
-
 Puis vous devez retirer la restriction des scripts via la commande :
 ```PowerShell
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine -Force
@@ -147,17 +144,51 @@ Démarrez le service SSH :
 Start-Service -Name sshd
 ```
 
-#### Chocolatey
+##### Chocolatey
 
 Installer le logiciel Chocolatey :
-
 ```PowerShell
 Set-ExecutionPolicy AllSigned -Scope Process -Force; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex
 ```
 
-### Préparation serveur Windows
+#### Préparation serveur Windows
 
-Lorem Ipsum ...
+##### WinRM
+
+Démarrer le service WinRM :
+```PowerShell
+Start-Service -Name WinRM
+```
+
+Configurer WinRM pour permettre l'accès a distance :
+```PowerShell
+Enable-PSRemoting -Force
+```
+
+##### Hôtes de confiance 
+
+Ajouter le PC client à la liste des hôte de confiance avec la commande :
+
+```PowerShell
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value "172.16.30.20" -Force
+```
+
+##### PowerShell
+
+Pour avoir la dernière version de PowerShell
+
+```PowerShell
+iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
+```
+
+###### OpenSSH
+
+Pour installer et aciver OpenSSH
+
+```PowerShell
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+Start-Service sshd
+```
 
 ## 👨‍💻 Installation des scripts
 
