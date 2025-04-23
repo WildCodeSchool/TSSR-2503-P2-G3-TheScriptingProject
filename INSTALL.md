@@ -194,7 +194,7 @@ Start-Service sshd
 
 Les scripts sont déjà présents sur les machines Proxmox.
 
-> Donner localisation des scripts
+Pour plus de détails, je vous invite a lire USER_GUIDE.md.
 
 ## ❓ FAQ
 
@@ -205,6 +205,20 @@ Oui, ces scripts sont des scripts permettant d'administrer des machines et les c
 ### Puis-je exécuter un script sans l’installer ?
 
 Oui, les scripts sont des petits programmes lancés directement depuis un terminal. Plus d'informations sont présentes dans le document **USER_GUIDE.md**.
+
+### Dois-je avoir un bon niveau en informatique pour lancer le script ?
+
+Non, il suffit d'executer le script dans une console et celui-ci vous guidera à travers ses ramifications.
+
+
+
+
+
+
+
+
+
+
 
 ### Comment mettre à jour les outils nécessaires à l’exécution d’un script ?
 
