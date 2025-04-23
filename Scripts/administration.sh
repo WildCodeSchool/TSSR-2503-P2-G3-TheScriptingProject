@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# @Authors : Brendan Borne, Sheldon Thurm
-
 # Script permettant la gestion de machines client Ubuntu depuis une machine serveur Debian. 
+
+# @Authors : Brendan Borne, Sheldon Thurm
 
 # --------------------------------- #
 #             FONCTIONS             # 

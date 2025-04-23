@@ -1,6 +1,6 @@
-# @Authors : Brendan Borne, Sheldon Thurm
-
 # Script permettant la gestion de machines client Windows depuis une machine serveur Windows Server.
+
+# @Authors : Brendan Borne, Sheldon Thurm
 
 # --------------------------------- #
 #             FONCTIONS             #
