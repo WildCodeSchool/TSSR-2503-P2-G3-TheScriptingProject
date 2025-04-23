@@ -1,32 +1,27 @@
 # Fonction gestion des comptes utilisateurs
 function utilisateur_local{
-
-# On demande à l'utilisateur l'action qu'il souhaite effectuer
+    # On demande à l'utilisateur l'action qu'il souhaite effectuer
     $utilisateur_local = @"
         Taper 1 pour créer un compte utilisateur 
         Taper 2 pour changer le mot de passe 
         Taper 3 pour supprimer un compte utilisateur 
         Taper 4 pour désactiver un compte
 "@
-
     Write-Host $utilisateur_local
-
     # On lit le choix de l'utilisateur
     $choix = Read-Host -Prompt "choix ?"
-
     # On applique le choix
     switch ($choix)
     {
-        1{
+        1 {
             # On demande sur quel client lancer la commande
             $client = Read-Host -Prompt "Client où créer l'utilisateur ?"
             # On lance la commande
             Invoke-Command -ComputerName $client -ScriptBlock {New-LocalUser}
             # On log l'action effectuée
             log_events "ActionCreerUtilisateur$client"
-        }
-        
-        2{
+        }     
+        2 {
             # On demande sur quel client lancer la commande
             $client = Read-Host -Prompt "Client où modifier le mot de passe ?"
             # On demande sur quel compte modifier le mot de passe
@@ -38,8 +33,7 @@ function utilisateur_local{
             # On log l'action effectuée
             log_events "ActionModifierMDP$client"
         }
-        
-        3{
+        3 {
             # On demande sur quel client lancer la commande
             $client = Read-Host -Prompt "Client où supprimer un utilisateur ?"
             # On demande quel utilisateur supprimer
@@ -48,9 +42,8 @@ function utilisateur_local{
             Invoke-Command -ComputerName $client -ScriptBlock { Remove-LocalUser -Name $Using:choix4 }
             # On log l'action effectuée
             log_events "ActionSupprimerUtilisateur$client"
-        }
-        
-        4{
+        }      
+        4 {
             # On demande sur quel client lancer la commande
             $client = Read-Host -Prompt "Client où supprimer un utilisateur ?"
             # On demande quel utilisateur verrouiller
@@ -62,9 +55,6 @@ function utilisateur_local{
         }      
     }
 }
-
-
-
 # Fonction gestions groupes 
 function groupe_local
 {
@@ -104,7 +94,6 @@ function groupe_local
             log_events "ActionGroupeQuitter$client"
         }
     }
-
 }
 # Fonction gestion alimentation
 function shut 
@@ -147,22 +136,19 @@ function shut
         }
     }
 }
-
-
-
 # Fonction gestion répertoires
 function repertoire
 {
+    # On demande à l'utilisateur ce qu'il souhaite faire
     $repertoire = @"
     Taper 1 pour créer un dossier
     Taper 2 pour modifier un dossier 
     Taper 3 pour supprimer un dossier
 "@
-
     Write-Host $repertoire
-
+    # On lit le choix de l'utilisateur
     $choix_repertoire = Read-Host -Prompt "Que voulez vous faire ?"
-
+    # On applique le choix de l'utilisateur
     switch ($choix_repertoire)
     {
         1 { 
@@ -199,13 +185,8 @@ function repertoire
             # On log l'action effectuée
             log_events "ActionSupprimerDossier$client"
         }
-
     }
-
 }
-
-
-
 # Fonction gestion du pare feu
 function pare_feu
 {
@@ -256,11 +237,8 @@ function pare_feu
             # On log l'action effectuée
             log_events "ActionDesactiverPareFeu$client"
         }
-
     }    
 }
-
-
 # Fonction gestion logiciels
 function logiciel
 {
@@ -271,9 +249,9 @@ function logiciel
     3) Executer du script sur une machine distante
 "@
     Write-Host $logiciel
-
+    # On lit le choix de l'utilisateur
     $choix_logiciel = Read-Host -Prompt "Que voulez vous faire ?"
-
+    # On applique le choix de l'utilisateur
     switch ($choix_logiciel)
     {
         1 {
@@ -317,9 +295,7 @@ function logiciel
         }
     }
 }
-
-
-# Fonctions infos droits utilisateur
+# Fonction infos droits utilisateur
 function info_droits
 {
     # On demande à l'utilisateur ce qu'il souhaite faire
@@ -328,46 +304,40 @@ function info_droits
     2) Consulter droits/permissions de l’utilisateur sur un fichier
 "@
     Write-Host $droits
-
     # On lit le choix de l'utilisateur
     $choix_droits = Read-Host -Prompt "Que voulez vous faire ?"
-
     # On applique son choix
-    switch ($choix_droits)
-        {
-            1{
-                # On demande sur quel client récupérer l'information
-                $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
-                # On demande sur quel dossier récupérer l'information
-                $choix_droits1 = Read-host -Prompt "Quel dossier ? Syntaxte chemin absolu .\<nom dossier>\"
-                # On lance la commande
-                $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Acl -Path $Using:choix_droits1 }
-                # On affiche l'information
-                Write-Output $Info
-                # On log l'info obtenue
-                log_infos -LogCible $client -LogInfo $Info
-                # On log l'action effectuée
-                log_events "InfoDroitDossier$client"
-            }
-            
-            2{
-                # On demande sur quel client récupérer l'information
-                $client = Read-Host -Prompt "Sur quel client récupérer l'info ?" 
-                # On demande sur quel dossier récupérer l'information
-                $choix_droits2 = Read-host -Prompt "Quel fichier ? Syntaxte chemin absolu .\<nom dossier>\ avec le .txt par exemple" 
-                # On lance la commande
-                $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Acl -Path $Using:choix_droits1 }
-                # On affiche l'information
-                Write-Output $Info
-                # On log l'info obtenue
-                log_infos -LogCible $client -LogInfo $Info
-                # On log l'action effectuée
-                log_events "InfoDroitFichier$client"
-            }
+    switch ($choix_droits){
+        1 {
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
+            # On demande sur quel dossier récupérer l'information
+            $choix_droits1 = Read-host -Prompt "Quel dossier ? Syntaxte chemin absolu .\<nom dossier>\"
+            # On lance la commande
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Acl -Path $Using:choix_droits1 }
+            # On affiche l'information
+            Write-Output $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoDroitDossier$client"
         }
+        2 {
+            # On demande sur quel client récupérer l'information
+            $client = Read-Host -Prompt "Sur quel client récupérer l'info ?" 
+            # On demande sur quel dossier récupérer l'information
+            $choix_droits2 = Read-host -Prompt "Quel fichier ? Syntaxte chemin absolu .\<nom dossier>\ avec le .txt par exemple" 
+            # On lance la commande
+            $Info = Invoke-Command -ComputerName $client -ScriptBlock { Get-Acl -Path $Using:choix_droits1 }
+            # On affiche l'information
+            Write-Output $Info
+            # On log l'info obtenue
+            log_infos -LogCible $client -LogInfo $Info
+            # On log l'action effectuée
+            log_events "InfoDroitFichier$client"
+        }
+    }
 }
-
-
 # Fonction info OS
 function info_OS
 {   
@@ -382,10 +352,7 @@ function info_OS
     # On log l'action effectée
     log_events "InfoOS$client"
 }
-
-
-
-# Fonction infos Disque
+# Fonction infos disque
 function info_partition 
 {
     # On demande à l'utilisateur ce qu'il souhaite faire
@@ -394,14 +361,12 @@ function info_partition
     2) Partition (nombre, nom, FS, taille) par disque
 "@
     Write-Host $partition
-
     # On lit le choix de l'utilisateur 
     $choix_partition = Read-Host -Prompt "Que voulez vous faire ?"
-
-    # On applique son choix
+    # On applique le choix de l'utilisateur
     switch ($choix_partition)
     {    
-        1{
+        1 {
             # On demande sur quel client récupérer l'information
             $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
             # On lance la commande    
@@ -413,8 +378,7 @@ function info_partition
             # On log l'action effectuée
             log_events "InfoDisques$client"
         }
-    
-        2{
+        2 {
             # On demande sur quel client récupérer l'information
             $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
             # On lance la commande  
@@ -440,13 +404,12 @@ function info_paquets
     3) Liste des utilisateurs locaux
 "@
     Write-Host $paquets
-
     # On lit le choix de l'utilisateur
     $choix_paquets = Read-Host -Prompt "Que voulez vous faire ?"
     # On applique le choix de l'utilisateur
     switch ($choix_paquets)
     {
-        1{
+        1 {
             # On demande sur quel client récupérer l'information
             $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
             # On lance la commande              
@@ -458,8 +421,7 @@ function info_paquets
             # On log l'action effectuée
             log_events "InfoApps$client"
         }
-        
-        2{
+        2 {
             # On demande sur quel client récupérer l'information
             $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
             # On lance la commande              
@@ -470,9 +432,8 @@ function info_paquets
             log_infos -LogCible $client -LogInfo $Info
             # On log l'action effectuée
             log_events "InfoServices$client"
-        }
-        
-        3{
+        }  
+        3 {
             # On demande sur quel client récupérer l'information
             $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
             # On lance la commande              
@@ -498,12 +459,11 @@ function info_CPU
     5) Utilisation du processeur
 "@
     Write-Host $CPU
-
     # On lit le choix de l'utilisateur
     $choix_paquets = Read-Host -Prompt "Que voulez vous faire ?"
     # On applique le choix de l'utilisateur
     switch ($choix_paquets){
-        1{
+        1 {
             # On demande sur quel client récupérer l'information
             $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
             # On lance la commande
@@ -515,8 +475,7 @@ function info_CPU
             # On log l'action effectuée
             log_events "InfoCPU$client"
         }
-        
-        2{
+        2 {
             # On demande sur quel client récupérer l'information
             $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
             # On lance la commande
@@ -528,8 +487,7 @@ function info_CPU
             # On log l'action effectuée
             log_events "InfoRAM$client"
         }
-        
-        3{
+        3 {
             # On demande sur quel client récupérer l'information
             $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
             # On lance la commande
@@ -541,8 +499,7 @@ function info_CPU
             # On log l'action effectuée
             log_events "InfoRAM$client"
         }
-        
-        4{
+        4 {
             # On demande sur quel client récupérer l'information
             $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
             # On lance la commande
@@ -554,8 +511,7 @@ function info_CPU
             # On log l'action effectuée
             log_events "InfoUtilDisque$client"
         }
-        
-        5{
+        5 {
             # On demande sur quel client récupérer l'information
             $client = Read-Host -Prompt "Sur quel client récupérer l'info ?"
             # On lance la commande
@@ -584,20 +540,23 @@ function search_log
     # On applique le choix de l'utilisateur
     switch ($choix_search_log)
     {    
-        1{
+        1 {
+            # On demande l'utilisateur concerné
             $choix_search_log1 = Read-Host -Prompt "Quel utilisateur ?"
             #$choix_search_log2 = Read-Host -Prompt "Quel évenement ? Action ou Information ?"
-            Select-String -Path "C:\Windows\System32\LogFiles\log_evt.log" -Pattern $choix_search_log1 $choix_search_log2
+            # On fait la recherche
+            Select-String -Path "C:\Windows\System32\LogFiles\log_evt.log" -Pattern $choix_search_log1 #$choix_search_log2
         }
 
-        2{
+        2 {
+            # On demande la machine concernée
             $choix_search_log3 = Read-Host -Prompt "Sur quelle machine ?"
             #$choix_search_log4 = Read-Host -Prompt "Quel évenement ? Action ou Information ?"
-            Select-String -Path "C:\Windows\System32\LogFiles\log_evt.log" -Pattern $choix_search_log3 $choix_search_log4
+            # On fait la recherche
+            Select-String -Path "C:\Windows\System32\LogFiles\log_evt.log" -Pattern $choix_search_log3 #$choix_search_log4
         }
     }
 }
-
 # Journalisation des actions
 function log_events{
     # On passe l'action réalisée en premier argument positionnel de la fonction
@@ -681,9 +640,8 @@ While($run -eq 1){
                        }
                        "q" {
                            $run=0
-                       }
-                    
-                }
+                       }  
+                    }
                 "2" {
                     Write-Host "Que voulez-vous faire ?"
                     Write-Host "--------------------"
