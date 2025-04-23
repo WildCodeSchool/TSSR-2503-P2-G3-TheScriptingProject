@@ -1,3 +1,11 @@
+# @Authors : Brendan Borne, Sheldon Thurm
+
+# Script permettant la gestion de machines client Windows depuis une machine serveur Windows Server.
+
+# --------------------------------- #
+#             FONCTIONS             #
+# --------------------------------- #
+
 # Fonction gestion des comptes utilisateurs
 function utilisateur_local{
     # On demande à l'utilisateur l'action qu'il souhaite effectuer

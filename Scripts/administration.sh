@@ -5,7 +5,7 @@
 # Script permettant la gestion de machines client Ubuntu depuis une machine serveur Debian. 
 
 # --------------------------------- #
-#             FONCTIONS             #     
+#             FONCTIONS             # 
 # --------------------------------- #
 
 # Gestion des utilisateurs 
