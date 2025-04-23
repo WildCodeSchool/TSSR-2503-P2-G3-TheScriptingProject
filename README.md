@@ -151,11 +151,19 @@ _Aucune dépendance Windows_
 
 Avant la réalisation de ce projet, aucun membre de l'équipe n'avait de connaissances sur le langage PowerShell. Il a donc fallu attendre d'avoir les cours sur le langage avant de pouvoir attaquer sérieusement la réalisation du script. 
 
+### 2. Configuration des machines Windows
+
+Nous pensions dans un premier temps que les machines Windows pourraient utiliser OpenSSH similairement aux machines Linux. Malheureusement, certains cmdlets PowerShell ne fonctionnent pas comme on l'espère avec ssh. La configuration des machines Windows a donc nécessité plus de travail que nous le pensions dans un premier temps.
+
 ## 💡 Solutions trouvées
 
 ### 1. Se documenter en ligne
 
 Afin de palier aux manques que nous avions en PowerShell, nous avons beaucoup eu recours à la documentation officielle de PowerShell, ainsi qu'à des questions qu'avaient posées des utilisateurs du forum StackOverflow.
+
+### 2. Aide du formateur
+
+Pour répondre à ce besoin de configurer les machines Windows, notre formateur nous a donné une documentation permettant d'installer et configuration de nombreux services Windows permettant d'utiliser plus efficacement les commandes à distance sur les machines Windows.
 
 ## 🚀 Améliorations possibles
 
