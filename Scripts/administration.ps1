@@ -543,6 +543,7 @@ function search_log
     1) Recherche des evenements dans le fichier log_evt.log pour un utilisateur
     2) Recherche des evenements dans le fichier log_evt.log pour un ordinateur
 "@
+    Write-Host $search_log
     # On lit la réponse de l'utilisateur
     $choix_search_log = Read-Host -Prompt "Que voulez vous faire ?"
     # On applique le choix de l'utilisateur
