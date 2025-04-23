@@ -687,6 +687,7 @@ While($run -eq 1){
                     }
                 }
             }
+        }
         "2" {
             # On demande à l'utilisateur quelle action il souhaite effectuer
             Write-Host "Sur quelle cible récupérer l'information ?"
