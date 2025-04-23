@@ -8,6 +8,8 @@ Les menus sont cependant identiques.
 
 Lorsque vous avez lancé le script, on vous demande de choisir si vous voulez effectuer une action d'administration, ou récupérer une information. Ensuite, on vous demande si votre cible est un utilisateur ou un ordinateur. Finalement, on vous demandera quelle fonctionnalité vous souhaitez utiliser exactement.
 
+A chaque fois, on vous demandera d'entrer l'ordinateur que vous souhaitez cibler, et, le cas échéant, l'utilisateur.
+
 > Pour chaque information que vous récupérez, le script les affiche sur l'écran. Il les garde également en mémoire dans un dossier **log** situé au même endroit que le script par défaut. De plus, chacune de vos actions est conservées dans un fichier **log_evt.log**.
 
 Dans les sous-menus du script, il est possible de revenir en arrière en apuyant sur **r**.
