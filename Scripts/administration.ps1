@@ -650,6 +650,7 @@ While($run -eq 1){
                            $run=0
                        }  
                     }
+                }
                 "2" {
                     Write-Host "Que voulez-vous faire ?"
                     Write-Host "--------------------"
