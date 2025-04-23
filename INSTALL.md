@@ -52,78 +52,77 @@ sudo passwd root
 sudo passwd -u root
 ```
 
-#### Sur Windows
+#### Sur le Client Windows
 
-Dépendances
-* Chocolatey
-* NuGet
-* OpenSSH
+##### WinRM
 
-### Préparation Client Windows
+Démarrer le service WinRM :
+`Start-Service -Name WinRM`
 
-#### WinRM
-Exécutez la commande suivante pour démarrer le service WinRM :
-
-```PowerShell
-Set-Service -Name winrm -StartupType Automatic`
-```
-
-Pour démarrer le service immédiatement, utilise :
-
-```PowerShell
-Start-Service -Name WinRM
-```
-
-#### Configuration hôte distant
-
-Exécutez la commande suivante pour configurer les paramètres de l'hôte distant :
-
-```PowerShell
-Set-Item WSMan:\localhost\Client\TrustedHosts -Value SRVWIN01 -Force
-```
+Executer les paramètres de l'hôte distant pour permettre la connexion a distance : 
+`Set-Item WSMan:\localhost\Client\TrustedHosts -Value SRVWIN01 -Force`
 
 Une fois la configuration terminée, vous devriez pouvoir vous connecter au serveur Windows depuis le client Windows en utilisant PowerShell sans être invité à saisir un mot de passe.
+Maintenant nous allons récupérer l'index de l'interface
+`$Index = (Get-NetConnectionProfile).InterfaceIndex`
 
-Ouvrir une console PowerShell en administrateur.
+Puis modifier le profil en catégorie Privée
+`Set-NetConnectionProfile -InterfaceIndex $Index -NetworkCategory Private`
 
-Récupérer l'index de l'interface :
+Configuration du LocalAccountTokenFilterPolicy
+`reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f`
 
-```PowerShell
-$Index = (Get-NetConnectionProfile).InterfaceIndex
-```
+Pour la configuration du WinRM
+`winrm quickconfig`
 
-Modifier le profil en catégorie Privée :
+##### Registre distant 
 
-```PowerShell
-Set-NetConnectionProfile -InterfaceIndex $Index -NetworkCategory Private
-```
+Configuration sur les Clients du démarrage automatique du service Registre Distant via la
+commande PowerShell :
 
-Si le pare-feu est activé mettre l'exception WinRM :
+Définir le démarrage automatique du service "Registre Distant"
+`Set-Service -Name RemoteRegistry -StartupType Automatic`
 
-```PowerShell
-Enable-PSRemoting -Force
-Set-NetFirewallRule -Name "WINRM-HTTP-In-TCP" -Enabled True
-```
+Démarrer le service "Registre Distant"
+`Start-Service -Name RemoteRegistry`
 
-OU
+##### Firewall 
 
-```PowerShell
-Enable-NetFirewallRule -DisplayName "Windows Remote Management (HTTP-In)"
-```
+Pour la bonne execution du script, nous devons désactiver le pare-feu :
+`Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False`
 
-Ouvrir un terminal cmd.exe en administrateur et exécuter les commandes :
+##### Compte administrateur
 
-Configuration du LocalAccountTokenFilterPolicy :
+Création d'un nouveau compte utilisateur
+`New-LocalUser -Name "Administrator" -Description "Compte local identique au compte du domaine" -Password (ConvertTo-SecureString "Azerty1*" -AsPlainText -Force) -FullName "Administrator" -PasswordNeverExpires -UserMayNotChangePassword`
+Ajout du compte au groupe des administrateurs locaux
+`Add-LocalGroupMember -Group "Administrateurs" -Member "Administrator"`
 
-```
-reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
-```
+##### Modules additionnels
 
-Configuration du WinRM :
+Il faut dans un premier temps installer sur chaque Client PSWindowsUpdate via la
+commande :
 
-```
-winrm quickconfig
-```
+`Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force`
+`Install-Module -Name PSWindowsUpdate -RequiredVersion 2.2.0.3 -Force -Confirm:$false`
+
+Puis vous devez retirer la restriction des scripts via la commande :
+`Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine -Force`
+
+##### OpenSSH
+
+Ouvrez PowerShell en tant qu'administrateur et exécutez :
+`Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0`
+
+Démarrez le service SSH :
+`Start-Service -Name sshd`
+
+#### Chocolatey
+
+Installer le logiciel Chocolatey :
+
+`Set-ExecutionPolicy AllSigned -Scope Process -Force; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex`
+
 
 ### Préparation serveur Windows
 
