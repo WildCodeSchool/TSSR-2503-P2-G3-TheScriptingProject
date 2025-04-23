@@ -57,23 +57,35 @@ sudo passwd -u root
 ##### WinRM
 
 Démarrer le service WinRM :
-`Start-Service -Name WinRM`
+```PowerShell
+Start-Service -Name WinRM
+```
 
 Executer les paramètres de l'hôte distant pour permettre la connexion a distance : 
-`Set-Item WSMan:\localhost\Client\TrustedHosts -Value SRVWIN01 -Force`
+```PowerShell
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value SRVWIN01 -Force
+```
 
 Une fois la configuration terminée, vous devriez pouvoir vous connecter au serveur Windows depuis le client Windows en utilisant PowerShell sans être invité à saisir un mot de passe.
 Maintenant nous allons récupérer l'index de l'interface
-`$Index = (Get-NetConnectionProfile).InterfaceIndex`
+```PowerShell
+$Index = (Get-NetConnectionProfile).InterfaceIndex
+```
 
 Puis modifier le profil en catégorie Privée
-`Set-NetConnectionProfile -InterfaceIndex $Index -NetworkCategory Private`
+```PowerShell
+Set-NetConnectionProfile -InterfaceIndex $Index -NetworkCategory Private
+```
 
 Configuration du LocalAccountTokenFilterPolicy
-`reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f`
+```PowerShell
+reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+```
 
 Pour la configuration du WinRM
-`winrm quickconfig`
+```PowerShell
+winrm quickconfig
+```
 
 ##### Registre distant 
 
@@ -81,48 +93,67 @@ Configuration sur les Clients du démarrage automatique du service Registre Dist
 commande PowerShell :
 
 Définir le démarrage automatique du service "Registre Distant"
-`Set-Service -Name RemoteRegistry -StartupType Automatic`
+```PowerShell
+Set-Service -Name RemoteRegistry -StartupType Automatic
+```
 
 Démarrer le service "Registre Distant"
-`Start-Service -Name RemoteRegistry`
+```PowerShell
+Start-Service -Name RemoteRegistry
+```
 
 ##### Firewall 
 
 Pour la bonne execution du script, nous devons désactiver le pare-feu :
-`Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False`
+```PowerShell
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+```
 
 ##### Compte administrateur
 
 Création d'un nouveau compte utilisateur
-`New-LocalUser -Name "Administrator" -Description "Compte local identique au compte du domaine" -Password (ConvertTo-SecureString "Azerty1*" -AsPlainText -Force) -FullName "Administrator" -PasswordNeverExpires -UserMayNotChangePassword`
+```PowerShell
+New-LocalUser -Name "Administrator" -Description "Compte local identique au compte du domaine" -Password (ConvertTo-SecureString "Azerty1*" -AsPlainText -Force) -FullName "Administrator" -PasswordNeverExpires -UserMayNotChangePassword
+```
 Ajout du compte au groupe des administrateurs locaux
-`Add-LocalGroupMember -Group "Administrateurs" -Member "Administrator"`
+```PowerShell
+Add-LocalGroupMember -Group "Administrateurs" -Member "Administrator"
+```
 
 ##### Modules additionnels
 
 Il faut dans un premier temps installer sur chaque Client PSWindowsUpdate via la
 commande :
 
-`Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force`
-`Install-Module -Name PSWindowsUpdate -RequiredVersion 2.2.0.3 -Force -Confirm:$false`
+```PowerShell
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+Install-Module -Name PSWindowsUpdate -RequiredVersion 2.2.0.3 -Force -Confirm:$false
+```
 
 Puis vous devez retirer la restriction des scripts via la commande :
-`Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine -Force`
+```PowerShell
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine -Force
+```
 
 ##### OpenSSH
 
 Ouvrez PowerShell en tant qu'administrateur et exécutez :
-`Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0`
+```PowerShell
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+```
 
 Démarrez le service SSH :
-`Start-Service -Name sshd`
+```PowerShell
+Start-Service -Name sshd
+```
 
 #### Chocolatey
 
 Installer le logiciel Chocolatey :
 
-`Set-ExecutionPolicy AllSigned -Scope Process -Force; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex`
-
+```PowerShell
+Set-ExecutionPolicy AllSigned -Scope Process -Force; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex
+```
 
 ### Préparation serveur Windows
 
