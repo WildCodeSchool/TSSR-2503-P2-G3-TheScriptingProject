@@ -67,22 +67,23 @@ Set-Item WSMan:\localhost\Client\TrustedHosts -Value SRVWIN01 -Force
 ```
 
 Une fois la configuration terminée, vous devriez pouvoir vous connecter au serveur Windows depuis le client Windows en utilisant PowerShell sans être invité à saisir un mot de passe.
-Maintenant nous allons récupérer l'index de l'interface
+
+Maintenant nous allons récupérer l'index de l'interface :
 ```PowerShell
 $Index = (Get-NetConnectionProfile).InterfaceIndex
 ```
 
-Puis modifier le profil en catégorie Privée
+Puis modifier le profil en catégorie Privée :
 ```PowerShell
 Set-NetConnectionProfile -InterfaceIndex $Index -NetworkCategory Private
 ```
 
-Configuration du LocalAccountTokenFilterPolicy
+Configuration du LocalAccountTokenFilterPolicy :
 ```PowerShell
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
 ```
 
-Pour la configuration du WinRM
+Pour la configuration du WinRM :
 ```PowerShell
 winrm quickconfig
 ```
@@ -91,12 +92,12 @@ winrm quickconfig
 
 Configuration sur les Clients du démarrage automatique du service Registre Distant via la commande PowerShell :
 
-Définir le démarrage automatique du service "Registre Distant"
+Définir le démarrage automatique du service "Registre Distant" :
 ```PowerShell
 Set-Service -Name RemoteRegistry -StartupType Automatic
 ```
 
-Démarrer le service "Registre Distant"
+Démarrer le service "Registre Distant" :
 ```PowerShell
 Start-Service -Name RemoteRegistry
 ```
@@ -110,11 +111,11 @@ Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 
 ##### Compte administrateur
 
-Création d'un nouveau compte utilisateur
+Création d'un nouveau compte utilisateur :
 ```PowerShell
 New-LocalUser -Name "Administrator" -Description "Compte local identique au compte du domaine" -Password (ConvertTo-SecureString "Azerty1*" -AsPlainText -Force) -FullName "Administrator" -PasswordNeverExpires -UserMayNotChangePassword
 ```
-Ajout du compte au groupe des administrateurs locaux
+Ajout du compte au groupe des administrateurs locaux :
 ```PowerShell
 Add-LocalGroupMember -Group "Administrateurs" -Member "Administrator"
 ```
@@ -175,7 +176,7 @@ Set-Item WSMan:\localhost\Client\TrustedHosts -Value "172.16.30.20" -Force
 
 ##### PowerShell
 
-Pour avoir la dernière version de PowerShell
+Pour avoir la dernière version de PowerShell :
 
 ```PowerShell
 iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
@@ -183,7 +184,7 @@ iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
 
 ###### OpenSSH
 
-Pour installer et aciver OpenSSH
+Pour installer et aciver OpenSSH :
 
 ```PowerShell
 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
