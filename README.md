@@ -23,6 +23,7 @@ Les machines en question, client comme serveur, doivent également être configu
 Ce projet a été réalisé par Sheldon THURM, Brendan BORNE et Mamadou DRAME.
 
 Il a pour but de mobiliser les compétences suivantes :
+* Création de VM avec l'hyperviseur Proxmox
 * Configuration de machines serveur et client en réseau
 * Installation et configuration d'OpenSSH
 * Prise en main de Proxmox
