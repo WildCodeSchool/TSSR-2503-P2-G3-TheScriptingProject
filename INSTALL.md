@@ -194,7 +194,7 @@ Start-Service sshd
 
 Les scripts sont déjà présents sur les machines Proxmox.
 
-Pour plus de détails, je vous invite a lire USER_GUIDE.md.
+Pour plus de détails sur leur exécution, vous pouvez lire **USER_GUIDE.md**.
 
 ## ❓ FAQ
 
@@ -209,16 +209,6 @@ Oui, les scripts sont des petits programmes lancés directement depuis un termin
 ### Dois-je avoir un bon niveau en informatique pour lancer le script ?
 
 Non, il suffit d'executer le script dans une console et celui-ci vous guidera à travers ses ramifications.
-
-
-
-
-
-
-
-
-
-
 
 ### Comment mettre à jour les outils nécessaires à l’exécution d’un script ?
 
