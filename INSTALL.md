@@ -8,15 +8,15 @@ La machine Debian est fonctionnelle par défaut, OpenSSH étant activé de base 
 
 La machine Ubuntu nécessite l'installation de quelques dépendances ainsi que la configuration rapide de OpenSSH.
 
-Les machines Windows nécessitent des dépendances **et** une configuration détaillée dans la section **Préparation <Client/Serveur> Windows**.
+Les machines Windows nécessitent des dépendances **et** une configuration détaillée dans leurs sections respectives de ce document.
 
 ## ⚡ Prérequis techniques
 
 ### Dépendances
 
-Les dépendances des scripts doivent être installés sur les machines **client**. 
+Les dépendances des scripts doivent être installées sur les machines **client**. 
 
-#### Sur Linux
+#### Sur Ubuntu
 
 Les dépendances pour la bonne exécution du script sur Linux sont les suivantes :
 * ufw
@@ -152,7 +152,7 @@ Installer le logiciel Chocolatey :
 Set-ExecutionPolicy AllSigned -Scope Process -Force; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex
 ```
 
-#### Préparation serveur Windows
+#### Sur le Serveur Windows
 
 ##### WinRM
 
@@ -210,23 +210,3 @@ Oui, les scripts sont des petits programmes lancés directement depuis un termin
 ### Dois-je avoir un bon niveau en informatique pour lancer le script ?
 
 Non, il suffit d'executer le script dans une console et celui-ci vous guidera à travers ses ramifications.
-
-### Comment mettre à jour les outils nécessaires à l’exécution d’un script ?
-
-Sur une distribution Debian, vous pouvez mettre à jour les dépendances du script en exécutant les commandes :
-
-```bash
-# On met à jour la liste des paquets
-sudo apt update
-# On met à jour le système
-sudo apt upgrade
-```
-
-Sur Windows, il est possible de mettre à jour le système et les dépendances à l'aide des commandes suivantes :
-
-```PowerShell
-# On récupère les données de mise à jour
-Get-WindowsUpdate
-# On met à jour le système
-Install-WindowsUpdate 
-```

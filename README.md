@@ -148,19 +148,25 @@ Afin de palier aux manques que nous avions en PowerShell, nous avons beaucoup eu
 
 ### 2. Aide du formateur
 
-Pour répondre à ce besoin de configurer les machines Windows, notre formateur nous a donné une documentation permettant d'installer et configuration de nombreux services Windows permettant d'utiliser plus efficacement les commandes à distance sur les machines Windows.
+Pour répondre à ce besoin de configurer les machines Windows, notre formateur nous a donné une documentation permettant d'installer et configurer de nombreux services Windows permettant d'utiliser plus efficacement les commandes à distance sur les machines Windows.
 
 ## 🚀 Améliorations possibles
 
 Nous avons de nombreuses pistes d'améliorations possibles pour nos deux scripts d'administration.
 
-### 1. Contrôle du bon déroulement des actions
+### 1. Fonctionnalités script PowerShell
+
+Faute de temps, l'intégralité des fonctionnalités attendues n'a pas été implémenté en PowerShell. Il manque actuellement 4  fonctions qui ne passent pas les tests de débugage. 
+
+Nous pourrions les implémenter afin de boucler les attendus pour ce script.
+
+### 2. Contrôle du bon déroulement des actions
 
 En l'état actuel, nos scripts réalisent les actions d'administration demandées sans vérifier si elles sont possibles ni si elles ont bien été réalisées. Le script repose sur la gestion des erreurs intégrée des commandes auxquelles il fait appel.
 
 Nous pourrions programmer nos propres vérifications et messages d'erreur afin de rendre plus claire l'utilisation du script.
 
-### 2. Formatage des informations recueillies
+### 3. Formatage des informations recueillies
 
 En l'état actuel, nos scripts récupèrent les informations demandées en faisant appel à des fonctions récupérant les informations, sans en changer la sortie ni le format. Parfois, ces résultats sont assez lourds visuellement, ou assez peu lisibles.
 

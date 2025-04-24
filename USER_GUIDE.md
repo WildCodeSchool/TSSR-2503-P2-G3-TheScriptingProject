@@ -10,11 +10,13 @@ Lorsque vous avez lancé le script, on vous demande de choisir si vous voulez ef
 
 A chaque fois, on vous demandera d'entrer l'ordinateur que vous souhaitez cibler, et, le cas échéant, l'utilisateur.
 
-> Pour chaque information que vous récupérez, le script les affiche sur l'écran. Il les garde également en mémoire dans un dossier **log** situé au même endroit que le script par défaut. De plus, chacune de vos actions est conservées dans un fichier **log_evt.log**.
+> Pour chaque information que vous récupérez, le script les affiche sur l'écran. Il les garde également en mémoire dans un dossier **log** situé au même endroit que le script par défaut. De plus, chacune de vos actions est conservée dans un fichier **log_evt.log**.
 
 Dans les sous-menus du script, il est possible de revenir en arrière en apuyant sur **r**.
 
 Dans les menus et sous-menus du script, il est possible de quitter le script en appuyant sur **q**. Tant que vous n'avez pas quitté le script ainsi, il continuera à tourner afin que vous puissiez réaliser plusieurs actions durant la même exécution.
+
+> Il est recommandé de quitter le script de cette manière afin de conserver une journalisation cohérente.
 
 ## 🐧 Utilisation Linux  
 
@@ -36,7 +38,7 @@ Si tout se passe bien, les lignes suivantes devraient s'afficher :
 
 Vous n'avez ensuite plus qu'à naviguer dans les menus pour effectuer les actions d'administration de votre choix, ou récupérer les informations qui vous intéressent.
 
-Voici par exemple à quoi peut ressembler le parcours des menus lorsque vous souhaitez obtenir la version de l'OS du PC **CLIWIN01**:
+Voici par exemple à quoi peut ressembler le parcours des menus lorsque vous souhaitez obtenir la version de l'OS du PC **CLILIN01**:
 
 ![Affiche menu OS Debian](Ressources/debian_infoOS.png)
 
@@ -46,7 +48,7 @@ Pour utiliser ce script, il faut être connecté en temps que **Administrator**.
 
 Le script s'exécute depuis un terminal **PowerShell (version 7)**.
 
-> Par défaut, le script est dans le dossier courant de l'utilisateur **Administrator**, c'est à dire **C:\Users\Administrator**. Il est donc accessible directement lorsqu'on se connecte en temps que **root**.
+> Par défaut, le script est dans le dossier courant de l'utilisateur **Administrator**, c'est à dire **C:\Users\Administrator**. Il est donc accessible directement lorsqu'on se connecte en temps que **Administrator** dans un terminal PowerShell 7.
 
 Lorsque que vous êtes dans le même dossier que le script "administration.ps1", lancer la commande suivante :
 
